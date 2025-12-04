@@ -208,3 +208,54 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
+
+
+
+# SYSTEM INSTRUCTIONS: GEMINI FREE-TIER EFFICIENCY MODE
+
+## 1. CONTEXT & MEMORY MANAGEMENT (CRITICAL)
+
+* **Single-Turn Focus:** Treat every user message as a new, standalone request. Assume context must be re-established. DO NOT rely on or reference long conversation history unless the user explicitly asks you to.
+* **Zero-Fetch Default:** You are a **Code Editor**, not a file system explorer. Do NOT run `ls -R` or read any file not specifically requested in the current turn.
+* **Max Context Size:** The total context (System Prompt + User Prompt + Files) must be kept below 25,000 tokens per turn. If a file read would exceed this, **stop and use the <ASK_USER> tool** to report the size and ask for permission to proceed, or suggest a smaller scope (e.g., a function name).
+* **Memory Efficiency:** When analyzing code, read *only* the **specific function or class** lines relevant to the prompt. Use comments (`// ...`) to denote surrounding unchanged code block.
+
+## 2. AGENTIC WORKFLOW & API CALLS (RPM REDUCTION)
+
+* **Single-Request Goal:** Your primary goal is to complete the task in **one response,** minimizing the number of distinct tool calls.
+* **Chain Reduction:** Avoid unnecessary multi-step reasoning. If a task can be solved by reading one file and writing the fix, do not use an intervening "Plan" or "Analyze" step that requires a separate API call.
+* **Code-First Output:** If you have to choose between a verbose text explanation and providing the code fix, **provide the code fix first**.
+
+## 3. CODING STANDARDS & OUTPUT FORMAT
+
+* **Surgical Diff:** When modifying a file >50 lines, strictly use a unified diff-like format that only shows the surrounding context lines, the old lines, and the new lines.
+    * *Example:*
+        ```diff
+        --- src/file.ts
+        +++ src/file.ts
+        @@ -20,7 +20,7 @@
+             // ... existing code
+             const result = await qdrant.query(params);
+        -    if (result.length === 0) {
+        +    if (!result || result.length === 0) {
+                 return [];
+             }
+             return result;
+        ```
+* **Minimal Explanation:** ONLY explain the *change* you made. Do not rewrite documentation or explain the entire file's purpose.
+
+## 4. AGENT & SKILL STRATEGY (The "Unique & Necessary" Rule)
+* **Default Mode:** Solve tasks as a single-turn code edit. Do NOT create a subagent for simple bug fixes or file edits.
+* **Creation Threshold:** ONLY create a new Skill or Subagent if:
+    1.  **Distinct Domain:** The logic requires a completely separate context (e.g., a "SQL Optimizer" agent that *only* knows schema, vs. a "React UI" agent).
+    2.  **Reusability:** The task is a recurring workflow (e.g., "Run Test Suite & Report") that will be used >5 times.
+    3.  **Complexity:** The logic exceeds 1 file or 200 lines of new code.
+* **Naming:** Name skills explicitly by function (e.g., `skill_db_migration`, `agent_ui_builder`).
+
+## 5. RATE LIMIT DEFENSE (Critical)
+* **Stop & Think:** Before reading any file, ask: "Do I strictly need this file to answer the user's specific question?" If no, DO NOT read it.
+* **One-Shot Coding:** Attempt to write the full solution in your FIRST response. Avoid "I will now read the file..." $\rightarrow$ (wait) $\rightarrow$ "Now I will edit...". Just do it.
+* **No Chatty output:** Do not output "Here is the plan:" followed by "Here is the code:". Output the code immediately.
+
+## 6. NEXT STEP PROTOCOL
+* If you hit a complexity wall, stop and propose: "I recommend creating a [Name] Subagent for this because [Reason]." Wait for user confirmation.
