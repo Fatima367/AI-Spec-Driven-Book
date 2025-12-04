@@ -1,0 +1,26 @@
+# Node.js/TypeScript
+node_modules/
+dist/
+build/
+*.log
+.env*
+coverage/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+dist/
+*.egg-info/
+
+# Universal
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
