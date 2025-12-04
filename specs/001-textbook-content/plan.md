@@ -1,44 +1,70 @@
-# Implementation Plan: [FEATURE]
+# Implementation Plan: Textbook Content Structure
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+**Branch**: `001-textbook-content` | **Date**: 2025-12-04 | **Spec**: /specs/001-textbook-content/spec.md
+**Input**: Feature specification from `/specs/001-textbook-content/spec.md`
 
 **Note**: This template is filled in by the `/sp.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+This plan outlines the generation of a comprehensive Docusaurus-based textbook structure and content for "Physical AI & Humanoid Robotics". It covers the creation of sidebar navigation, folder organization, and detailed chapter content, including hero sections, learning objectives, code blocks, diagrams, quizzes, and simulation exercises, with a dedicated hardware lab chapter.
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
-
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Language/Version**: Python 3.10+ (for content generation scripts, potentially backend for RAG), TypeScript/React (for Docusaurus frontend), ROS 2, URDF.
+**Primary Dependencies**: Docusaurus, FastAPI, Pydantic, Neon Postgres, Qdrant, OpenAI ChatKit SDK (with Gemini API key), BetterAuth, Mermaid.js.
+**Storage**: Neon Serverless Postgres (User Data), Qdrant Cloud (RAG Vector DB).
+**Testing**: Unit tests for content generation scripts (e.g., Python `pytest`), Docusaurus build validation, manual content review for accuracy and formatting.
+**Target Platform**: GitHub Pages (Docusaurus build).
+**Project Type**: Web application (Docusaurus frontend for the book, FastAPI backend for RAG chatbot).
+**Performance Goals**: Backend API responses <500ms for 95% of requests. Frontend Time to Interactive (TTI) <3 seconds on mobile devices.
+**Constraints**: Utilize free-tier services (Qdrant Cloud Free, Neon Serverless). Minimum 5-8 highly-regarded sources, with at least 50% peer-reviewed. Simple and replicable GitHub Pages deployment. No verbose and repetition in chapters.
+**Scale/Scope**: Generate complete textbook structure and content for 7 modules/chapters as specified in the syllabus, including sidebar categories: Foundations, ROS2, Simulation, NVIDIA Isaac, Humanoids, VLA, Hardware, Capstone.
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+### I. Comprehensive Course Content
+- **Compliance**: ✅ Fully compliant. The feature directly implements this principle by generating the course content based on the syllabus.
+
+### II. GitHub Pages Publication & Deployment
+- **Compliance**: ✅ Fully compliant. The generated content is designed for Docusaurus and GitHub Pages deployment, adhering to free-tier services.
+
+### III. Robust RAG Chatbot Implementation
+- **Compliance**: 🚫 Not applicable for this feature. This feature focuses on content generation, not chatbot implementation.
+
+### IV. Extensive Claude Code Subagent Utilization
+- **Compliance**: ✅ Fully compliant. Subagents will be used for content generation and formatting, leveraging specialized capabilities (e.g., content-expander, introduction-writer, outline-generator).
+
+### V. Production-Ready Code Quality
+- **Compliance**: ✅ Fully compliant. Generated content (e.g., code blocks) and any generation scripts will adhere to high code quality standards.
+
+### VI. Accuracy Through Primary Source Verification
+- **Compliance**: ✅ Fully compliant. Content generation will emphasize accuracy and verifiability through primary sources as per the constitution.
+
+### VII. Clarity for Audience
+- **Compliance**: ✅ Fully compliant. Generated content will be clear and understandable for the target audience.
+
+### VIII. Reproducibility
+- **Compliance**: ✅ Fully compliant. Content generation will ensure claims and experimental results are cited and traceable.
+
+### IX. Rigor
+- **Compliance**: ✅ Fully compliant. Peer-reviewed sources will be preferred for content generation.
+
+### Bonus Features (Relevant to content generation)
+- **Claude Code Subagents**: ✅ Fully compliant. Will leverage subagents for content generation.
+- **Agent Skills**: ✅ Fully compliant. Will utilize existing or create new skills (e.g., outline-generator, content-expander, introduction-writer) for content creation.
+- **Logged-in users get two buttons per chapter**: ✅ Fully compliant. The spec explicitly requires these buttons.
+- **Personalization uses user profile to simplify/complexify content**: ✅ Fully compliant. The 'Personalize for Me' button implies this functionality.
+- **Urdu translation uses gemini-2.0-flash with Urdu prompt engineering**: ✅ Fully compliant. The 'اردو میں ترجمہ کریں' button implies this functionality.
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/[###-feature]/
+specs/001-textbook-content/
 ├── plan.md              # This file (/sp.plan command output)
 ├── research.md          # Phase 0 output (/sp.plan command)
 ├── data-model.md        # Phase 1 output (/sp.plan command)
@@ -48,27 +74,34 @@ specs/[###-feature]/
 ```
 
 ### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
+book_frontend/
+├── docs/
+│   ├── intro.mdx
+│   ├── module1-ros2/
+│   │   ├── _category_.json
+│   │   └── index.mdx
+│   ├── module2-digital-twin/
+│   │   ├── _category_.json
+│   │   └── index.mdx
+│   ├── module3-ai-robot-brain/
+│   │   ├── _category_.json
+│   │   └── index.mdx
+│   ├── module4-vla/
+│   │   ├── _category_.json
+│   │   └── index.mdx
+│   ├── capstone/
+│   │   ├── _category_.json
+│   │   └── index.mdx
+│   └── hardware-lab.mdx
+├── src/
+│   ├── components/
+│   ├── pages/
+│   └── theme/
+├── sidebars.js
+└── docusaurus.config.js
 
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
 backend/
 ├── src/
 │   ├── models/
@@ -76,23 +109,9 @@ backend/
 │   └── api/
 └── tests/
 
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: The project will utilize a monorepo-like structure with `book_frontend` for the Docusaurus application and `backend` for the FastAPI RAG chatbot (though the latter is not directly modified by *this* feature, its presence is acknowledged). The Docusaurus `docs` directory will house all generated textbook content, organized into subdirectories for each module and chapter, along with `_category_.json` files for sidebar management and an updated `sidebars.js` file.
 
 ## Complexity Tracking
 
@@ -100,5 +119,4 @@ directories captured above]
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+| N/A | N/A | N/A |
