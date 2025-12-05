@@ -1,0 +1,88 @@
+openapi: 3.0.0
+info:
+  title: Chat API
+  version: 1.0.0
+paths:
+  /chat:
+    post:
+      summary: Interact with the RAG chatbot
+      description: Accepts user queries, retrieves context, and provides answers with citations.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  description: The user's natural language question.
+                  example: "How does RAG work?"
+                user_id:
+                  type: string
+                  description: Optional identifier for the user.
+                  example: "user123"
+                selected_text:
+                  type: string
+                  description: Optional highlighted text from the UI to narrow context.
+                  example: "Retrieval-augmented generation (RAG) is..."
+      responses:
+        '200':
+          description: Chatbot response with answer and citations.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  answer:
+                    type: string
+                    example: "RAG works by first retrieving relevant documents and then generating a response based on those documents [1]."
+                  citations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        doc_id:
+                          type: string
+                          example: "chapter-1"
+                        chunk_id:
+                          type: string
+                          example: "chunk-abc"
+                        url:
+                          type: string
+                          example: "/docs/chapter-1#chunk-abc"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Query is required."
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Failed to process chat request."
+        '200':
+          description: Polite refusal if query cannot be grounded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  answer:
+                    type: string
+                    example: "I can only answer questions based on the content of the textbook."
+                  citations:
+                    type: array
+                    items: {}

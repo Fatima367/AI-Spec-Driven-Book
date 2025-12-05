@@ -1,0 +1,61 @@
+openapi: 3.0.0
+info:
+  title: Query API
+  version: 1.0.0
+paths:
+  /query:
+    post:
+      summary: Direct retrieval from Qdrant
+      description: Retrieves relevant document chunks based on a direct query.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  description: The search query.
+                  example: "What is RAG?"
+      responses:
+        '200':
+          description: A list of relevant document chunks.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    page_content:
+                      type: string
+                      description: The textual content of the chunk.
+                    chapter_title:
+                      type: string
+                      description: The title of the chapter.
+                    url_slug:
+                      type: string
+                      description: URL slug for the exact section.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Query parameter is required."
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Failed to retrieve documents."
