@@ -1,0 +1,41 @@
+openapi: 3.0.0
+info:
+  title: Ingestion API
+  version: 1.0.0
+paths:
+  /ingest:
+    post:
+      summary: Ingest Docusaurus documentation
+      description: Scrapes the Docusaurus `docs/` folder, chunks text, generates embeddings, and uploads to Qdrant.
+      requestBody:
+        description: No request body needed as scraping is initiated on the server.
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+      responses:
+        '200':
+          description: Ingestion initiated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Ingestion process started."
+                  documents_ingested:
+                    type: integer
+                    example: 100
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Failed to initiate ingestion process."
