@@ -1,0 +1,55 @@
+# Chapter 2.1: Sensors and Environmental Awareness
+
+## 2.1.1 Visual Perception (Cameras, LiDAR)
+
+Visual perception is fundamental for humanoid robots to understand their surroundings, navigate, and interact with objects and humans.
+
+*   **Cameras**:
+    *   **Monocular Cameras**: Provide 2D images, crucial for object recognition, pose estimation (with advanced algorithms), and visual servoing. They are lightweight and inexpensive but lack direct depth information.
+    *   **Stereo Cameras**: Mimic human binocular vision by using two cameras to capture images from slightly different viewpoints. This allows for the computation of depth maps through triangulation, essential for 3D reconstruction and obstacle avoidance.
+    *   **RGB-D Cameras (e.g., Intel RealSense, Microsoft Azure Kinect)**: These cameras directly provide color (RGB) and depth (D) information. They typically use structured light or time-of-flight principles to generate accurate depth maps, simplifying tasks like object segmentation, human skeleton tracking, and scene understanding in indoor environments.
+    *   **Applications**: Object detection and recognition, facial recognition, gesture recognition, human tracking, navigation, visual servoing for manipulation tasks.
+
+*   **LiDAR (Light Detection and Ranging)**:
+    *   LiDAR sensors emit pulsed laser light and measure the time it takes for the light to return, generating precise 3D point clouds of the environment.
+    *   **2D LiDAR**: Scans a single plane, commonly used for simultaneous localization and mapping (SLAM) in mobile robotics, providing accurate distance measurements to obstacles.
+    *   **3D LiDAR**: Scans across multiple planes, providing dense 3D representations of the environment. Crucial for complex outdoor navigation, terrain mapping, and detailed object reconstruction.
+    *   **Applications**: SLAM, obstacle avoidance, terrain mapping, environmental modeling, precise localization, human detection in dynamic environments.
+
+## 2.1.2 Tactile and Proprioceptive Sensing
+
+These sensors provide crucial information about the robot's internal state and its physical interaction with the environment.
+
+*   **Tactile Sensors**:
+    *   Enable robots to "feel" their environment, detecting contact, pressure, and sometimes texture. These are typically arrays of force-sensing resistors (FSRs), capacitive sensors, or piezoelectric sensors embedded in grippers, fingertips, or the robot's "skin."
+    *   **Applications**: Object grasping (detecting slippage, determining appropriate grip force), safe human-robot interaction (detecting unwanted contact), surface texture analysis, manipulation of delicate objects.
+
+*   **Proprioceptive Sensors**:
+    *   Provide information about the robot's own body state, such as joint angles, velocities, and forces.
+    *   **Encoders**: Measure joint angles (position) by converting angular position into electrical signals. Optical encoders are common for high precision.
+    *   **Inertial Measurement Units (IMUs)**: Combine accelerometers (measuring linear acceleration) and gyroscopes (measuring angular velocity) to estimate the robot's orientation, velocity, and sometimes position. Often used in humanoid torso and feet for balance control and gait analysis.
+    *   **Force/Torque Sensors**: Measure the forces and torques exerted at specific points, such as robot wrists, ankles, or feet. Essential for compliant control, disturbance rejection, and human-robot interaction.
+    *   **Applications**: Joint position and velocity control, balance control, gait generation, force-controlled manipulation, disturbance detection, collision detection.
+
+## 2.1.3 Sensor Fusion Techniques
+
+Individual sensors provide partial and often noisy information. Sensor fusion is the process of combining data from multiple sensors to achieve a more accurate, robust, and comprehensive understanding of the robot's state and environment.
+
+*   **Why Sensor Fusion?**:
+    *   **Redundancy**: Provides robustness against individual sensor failures.
+    *   **Complementarity**: Combines different types of information (e.g., depth from LiDAR, color from camera) to form a richer representation.
+    *   **Accuracy**: Reduces uncertainty and noise by integrating multiple measurements.
+    *   **Expanded Coverage**: Overcomes the limitations of individual sensors' fields of view or measurement ranges.
+
+*   **Common Techniques**:
+    *   **Kalman Filters (KF) and Extended Kalman Filters (EKF)**: Used for linear and non-linear systems, respectively, to estimate the state of a system (e.g., robot's position, velocity, orientation) from noisy sensor measurements over time. They are particularly effective for fusing IMU data with GPS or visual odometry.
+    *   **Unscented Kalman Filters (UKF)**: An alternative to EKF for non-linear systems that uses a deterministic sampling approach to better capture the statistics of the state distribution.
+    *   **Particle Filters (PF)**: Suitable for highly non-linear and non-Gaussian systems, representing the state distribution with a set of weighted particles. More computationally intensive but can handle complex uncertainties.
+    *   **Complementary Filters**: A simpler approach, often used for fusing accelerometer and gyroscope data to estimate orientation. It combines the high-frequency accuracy of gyroscopes with the low-frequency stability of accelerometers.
+    *   **Graph-based SLAM**: Modern SLAM approaches often build a graph of robot poses and environmental features, optimizing the entire graph to achieve globally consistent maps and accurate localization by fusing data from various sensors (e.g., cameras, LiDAR, IMU).
+
+*   **Challenges**:
+    *   **Time Synchronization**: Ensuring all sensor data is time-stamped and synchronized is crucial for accurate fusion.
+    *   **Calibration**: Precisely calibrating the intrinsic and extrinsic parameters of each sensor is essential.
+    *   **Computational Cost**: Advanced fusion algorithms can be computationally demanding, requiring powerful onboard processing.
+    *   **Data Association**: Correctly associating measurements from different sensors with the same environmental features or robot states.

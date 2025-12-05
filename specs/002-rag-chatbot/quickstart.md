@@ -11,7 +11,9 @@ Before you begin, ensure you have the following installed:
 *   **Poetry** (Python package manager, `pip install poetry`)
 *   **API Keys**:
     *   **Qdrant Cloud API Key**: For your vector database (free tier account at [qdrant.tech](https://qdrant.tech)).
-    *   **Gemini API Key**: For embeddings and LLM (from [Google AI Studio](https://ai.google.dev/)).
+    *   **Gemini API Key**: For both embeddings and the Large Language Model (from [Google AI Studio](https://ai.google.dev/)).
+    *   **GEMINI_BASE_URL** (Optional): Base URL for the Gemini API if using a custom endpoint (default is compatible with OpenAI SDK).
+
 
 ## 1. Backend Setup (FastAPI)
 
