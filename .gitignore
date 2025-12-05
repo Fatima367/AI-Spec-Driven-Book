@@ -1,0 +1,27 @@
+# Gitignore for AI-Spec-Driven-Book project
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+dist/
+*.egg-info/
+uv.lock
+
+# Node.js
+node_modules/
+dist/
+build/
+*.log
+.env
+.env.*
+.docusaurus/
+
+# Universal
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
