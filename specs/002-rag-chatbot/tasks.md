@@ -7,17 +7,17 @@ description: "Task list template for feature implementation"
 
 *GATE: All tasks must align with the project's Constitution.*
 
-- [x] Principle I: Full Course Content
-- [x] Principle II: Tech Stack Adherence
-- [x] Principle III: GitHub Pages Publication
-- [x] Principle IV: Free GitHub Pages Deployment
-- [x] Principle V: Full RAG Chatbot Implementation
-- [x] Principle VI: Extensive Subagent Usage
-- [x] Principle VII: Production-Ready Code
-- [x] Principle VIII: Accuracy through Primary Source Verification
-- [x] Principle IX: Clarity for Audience
-- [x] Principle X: Reproducibility
-- [x] Principle XI: Rigor
+- [ ] Principle I: Full Course Content
+- [ ] Principle II: Tech Stack Adherence
+- [ ] Principle III: GitHub Pages Publication
+- [ ] Principle IV: Free GitHub Pages Deployment
+- [ ] Principle V: Full RAG Chatbot Implementation
+- [ ] Principle VI: Extensive Subagent Usage
+- [ ] Principle VII: Production-Ready Code
+- [ ] Principle VIII: Accuracy through Primary Source Verification
+- [ ] Principle IX: Clarity for Audience
+- [ ] Principle X: Reproducibility
+- [ ] Principle XI: Rigor
 
 ---
 
@@ -138,12 +138,12 @@ description: "Task list template for feature implementation"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T024 Implement error handling for `POST /ingest` (empty/maldformed/large Markdown files).
-- [ ] T025 Implement polite refusal message for unanswerable queries.
-- [ ] T026 Add comprehensive unit/integration tests for backend services and API.
-- [ ] T027 Add unit/integration tests for book_frontend components and services.
-- [ ] T028 Document API endpoints using OpenAPI/Swagger.
-- [ ] T029 Update Quickstart Guide with final setup and usage instructions.
+- [x] T024 Implement error handling for `POST /ingest` (empty/maldformed/large Markdown files).
+- [x] T025 Implement polite refusal message for unanswerable queries.
+- [x] T026 Add comprehensive unit/integration tests for backend services and API.
+- [x] T027 Add unit/integration tests for book_frontend components and services.
+- [x] T028 Document API endpoints using OpenAPI/Swagger.
+- [x] T029 Update Quickstart Guide with final setup and usage instructions.
 
 ---
 

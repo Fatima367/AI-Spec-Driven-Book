@@ -2,7 +2,7 @@
 id: 0003
 title: Generated tasks for RAG Chatbot
 stage: tasks
-date: 2025-12-02
+date: 2025-12-05
 surface: agent
 model: claude-sonnet-4-5-20250929
 feature: 001-rag-chatbot
