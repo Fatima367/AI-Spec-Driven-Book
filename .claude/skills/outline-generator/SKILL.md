@@ -1,6 +1,6 @@
 ---
 name: Outline Generator
-description: Generates a detailed outline for a book chapter or section based on a given topic or summary.
+description: Generates an outline for a book chapter or section based on a given topic or summary.
 when to use: Use this skill when you need to quickly generate a structured outline for a book, chapter, or any specific section, providing a clear hierarchical view of the content.
 ---
 
