@@ -4,6 +4,7 @@ sidebar_position: 1
 ---
 
 import { PersonalizeButton, UrduTranslationButton } from '@site/src/components/PersonalizationButtons';
+import Mermaid from '@theme/Mermaid';
 
 <PersonalizeButton />
 <UrduTranslationButton />
@@ -11,12 +12,455 @@ import { PersonalizeButton, UrduTranslationButton } from '@site/src/components/P
 # Module 3: The AI Robot Brain (NVIDIA Isaac)
 
 ## Learning Objectives
-- Discover the NVIDIA Isaac robotics platform.
-- Understand how AI is integrated into robot control and perception.
-- Explore advanced navigation and manipulation techniques.
+- Understand the NVIDIA Isaac platform architecture and its role in AI-powered robotics
+- Implement perception systems using NVIDIA Isaac tools and libraries
+- Configure and deploy Nav2 for advanced path planning in humanoid robots
+- Integrate GPU-accelerated AI models for real-time perception and decision-making
+- Explore Isaac Sim for photorealistic simulation and synthetic data generation
+- Master Isaac ROS for hardware-accelerated perception and control
 
-## Content
-This module focuses on the integration of Artificial Intelligence into robotic systems, with a deep dive into NVIDIA Isaac platform's capabilities.
+## Introduction to NVIDIA Isaac Platform
+
+The NVIDIA Isaac platform represents a comprehensive ecosystem for developing AI-powered robotic systems. It combines hardware (Jetson platforms), software (Isaac ROS, Isaac Sim), and AI frameworks (Triton Inference Server, TAO Toolkit) to accelerate the development of intelligent robots. The platform is specifically designed to handle the computational demands of real-time AI inference, making it ideal for humanoid robotics applications that require complex perception, planning, and control.
+
+The Isaac platform addresses the critical challenge of bringing AI to the edge, where robots must make intelligent decisions in real-time with limited computational resources. By leveraging NVIDIA's GPU acceleration and specialized AI libraries, the platform enables robots to process sensor data, run complex neural networks, and execute intelligent behaviors with low latency and high performance.
+
+## Isaac Platform Components
+
+### Isaac Sim
+Isaac Sim is NVIDIA's robotics simulation application built on the Omniverse platform. It provides photorealistic simulation capabilities that enable the generation of synthetic training data for AI models and testing of robotic algorithms in diverse virtual environments.
+
+Key features of Isaac Sim:
+- Photorealistic rendering using PhysX physics engine
+- Synthetic data generation for training AI models
+- Domain randomization for robust AI model training
+- Integration with ROS 2 and Isaac ROS
+- Support for complex humanoid robot models
+
+### Isaac ROS
+Isaac ROS provides GPU-accelerated perception and control capabilities for robotic systems. It includes hardware-accelerated implementations of common robotics algorithms that run on NVIDIA Jetson platforms.
+
+Isaac ROS components include:
+- **Isaac ROS Apriltag**: GPU-accelerated AprilTag detection
+- **Isaac ROS DNN Inference**: Hardware-accelerated deep learning inference
+- **Isaac ROS Stereo DNN**: GPU-accelerated stereo vision and depth estimation
+- **Isaac ROS Visual SLAM**: Hardware-accelerated simultaneous localization and mapping
+- **Isaac ROS Manipulator**: GPU-accelerated inverse kinematics and manipulator control
+
+<Mermaid chart={`graph TD;
+    A[Sensor Data] --> B{Isaac ROS Processing};
+    B --> C[GPU-accelerated Perception];
+    B --> D[Hardware-accelerated Control];
+    C --> E[AI Decision Making];
+    D --> F[Robot Actuation];
+    E --> G[Navigation Planning];
+    G --> D;
+`} />
+
+## Nav2 Path Planning for Humanoid Robots
+
+Navigation2 (Nav2) is the state-of-the-art navigation framework for ROS 2 that provides path planning, obstacle avoidance, and localization capabilities. For humanoid robots, Nav2 requires specialized configuration to handle bipedal locomotion patterns and unique kinematic constraints.
+
+### Nav2 Architecture Components
+
+The Nav2 system consists of several key components that work together to enable autonomous navigation:
+
+- **Navigation Server**: Coordinates the navigation system and manages state transitions
+- **Planner Server**: Generates global path plans using algorithms like A* or Dijkstra
+- **Controller Server**: Executes local path following and obstacle avoidance
+- **Recovery Server**: Handles navigation failures with recovery behaviors
+- **Lifecycle Manager**: Manages the lifecycle states of navigation components
+
+### Nav2 Configuration for Humanoid Robots
+
+Humanoid robots present unique navigation challenges due to their bipedal locomotion and anthropomorphic form. The navigation configuration must account for:
+
+- **Footstep Planning**: Generating stable footstep sequences for bipedal walking
+- **ZMP (Zero Moment Point) Control**: Maintaining balance during movement
+- **Step Height Constraints**: Managing step height for different terrains
+- **Balance Recovery**: Implementing recovery behaviors for balance loss
+
+## NVIDIA Isaac Code Examples
+
+### Isaac ROS Perception Pipeline
+```python
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import Image, CameraInfo
+from cv_bridge import CvBridge
+import numpy as np
+import cv2
+
+class IsaacPerceptionNode(Node):
+    def __init__(self):
+        super().__init__('isaac_perception_node')
+
+        # Create subscribers for camera and depth data
+        self.image_sub = self.create_subscription(
+            Image, '/camera/rgb/image_raw', self.image_callback, 10)
+        self.depth_sub = self.create_subscription(
+            Image, '/camera/depth/image_raw', self.depth_callback, 10)
+
+        # Create publisher for processed results
+        self.result_pub = self.create_publisher(Image, '/perception/result', 10)
+
+        self.bridge = CvBridge()
+        self.latest_depth = None
+
+    def image_callback(self, msg):
+        # Convert ROS image to OpenCV format
+        cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+
+        # Apply GPU-accelerated processing (simulated here)
+        processed_image = self.process_with_gpu(cv_image)
+
+        # Publish results
+        result_msg = self.bridge.cv2_to_imgmsg(processed_image, encoding='bgr8')
+        self.result_pub.publish(result_msg)
+
+    def depth_callback(self, msg):
+        # Process depth information
+        self.latest_depth = self.bridge.imgmsg_to_cv2(msg, desired_encoding='32FC1')
+
+    def process_with_gpu(self, image):
+        # Simulate GPU-accelerated processing
+        # In real implementation, this would use Isaac ROS or CUDA
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        edges = cv2.Canny(gray, 50, 150)
+        return cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)
+
+def main(args=None):
+    rclpy.init(args=args)
+    perception_node = IsaacPerceptionNode()
+    rclpy.spin(perception_node)
+    perception_node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+### Nav2 Configuration for Humanoid Navigation
+```yaml
+# humanoid_nav2_config.yaml
+amcl:
+  ros__parameters:
+    use_sim_time: True
+    alpha1: 0.2
+    alpha2: 0.2
+    alpha3: 0.2
+    alpha4: 0.2
+    alpha5: 0.2
+    base_frame_id: "base_footprint"
+    beam_skip_distance: 0.5
+    beam_skip_error_threshold: 0.9
+    beam_skip_threshold: 0.3
+    do_beamskip: false
+    global_frame_id: "map"
+    lambda_short: 0.1
+    laser_likelihood_max_dist: 2.0
+    laser_max_range: 10.0
+    laser_min_range: -1.0
+    laser_model_type: "likelihood_field"
+    max_beams: 60
+    max_particles: 2000
+    min_particles: 500
+    odom_frame_id: "odom"
+    pf_err: 0.05
+    pf_z: 0.99
+    recovery_alpha_fast: 0.0
+    recovery_alpha_slow: 0.0
+    resample_interval: 1
+    robot_model_type: "nav2_amcl::DifferentialMotionModel"
+    save_pose_rate: 0.5
+    sigma_hit: 0.2
+    tf_broadcast: true
+    transform_tolerance: 1.0
+    update_min_a: 0.2
+    update_min_d: 0.25
+    z_hit: 0.5
+    z_max: 0.05
+    z_rand: 0.5
+    z_short: 0.05
+
+bt_navigator:
+  ros__parameters:
+    use_sim_time: True
+    global_frame: map
+    robot_base_frame: base_link
+    odom_topic: /odom
+    bt_loop_duration: 10
+    default_server_timeout: 20
+    enable_groot_monitoring: True
+    groot_zmq_publisher_port: 1666
+    groot_zmq_server_port: 1667
+    # Specify the path where the BT XML files are located
+    default_nav_through_poses_bt_xml: "nav2_bt_xml_v0.14/nav_through_poses_w_replanning_and_recovery.xml"
+    default_nav_to_pose_bt_xml: "nav2_bt_xml_v0.14/nav_to_pose_w_replanning_and_recovery.xml"
+    plugin_lib_names:
+    - nav2_compute_path_to_pose_action_bt_node
+    - nav2_compute_path_through_poses_action_bt_node
+    - nav2_smooth_path_action_bt_node
+    - nav2_follow_path_action_bt_node
+    - nav2_spin_action_bt_node
+    - nav2_wait_action_bt_node
+    - nav2_assisted_teleop_action_bt_node
+    - nav2_back_up_action_bt_node
+    - nav2_drive_on_heading_bt_node
+    - nav2_clear_costmap_service_bt_node
+    - nav2_is_stuck_condition_bt_node
+    - nav2_goal_reached_condition_bt_node
+    - nav2_goal_updated_condition_bt_node
+    - nav2_globally_updated_goal_condition_bt_node
+    - nav2_is_path_valid_condition_bt_node
+    - nav2_initial_pose_received_condition_bt_node
+    - nav2_reinitialize_global_localization_service_bt_node
+    - nav2_rate_controller_bt_node
+    - nav2_distance_controller_bt_node
+    - nav2_speed_controller_bt_node
+    - nav2_truncate_path_action_bt_node
+    - nav2_truncate_path_local_action_bt_node
+    - nav2_goal_updater_node_bt_node
+    - nav2_recovery_node_bt_node
+    - nav2_pipeline_sequence_bt_node
+    - nav2_round_robin_node_bt_node
+    - nav2_transform_available_condition_bt_node
+    - nav2_time_expired_condition_bt_node
+    - nav2_path_expiring_timer_condition
+    - nav2_distance_traveled_condition_bt_node
+    - nav2_single_trigger_bt_node
+    - nav2_is_battery_low_condition_bt_node
+    - nav2_navigate_through_poses_action_bt_node
+    - nav2_navigate_to_pose_action_bt_node
+    - nav2_remove_passed_goals_action_bt_node
+    - nav2_planner_selector_bt_node
+    - nav2_controller_selector_bt_node
+    - nav2_goal_checker_selector_bt_node
+    - nav2_controller_cancel_bt_node
+    - nav2_path_longer_on_approach_bt_node
+    - nav2_wait_cancel_bt_node
+    - nav2_spin_cancel_bt_node
+    - nav2_back_up_cancel_bt_node
+    - nav2_assisted_teleop_cancel_bt_node
+    - nav2_drive_on_heading_cancel_bt_node
+
+controller_server:
+  ros__parameters:
+    use_sim_time: True
+    controller_frequency: 20.0
+    min_x_velocity_threshold: 0.001
+    min_y_velocity_threshold: 0.5
+    min_theta_velocity_threshold: 0.001
+    failure_tolerance: 0.3
+    progress_checker_plugin: "progress_checker"
+    goal_checker_plugins: ["humanoid_goal_checker"]  # Custom goal checker for humanoid
+    controller_plugins: ["FollowPath"]
+
+    # Humanoid-specific controller
+    FollowPath:
+      plugin: "nav2_mppi_controller::MPPIController"
+      time_steps: 50
+      model_dt: 0.05
+      batch_size: 2000
+      vx_std: 0.2
+      vy_std: 0.2
+      wz_std: 0.3
+      vx_max: 0.5
+      vx_min: -0.2
+      vy_max: 0.3
+      wz_max: 0.3
+      vx_scale: 1.0
+      vy_scale: 1.0
+      wz_scale: 1.0
+      xy_goal_tolerance: 0.25
+      yaw_goal_tolerance: 0.2
+      stateful: True
+      critics: ["BaseObstacleCritic", "GoalCritic", "PathAlignCritic", "PreferForwardCritic"]
+      BaseObstacleCritic:
+        cost_scaling_factor: 1.0
+        inflation_radius: 0.5
+      GoalCritic:
+        cost_scaling_factor: 5.0
+        threshold_to_consider_goal: 1.0
+      PathAlignCritic:
+        cost_scaling_factor: 10.0
+        max_path_occupancy_ratio: 0.3
+        path_angle_thresh: 1.0
+      PreferForwardCritic:
+        cost_scaling_factor: 10.0
+        threshold_to_consider_forward: 1.0
+
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      update_frequency: 5.0
+      publish_frequency: 2.0
+      global_frame: odom
+      robot_base_frame: base_link
+      use_sim_time: True
+      rolling_window: true
+      width: 6
+      height: 6
+      resolution: 0.05
+      robot_radius: 0.3  # Humanoid robot radius
+      plugins: ["voxel_layer", "inflation_layer"]
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        cost_scaling_factor: 3.0
+        inflation_radius: 0.55
+      voxel_layer:
+        plugin: "nav2_costmap_2d::VoxelLayer"
+        enabled: True
+        publish_voxel_map: True
+        origin_z: 0.0
+        z_resolution: 0.2
+        z_voxels: 8
+        max_obstacle_height: 2.0
+        mark_threshold: 0
+        observation_sources: scan
+        scan:
+          topic: /scan
+          max_obstacle_height: 2.0
+          clearing: True
+          marking: True
+          data_type: "LaserScan"
+          raytrace_max_range: 3.0
+          raytrace_min_range: 0.0
+          obstacle_max_range: 2.5
+          obstacle_min_range: 0.0
+      always_send_full_costmap: True
+
+global_costmap:
+  global_costmap:
+    ros__parameters:
+      update_frequency: 1.0
+      publish_frequency: 1.0
+      global_frame: map
+      robot_base_frame: base_link
+      use_sim_time: True
+      robot_radius: 0.3
+      resolution: 0.05
+      track_unknown_space: true
+      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: True
+        observation_sources: scan
+        scan:
+          topic: /scan
+          max_obstacle_height: 2.0
+          clearing: True
+          marking: True
+          data_type: "LaserScan"
+          raytrace_max_range: 3.0
+          raytrace_min_range: 0.0
+          obstacle_max_range: 2.5
+          obstacle_min_range: 0.0
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        map_subscribe_transient_local: True
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        cost_scaling_factor: 3.0
+        inflation_radius: 0.55
+      always_send_full_costmap: True
+
+planner_server:
+  ros__parameters:
+    expected_planner_frequency: 20.0
+    use_sim_time: True
+    planner_plugins: ["GridBased"]
+    GridBased:
+      plugin: "nav2_navfn_planner::NavfnPlanner"
+      tolerance: 0.5
+      use_astar: false
+      allow_unknown: true
+```
+
+## Nav2 Path Planning Diagram
+
+<Mermaid chart={`graph TD;
+    A[Start Pose] --> B[Global Path Planner];
+    B --> C[Path Optimization];
+    C --> D[Local Path Planner];
+    D --> E[Footstep Planner for Humanoid];
+    E --> F[Balance Controller];
+    F --> G[Robot Execution];
+    G --> H{Goal Reached?};
+    H -->|No| I[Obstacle Detected?];
+    I -->|Yes| J[Local Replanning];
+    J --> D;
+    I -->|No| K[Continue Navigation];
+    K --> G;
+    H -->|Yes| L[Navigation Complete];
+    B -.-> M[Map Server];
+    D -.-> N[Costmap Server];
+    F -.-> O[Sensor Feedback];
+    O --> F;
+`} />
+
+## Isaac AI Integration
+
+The integration of AI into the robot's decision-making process involves several key components:
+
+### Perception Pipeline
+- **Object Detection**: Using GPU-accelerated models to identify objects in the environment
+- **Semantic Segmentation**: Understanding scene composition and object relationships
+- **Depth Estimation**: Extracting 3D information from 2D images
+- **SLAM**: Simultaneous Localization and Mapping for navigation
+
+### Decision Making
+- **Behavior Trees**: Structured approach to complex robot behaviors
+- **Reinforcement Learning**: Learning optimal behaviors through environmental interaction
+- **Path Planning**: Computing optimal routes while avoiding obstacles
+- **Human-Robot Interaction**: Understanding and responding to human commands
+
+### Control Systems
+- **Motion Planning**: Computing joint trajectories for complex movements
+- **Balance Control**: Maintaining stability for humanoid robots
+- **Manipulation**: Controlling robotic arms and hands for object interaction
+
+## GPU-Accelerated AI Models
+
+NVIDIA Isaac leverages GPU acceleration for various AI tasks:
+
+- **TensorRT Optimization**: Optimizing neural networks for inference on Jetson platforms
+- **TAO Toolkit**: Fine-tuning pre-trained models for specific robotic applications
+- **CUDA Integration**: Direct integration of CUDA kernels for specialized processing
+- **Multi-GPU Scaling**: Distributing AI workloads across multiple GPU units
 
 ## Try it yourself
-(Placeholder for simulation or hands-on exercise instructions)
+
+1. **Set up NVIDIA Isaac ROS**:
+   ```bash
+   # Install Isaac ROS dependencies
+   sudo apt update
+   sudo apt install nvidia-isaa-ros-dev
+   ```
+
+2. **Create an Isaac perception node**:
+   - Implement a GPU-accelerated object detection pipeline
+   - Use Isaac ROS packages for sensor processing
+   - Integrate with your robot's existing ROS 2 system
+
+3. **Configure Nav2 for your robot**:
+   - Create a custom Nav2 configuration file
+   - Adjust parameters for your robot's kinematic constraints
+   - Test navigation in simulation before real-world deployment
+
+4. **Implement path planning**:
+   - Create a simple navigation goal publisher
+   - Test global and local path planning capabilities
+   - Experiment with different path planning algorithms
+
+5. **Optimize for humanoid navigation**:
+   - Modify Nav2 configuration for bipedal locomotion
+   - Implement custom footstep planning
+   - Test balance recovery behaviors
+
+6. **Integrate AI perception**:
+   - Deploy a trained object detection model
+   - Connect perception output to navigation system
+   - Test autonomous navigation with object avoidance
+
+Through these exercises, you'll gain hands-on experience with NVIDIA Isaac's AI capabilities and Nav2 path planning, preparing you to develop sophisticated AI-powered robotic systems with advanced navigation and perception capabilities.

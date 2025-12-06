@@ -4,6 +4,7 @@ sidebar_position: 1
 ---
 
 import { PersonalizeButton, UrduTranslationButton } from '@site/src/components/PersonalizationButtons';
+import Mermaid from '@theme/Mermaid';
 
 <PersonalizeButton />
 <UrduTranslationButton />
@@ -11,12 +12,453 @@ import { PersonalizeButton, UrduTranslationButton } from '@site/src/components/P
 # Capstone Project: Autonomous Humanoid Development
 
 ## Learning Objectives
-- Apply learned concepts to develop an autonomous humanoid robot.
-- Integrate various modules (ROS 2, simulation, AI, VLA) into a single project.
-- Troubleshoot and optimize robotic systems for real-world scenarios.
+- Synthesize knowledge from all previous modules to design and implement an autonomous humanoid robot system
+- Integrate ROS 2, simulation environments, AI perception, and VLA models into a cohesive robotic platform
+- Develop comprehensive system architecture that handles navigation, manipulation, perception, and human interaction
+- Implement safety mechanisms and error recovery procedures for reliable humanoid operation
+- Evaluate and optimize system performance across multiple operational scenarios
+- Document and present the complete humanoid system design and implementation
 
-## Content
-The Capstone Project provides an opportunity to apply all the knowledge gained throughout the textbook to develop a functional autonomous humanoid robot.
+## Introduction to the Autonomous Humanoid Project
+
+The capstone project represents the culmination of your journey through Physical AI and Humanoid Robotics. You will design, implement, and evaluate a complete autonomous humanoid robot system that integrates all the technologies and concepts covered in previous modules. This project challenges you to think holistically about robotic systems, considering not just individual components but their complex interactions in real-world scenarios.
+
+The autonomous humanoid will be capable of:
+- Navigating human environments safely and efficiently
+- Understanding and executing natural language commands
+- Manipulating objects with human-like dexterity
+- Interacting naturally with humans in collaborative tasks
+- Adapting to dynamic and unstructured environments
+
+## System Architecture Overview
+
+The autonomous humanoid system integrates multiple subsystems that work together to enable intelligent behavior:
+
+<Mermaid chart={`graph TB;
+    A[Human Interaction] --> B{Cognitive System};
+    B --> C[Language Understanding];
+    B --> D[Task Planning];
+    B --> E[Behavior Selection];
+
+    F[Perception System] --> G[Object Detection];
+    F --> H[SLAM & Mapping];
+    F --> I[Human Detection];
+
+    J[Navigation System] --> K[Path Planning];
+    J --> L[Path Following];
+    J --> M[Obstacle Avoidance];
+
+    N[Manipulation System] --> O[Grasp Planning];
+    N --> P[Arm Control];
+    N --> Q[Hand Control];
+
+    C --> R[Humanoid Controller];
+    D --> R;
+    E --> R;
+    G --> R;
+    H --> R;
+    I --> R;
+    K --> R;
+    L --> R;
+    M --> R;
+    O --> R;
+    P --> R;
+    Q --> R;
+
+    R --> S[Humanoid Robot];
+    S --> T[Sensor Feedback];
+    T --> F;
+    T --> J;
+    T --> N;
+`} />
+
+## Project Phases and Implementation Strategy
+
+### Phase 1: System Design and Architecture
+- Define the overall system architecture and component interfaces
+- Select appropriate hardware and software platforms based on project requirements
+- Design the communication protocols between different subsystems
+- Create detailed system specifications and interface definitions
+
+### Phase 2: Core Infrastructure Development
+- Implement the ROS 2 communication backbone
+- Set up the simulation environment (Isaac Sim or Gazebo)
+- Integrate the humanoid robot model with appropriate sensors and actuators
+- Establish basic locomotion and balance control systems
+
+### Phase 3: Perception System Integration
+- Implement visual perception for object detection and recognition
+- Integrate SLAM for environment mapping and localization
+- Develop human detection and tracking capabilities
+- Create affordance detection for manipulation planning
+
+### Phase 4: Cognitive and Interaction Systems
+- Integrate VLA models for natural language understanding and action planning
+- Implement speech recognition and synthesis for human interaction
+- Develop task planning and execution systems
+- Create context-aware behavior selection mechanisms
+
+### Phase 5: Navigation and Manipulation
+- Implement humanoid-specific navigation with bipedal locomotion
+- Develop manipulation planning for complex object interactions
+- Integrate safety mechanisms and emergency stop procedures
+- Optimize system performance for real-time operation
+
+### Phase 6: Integration and Testing
+- Integrate all subsystems into a cohesive system
+- Conduct comprehensive testing in simulation and on physical hardware
+- Evaluate system performance across multiple scenarios
+- Document lessons learned and system limitations
+
+## Detailed Implementation Steps
+
+### 1. Robot Model and Simulation Setup
+Create or select a humanoid robot model with appropriate degrees of freedom and sensors. For this project, consider a model with:
+- 20+ degrees of freedom for human-like movement
+- RGB-D cameras for visual perception
+- IMU and force/torque sensors for balance and manipulation
+- Actuators capable of precise control
+
+```python
+# Example: Setting up the humanoid robot in simulation
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import JointState, Image, CameraInfo
+from geometry_msgs.msg import Twist, PoseStamped
+from std_msgs.msg import String
+import tf2_ros
+
+class HumanoidController(Node):
+    def __init__(self):
+        super().__init__('humanoid_controller')
+
+        # Publishers for different subsystems
+        self.joint_cmd_pub = self.create_publisher(JointState, '/joint_commands', 10)
+        self.nav_cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.speech_pub = self.create_publisher(String, '/tts_input', 10)
+
+        # Subscribers for sensor data
+        self.joint_state_sub = self.create_subscription(
+            JointState, '/joint_states', self.joint_state_callback, 10)
+        self.rgb_sub = self.create_subscription(
+            Image, '/camera/rgb/image_raw', self.rgb_callback, 10)
+        self.depth_sub = self.create_subscription(
+            Image, '/camera/depth/image_raw', self.depth_callback, 10)
+
+        # TF broadcaster for robot transforms
+        self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)
+
+        # Initialize robot state
+        self.current_joints = {}
+        self.robot_pose = PoseStamped()
+
+        # Set up control loop
+        self.control_timer = self.create_timer(0.05, self.control_loop)  # 20 Hz
+
+    def joint_state_callback(self, msg):
+        """Update current joint positions"""
+        for name, position in zip(msg.name, msg.position):
+            self.current_joints[name] = position
+
+    def rgb_callback(self, msg):
+        """Process RGB camera data"""
+        # Process visual input for perception
+        pass
+
+    def depth_callback(self, msg):
+        """Process depth camera data"""
+        # Process depth information for navigation and manipulation
+        pass
+
+    def control_loop(self):
+        """Main control loop for the humanoid robot"""
+        # This is where the integration of all systems happens
+        # Perception, planning, and control decisions are made here
+        pass
+
+def main(args=None):
+    rclpy.init(args=args)
+    humanoid_controller = HumanoidController()
+    rclpy.spin(humanoid_controller)
+    humanoid_controller.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+### 2. Navigation System for Humanoid Robots
+Implement specialized navigation that accounts for bipedal locomotion:
+
+```yaml
+# humanoid_navigation_config.yaml
+# Configuration for humanoid-specific navigation
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      robot_radius: 0.4  # Larger radius for humanoid safety
+      plugins: ["voxel_layer", "inflation_layer"]
+      inflation_layer:
+        cost_scaling_factor: 4.0  # Higher inflation for safety
+        inflation_radius: 0.8
+
+controller_server:
+  ros__parameters:
+    controller_frequency: 10.0  # Lower frequency for stable humanoid control
+    controller_plugins: ["HumanoidMPPIC"]
+
+    HumanoidMPPIC:
+      plugin: "nav2_mppi_controller::MPPIController"
+      time_steps: 30
+      model_dt: 0.1
+      vx_max: 0.3  # Slower for stability
+      vx_min: -0.1
+      wz_max: 0.2  # Slower turning for balance
+      # Humanoid-specific parameters
+      step_size: 0.1  # Step size for bipedal walking
+      balance_threshold: 0.1  # Balance maintenance parameters
+```
+
+### 3. VLA Integration for Humanoid Commands
+Implement the Vision-Language-Action pipeline for complex humanoid tasks:
+
+```python
+# vla_humanoid_integration.py
+import json
+from typing import List, Dict, Any
+from dataclasses import dataclass
+
+@dataclass
+class HumanoidAction:
+    action_type: str
+    parameters: Dict[str, Any]
+    priority: int = 1
+    safety_level: str = "normal"  # normal, caution, critical
+
+class HumanoidVLAIntegrator:
+    def __init__(self):
+        self.action_mapping = {
+            "walk": self.execute_walk,
+            "move_to": self.execute_move_to,
+            "pick_up": self.execute_pick_up,
+            "place": self.execute_place,
+            "greet": self.execute_greet,
+            "follow": self.execute_follow,
+            "wait": self.execute_wait,
+        }
+
+    def process_command(self, command: str, visual_context: Dict[str, Any]) -> List[HumanoidAction]:
+        """
+        Process a natural language command and return a sequence of humanoid actions
+        """
+        # This would typically involve an LLM call in a real implementation
+        # For this example, we'll use a simple rule-based approach
+        actions = []
+
+        if "walk to" in command or "go to" in command:
+            location = self.extract_location(command)
+            actions.append(HumanoidAction(
+                action_type="move_to",
+                parameters={"location": location},
+                priority=2
+            ))
+        elif "pick up" in command or "grab" in command:
+            obj = self.extract_object(command)
+            actions.append(HumanoidAction(
+                action_type="pick_up",
+                parameters={"object": obj},
+                priority=3
+            ))
+        elif "place" in command or "put" in command:
+            obj = self.extract_object(command)
+            location = self.extract_location(command)
+            actions.extend([
+                HumanoidAction(
+                    action_type="move_to",
+                    parameters={"location": location},
+                    priority=2
+                ),
+                HumanoidAction(
+                    action_type="place",
+                    parameters={"object": obj, "location": location},
+                    priority=3
+                )
+            ])
+
+        return actions
+
+    def execute_action_sequence(self, actions: List[HumanoidAction]) -> bool:
+        """
+        Execute a sequence of actions safely
+        """
+        for action in actions:
+            if not self.execute_single_action(action):
+                self.get_logger().error(f"Action failed: {action}")
+                return False
+        return True
+
+    def execute_single_action(self, action: HumanoidAction) -> bool:
+        """
+        Execute a single humanoid action
+        """
+        if action.action_type in self.action_mapping:
+            try:
+                return self.action_mapping[action.action_type](action.parameters)
+            except Exception as e:
+                self.get_logger().error(f"Action execution failed: {e}")
+                return False
+        else:
+            self.get_logger().warn(f"Unknown action type: {action.action_type}")
+            return False
+
+    def extract_location(self, command: str) -> str:
+        """Extract location from command"""
+        # Simple extraction - in practice, use NLP techniques
+        if "kitchen" in command:
+            return "kitchen"
+        elif "living room" in command:
+            return "living_room"
+        elif "bedroom" in command:
+            return "bedroom"
+        else:
+            return "unknown"
+
+    def extract_object(self, command: str) -> str:
+        """Extract object from command"""
+        # Simple extraction - in practice, use NLP techniques
+        objects = ["cup", "bottle", "book", "ball", "phone", "keys"]
+        for obj in objects:
+            if obj in command:
+                return obj
+        return "unknown"
+
+    def execute_walk(self, params: Dict[str, Any]) -> bool:
+        """Execute walking action"""
+        # Implementation for bipedal walking
+        return True
+
+    def execute_move_to(self, params: Dict[str, Any]) -> bool:
+        """Execute move to location"""
+        # Implementation for navigation to location
+        return True
+
+    def execute_pick_up(self, params: Dict[str, Any]) -> bool:
+        """Execute pick up object"""
+        # Implementation for manipulation
+        return True
+
+    def execute_place(self, params: Dict[str, Any]) -> bool:
+        """Execute place object"""
+        # Implementation for placing object
+        return True
+
+    def execute_greet(self, params: Dict[str, Any]) -> bool:
+        """Execute greeting behavior"""
+        # Implementation for social interaction
+        return True
+
+    def execute_follow(self, params: Dict[str, Any]) -> bool:
+        """Execute follow behavior"""
+        # Implementation for person following
+        return True
+
+    def execute_wait(self, params: Dict[str, Any]) -> bool:
+        """Execute wait behavior"""
+        # Implementation for waiting
+        return True
+```
+
+## Safety and Error Handling
+
+Safety is paramount in humanoid robotics. Implement multiple layers of safety mechanisms:
+
+### 1. Motion Safety
+- Joint limit enforcement
+- Collision avoidance
+- Balance maintenance
+- Emergency stop procedures
+
+### 2. Behavioral Safety
+- Command validation
+- Context-aware action filtering
+- Human safety zones
+- Predictable behavior patterns
+
+### 3. System Safety
+- Graceful degradation
+- Error recovery procedures
+- System monitoring
+- Fail-safe states
+
+## Performance Evaluation
+
+Evaluate your autonomous humanoid system across multiple dimensions:
+
+### 1. Functional Performance
+- Task completion rate
+- Navigation accuracy
+- Manipulation success rate
+- Response time to commands
+
+### 2. Safety Performance
+- Number of safety interventions
+- Collision avoidance effectiveness
+- Human safety compliance
+- System stability
+
+### 3. Interaction Quality
+- Natural language understanding accuracy
+- Human-robot interaction quality
+- Task execution naturalness
+- Social behavior appropriateness
 
 ## Try it yourself
-(Placeholder for simulation or hands-on exercise instructions)
+
+1. **Design your humanoid system architecture**:
+   - Create a system diagram showing all major components and their interactions
+   - Define the hardware specifications for your humanoid (or simulated) robot
+   - Plan the software architecture using ROS 2 packages and nodes
+
+2. **Set up the development environment**:
+   ```bash
+   # Create a workspace for the capstone project
+   mkdir -p ~/capstone_ws/src
+   cd ~/capstone_ws
+
+   # Clone or create packages for each subsystem
+   # Build and source the workspace
+   colcon build
+   source install/setup.bash
+   ```
+
+3. **Implement the basic robot control**:
+   - Create a basic humanoid controller node
+   - Implement joint state publishing and subscription
+   - Test basic movement in simulation
+
+4. **Integrate perception systems**:
+   - Set up camera and sensor processing
+   - Implement object detection using Isaac ROS or similar
+   - Test perception in various lighting conditions
+
+5. **Develop navigation capabilities**:
+   - Configure Nav2 for humanoid navigation
+   - Test path planning and obstacle avoidance
+   - Implement bipedal-specific locomotion patterns
+
+6. **Create VLA integration**:
+   - Implement a simple language understanding system
+   - Connect to a speech-to-text service
+   - Test basic command execution
+
+7. **Build complete system integration**:
+   - Connect all subsystems together
+   - Implement system state management
+   - Test end-to-end functionality
+
+8. **Evaluate and optimize**:
+   - Run comprehensive tests in simulation
+   - Identify bottlenecks and optimize performance
+   - Document system capabilities and limitations
+
+Through this capstone project, you'll synthesize all the knowledge gained throughout the textbook into a functional autonomous humanoid system, demonstrating mastery of Physical AI and Humanoid Robotics concepts.
