@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .api import ingest, query, chat
+from .chatkit import router as chatkit_router
 
 app = FastAPI(
     title="RAG Chatbot API",
@@ -21,6 +22,7 @@ app.add_middleware(
 app.include_router(ingest.router, prefix="/api/v1", tags=["ingest"])
 app.include_router(query.router, prefix="/api/v1", tags=["query"])
 app.include_router(chat.router, prefix="/api/v1", tags=["chat"])
+app.include_router(chatkit_router, tags=["chatkit"])
 
 @app.get("/")
 async def root():
