@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from '@docusaurus/router';
 import { usePluginData } from '@docusaurus/useGlobalData';
-import LayoutProvider from '@theme-original/LayoutProvider';
+import OriginalProvider from '@theme-original/Layout';
 import SkipToContent from '@theme/SkipToContent';
 import AnnouncementBar from '@theme/AnnouncementBar';
 import Navbar from '@theme/Navbar';
@@ -15,13 +15,11 @@ export default function Layout(props) {
   const showChatbot = !pathname.includes('404');
 
   return (
-    <LayoutProvider>
+    <OriginalProvider {...props}>
       <SkipToContent />
       <AnnouncementBar />
-      <Navbar />
       <main className="main-wrapper">{props.children}</main>
-      <Footer />
       {showChatbot && <Chatbot />}
-    </LayoutProvider>
+    </OriginalProvider>
   );
 }

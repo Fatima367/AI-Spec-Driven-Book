@@ -6,25 +6,68 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  /* Book theme colors from spec */
+  --ifm-color-primary: #00E0FF; /* Electric Cyan */
+  --ifm-color-primary-dark: #00C0E0;
+  --ifm-color-primary-darker: #00A0C0;
+  --ifm-color-primary-darkest: #0080A0;
+  --ifm-color-primary-light: #20E5FF;
+  --ifm-color-primary-lighter: #40EAFF;
+  --ifm-color-primary-lightest: #60F0FF;
+
+  /* Background and text colors */
+  --ifm-background-color: #020510; /* Deep void navy/black */
+  --ifm-background-surface-color: #020510;
+  --ifm-text-color: #ffffff; /* Pure white */
+  --ifm-text-color-secondary: #A0A0B0; /* Muted grey-blue */
+
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
+  --ifm-color-primary: #D600FF; /* Neon Magenta */
+  --ifm-color-primary-dark: #B600D0;
+  --ifm-color-primary-darker: #9600B0;
+  --ifm-color-primary-darkest: #760090;
+  --ifm-color-primary-light: #E020FF;
+  --ifm-color-primary-lighter: #F040FF;
+  --ifm-color-primary-lightest: #FF60FF;
+
+  /* Background and text colors */
+  --ifm-background-color: #020510; /* Deep void navy/black */
+  --ifm-background-surface-color: #020510;
+  --ifm-text-color: #ffffff; /* Pure white */
+  --ifm-text-color-secondary: #A0A0B0; /* Muted grey-blue */
+
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Additional book-specific styles */
+body {
+  background-color: #020510 !important;
+  color: #ffffff;
+}
+
+.navbar {
+  background-color: rgba(2, 5, 16, 0.8) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.footer {
+  background-color: #020510;
+}
+
+.button {
+  background: linear-gradient(90deg, #00E0FF 0%, #002BFF 100%) !important;
+  color: white !important;
+  border-radius: 50px !important;
+  border: none !important;
+}
+
+.button:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 10px 20px rgba(0, 224, 255, 0.3) !important;
 }
