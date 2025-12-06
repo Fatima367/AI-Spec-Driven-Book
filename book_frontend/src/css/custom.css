@@ -51,17 +51,22 @@ body {
 }
 
 .navbar {
-  background-color: rgba(2, 5, 16, 0.8) !important;
+  background-color: rgba(2, 5, 16, 0.85) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 140, 160, 0.3) !important; /* Softer border */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .footer {
-  background-color: #020510;
+  background: linear-gradient(135deg, #020510 0%, #0a0f20 100%);
+  border-top: 1px solid rgba(0, 140, 160, 0.3); /* Softer border */
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  margin-top: 50px;
 }
 
 .button {
-  background: linear-gradient(90deg, #00E0FF 0%, #002BFF 100%) !important;
+  background: linear-gradient(90deg, #008ca0 0%, #004a80 100%) !important; /* Much softer, less harsh gradient */
   color: white !important;
   border-radius: 50px !important;
   border: none !important;
@@ -69,5 +74,78 @@ body {
 
 .button:hover {
   transform: scale(1.05) !important;
-  box-shadow: 0 10px 20px rgba(0, 224, 255, 0.3) !important;
+  box-shadow: 0 10px 20px rgba(0, 140, 160, 0.3) !important; /* Even softer shadow color */
+}
+
+/* Personalization buttons styling */
+.personalization-container {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.personalization-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.personalization-btn {
+  padding: 12px 24px;
+  margin: 0;
+  background: linear-gradient(90deg, #004a80 0%, #002a5a 100%); /* Much softer, less harsh blue */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.personalization-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 74, 128, 0.3);
+  background: linear-gradient(90deg, #003f70 0%, #00204a 100%);
+}
+
+.personalization-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.personalization-btn:focus {
+  outline: 2px solid #004a80;
+  outline-offset: 2px;
+}
+
+.personalization-btn.active {
+  background: linear-gradient(90deg, #006ca0 0%, #004a80 100%); /* Softer active color */
+  box-shadow: 0 4px 8px rgba(0, 108, 160, 0.4);
+}
+
+/* Content level display - show beginner level by default, hide others */
+.content-level {
+  display: none; /* Hide all by default */
+}
+
+.content-level[data-level="beginner"] {
+  display: block; /* Show beginner by default until JS takes over */
+  margin-top: 20px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border-left: 3px solid #008ca0; /* Softer border color */
+}
+
+.content-level.active {
+  display: block;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border-left: 3px solid #008ca0; /* Softer border color */
 }

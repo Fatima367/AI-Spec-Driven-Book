@@ -4,6 +4,7 @@ import GlassmorphismCard from '../components/BookLanding/GlassmorphismCard';
 import BackgroundSpheres from '../components/BookLanding/BackgroundSpheres';
 import NavigationLinks from '../components/BookLanding/NavigationLinks';
 import CTAButton from '../components/BookLanding/CTAButton';
+import Chatbot from '../components/Chatbot/Chatbot';
 
 /**
  * The main landing page for the book
@@ -28,6 +29,9 @@ const Home = () => {
         }}>
           <GlassmorphismCard />
         </div>
+
+        {/* Chatbot */}
+        <Chatbot />
       </div>
     </Layout>
   );

@@ -38,6 +38,9 @@ const config: Config = {
     locales: ['en'],
   },
 
+  plugins: [
+    './src/plugins/personalization-plugin',
+  ],
   presets: [
     [
       'classic',
@@ -89,10 +92,9 @@ const config: Config = {
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          to: '/docs/intro',
+          label: 'Book',
           position: 'left',
-          label: 'Chapters',
         },
         {
           to: '/login',
@@ -120,10 +122,6 @@ const config: Config = {
             {
               label: 'Introduction',
               to: '/docs/intro',
-            },
-            {
-              label: 'Chapters',
-              to: '/docs/',
             },
             {
               label: 'Module 1: ROS2',

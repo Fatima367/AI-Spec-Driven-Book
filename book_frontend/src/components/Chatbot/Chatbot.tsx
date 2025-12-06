@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Chatbot.css';
 import { selectionService } from '../../services/selection_service'; // Import the selectionService
+import { FaCommentAlt, FaTimes, FaPaperPlane, FaRobot } from 'react-icons/fa'; // Import icons
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -88,9 +89,12 @@ const Chatbot = () => {
       {isOpen ? (
         <div className="chatbot-window">
           <div className="chatbot-header">
-            <h3>Book Assistant</h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <FaRobot color="#00E0FF" />
+              <h3>Book Assistant</h3>
+            </div>
             <button className="chatbot-close" onClick={toggleChat}>
-              ×
+              <FaTimes />
             </button>
           </div>
           <div className="chatbot-messages">
@@ -153,13 +157,14 @@ const Chatbot = () => {
               disabled={!inputValue.trim() || isLoading}
               className="chatbot-send-button"
             >
-              Send
+              <FaPaperPlane />
             </button>
           </div>
         </div>
       ) : (
         <button className="chatbot-button" onClick={toggleChat}>
-          <span>Ask Book</span>
+          <span>Ask AI</span>
+          <FaRobot style={{ marginLeft: '6px', fontSize: '0.9em' }} />
         </button>
       )}
     </div>

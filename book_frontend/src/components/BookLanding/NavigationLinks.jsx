@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
-import { FaBook, FaSignInAlt, FaUserPlus } from 'react-icons/fa'; // Using react-icons as specified in requirements
+import { FaSignInAlt, FaUserPlus } from 'react-icons/fa'; // Using react-icons as specified in requirements
 
 /**
  * Navigation links for the book landing page
- * Contains links to Chapters, Login, and Signup with React icons
+ * Contains links to Login and Signup with React icons
  */
 const NavigationLinks = () => {
   return (
@@ -13,21 +13,6 @@ const NavigationLinks = () => {
       role="navigation"
       aria-label="Main navigation"
     >
-      <Link
-        to="/docs/"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '5px',
-          color: 'white',
-          textDecoration: 'none',
-          fontWeight: '500',
-          fontSize: '1rem'
-        }}
-        aria-label="Go to book chapters"
-      >
-        <FaBook aria-hidden="true" /> Chapters
-      </Link>
       <Link
         to="/login"
         style={{
