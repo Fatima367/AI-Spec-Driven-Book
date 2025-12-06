@@ -82,7 +82,7 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'Physical AI & Humanoid Robotics Textbook',
+      title: 'Physical AI & Humanoid Robotics',
       logo: {
         alt: 'Physical AI & Humanoid Robotics Textbook Logo',
         src: 'img/logo.svg',
@@ -92,9 +92,18 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Chapters',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
+        {
+          to: '/login',
+          label: 'Login',
+          position: 'right',
+        },
+        {
+          to: '/signup',
+          label: 'Signup',
+          position: 'right',
+        },
         {
           href: 'https://github.com/gemini-book/AI-Spec-Driven-Book',
           label: 'GitHub',
@@ -106,37 +115,40 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Book Content',
           items: [
             {
-              label: 'Tutorial',
+              label: 'Introduction',
               to: '/docs/intro',
             },
+            {
+              label: 'Chapters',
+              to: '/docs/',
+            },
+            {
+              label: 'Module 1: ROS2',
+              to: '/docs/module1-ros2/',
+            },
+            {
+              label: 'Module 2: Digital Twin',
+              to: '/docs/module2-digital-twin/',
+            },
+            {
+              label: 'Module 3: AI Robot Brain',
+              to: '/docs/module3-ai-robot-brain/',
+            },
+            {
+              label: 'Module 4: VLA',
+              to: '/docs/module4-vla/',
+            },
           ],
         },
         {
-          title: 'Community',
+          title: 'Resources',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Blog',
-              to: '/blog',
+              label: 'Documentation',
+              to: '/docs/',
             },
             {
               label: 'GitHub',
@@ -144,8 +156,21 @@ const config: Config = {
             },
           ],
         },
+        {
+          title: 'Legal',
+          items: [
+            {
+              label: 'Privacy Policy',
+              to: '/privacy',
+            },
+            {
+              label: 'Terms of Service',
+              to: '/terms',
+            },
+          ],
+        },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,

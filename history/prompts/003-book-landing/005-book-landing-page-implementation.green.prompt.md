@@ -1,10 +1,10 @@
 ---
-id: "1"
+id: "005"
 title: "Book Landing Page Implementation"
 stage: "tasks"
 date: "2025-12-06"
 surface: "agent"
-model: "OpenAI GPT-4"
+model: "gemini-2.55-flash"
 feature: "003-book-landing"
 branch: "003-book-landing"
 user: "dell"

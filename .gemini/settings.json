@@ -11,7 +11,7 @@
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"],
       "env": {
-        "CONTEXT7_API_KEY": "ctx7sk-33d7b4bb-7e2d-4d04-85cd-76535dfb4c3d"
+        "CONTEXT7_API_KEY": "YOUR_KEY"
       }
     }
   }
