@@ -1,0 +1,74 @@
+# OpenAPI Contract: Book Landing Page Search API
+
+openapi: 3.0.0
+info:
+  title: Book Landing Page Search API
+  description: API for searching book content from the landing page
+  version: 1.0.0
+
+paths:
+  /api/search:
+    post:
+      summary: Search across all book content
+      description: Allows users to search for specific content across all chapters/modules from the landing page
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  description: The search query string
+                  example: "ROS 2 architecture"
+                limit:
+                  type: integer
+                  description: Maximum number of results to return
+                  default: 10
+                  example: 5
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SearchResult'
+                  total:
+                    type: integer
+                    description: Total number of matching results
+        '400':
+          description: Invalid request parameters
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the content
+        title:
+          type: string
+          description: Title of the matching content
+        content:
+          type: string
+          description: Excerpt of the matching content
+        url:
+          type: string
+          description: URL to the full content
+        chapter:
+          type: string
+          description: Chapter or section where the content is located
+        score:
+          type: number
+          description: Relevance score of the result
