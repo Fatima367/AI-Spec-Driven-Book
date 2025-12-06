@@ -4,6 +4,7 @@ sidebar_position: 1
 ---
 
 import { PersonalizeButton, UrduTranslationButton } from '@site/src/components/PersonalizationButtons';
+import Mermaid from '@theme/Mermaid';
 
 <PersonalizeButton />
 <UrduTranslationButton />
@@ -11,12 +12,301 @@ import { PersonalizeButton, UrduTranslationButton } from '@site/src/components/P
 # Module 2: Digital Twin and Simulation
 
 ## Learning Objectives
-- Grasp the concept of digital twins in robotics.
-- Learn to use simulation environments like Gazebo and Unity.
-- Understand the benefits of simulation for robotic development and testing.
+- Understand the concept of digital twins and their critical role in robotics development
+- Master the use of simulation environments including Gazebo and Unity for robotic systems
+- Implement physics simulation with realistic parameters for gravity, collisions, and sensor modeling
+- Create and configure robot models using URDF (Unified Robot Description Format) for simulation
+- Develop simulation scenarios that effectively bridge the sim-to-real gap for humanoid robots
+- Evaluate the benefits and limitations of simulation for robotic development and testing
 
-## Content
-This module explores the critical role of digital twins and simulation in modern robotics, providing a safe and efficient environment for development and testing.
+## Introduction to Digital Twins in Robotics
+
+A digital twin in robotics is a virtual replica of a physical robot or robotic system that mirrors its real-world counterpart in real-time. This virtual model encompasses not only the physical geometry and kinematics but also the dynamic behavior, sensor characteristics, and environmental interactions. Digital twins enable roboticists to test algorithms, validate designs, and train AI models in a safe, controlled, and cost-effective virtual environment before deploying to physical hardware.
+
+The concept is particularly valuable in humanoid robotics, where physical robots are expensive, potentially dangerous during testing, and time-consuming to reset after failures. Through digital twins, complex humanoid behaviors can be developed, refined, and validated in simulation before being transferred to the physical robot—a process known as sim-to-real transfer.
+
+## Simulation Environments: Gazebo vs Unity
+
+### Gazebo
+Gazebo is a physics-based simulation environment that provides realistic rendering, high-fidelity physics simulation, and sensor simulation capabilities. It integrates seamlessly with ROS/ROS 2 through Gazebo ROS packages, making it a natural choice for robotic development workflows.
+
+Gazebo features:
+- Realistic physics simulation using ODE, Bullet, or DART physics engines
+- Sensor simulation (cameras, LiDAR, IMUs, GPS, etc.)
+- Complex environments with dynamic objects
+- Support for multiple robots in the same simulation
+- Integration with ROS/ROS 2 for seamless development
+
+### Unity
+Unity provides a powerful game-engine-based simulation environment that excels in photorealistic rendering and complex scene creation. Unity Robotics Simulation offers high-fidelity visual simulation that is particularly valuable for training computer vision algorithms and testing perception systems.
+
+Unity features:
+- Photorealistic rendering capabilities
+- Procedural scene generation
+- Advanced lighting and material simulation
+- Cross-platform deployment
+- Asset store with pre-built environments and models
+
+<Mermaid chart={`graph LR;
+    A[Physical Robot] -->|State Data| B(Digital Twin);
+    B -->|Commands| A;
+    B -->|Validation| C[Test Scenarios);
+    B -->|Training| D[AI Models);
+    E[Simulation Environment] -.-> B;
+    E -.-> F[Gazebo];
+    E -.-> G[Unity];
+`} />
+
+## Physics Simulation Fundamentals
+
+### Gravity and Dynamics
+Simulation environments accurately model gravitational forces, friction, and collision dynamics. For humanoid robots, this includes modeling the complex interactions between multiple links and joints, ensuring realistic movement and balance behaviors.
+
+### Collision Detection and Response
+Realistic collision detection is crucial for humanoid robots operating in human environments. Simulation environments model contact forces, friction coefficients, and material properties to ensure accurate interaction with objects and surfaces.
+
+### Sensor Simulation
+Simulation environments provide realistic models of various sensors:
+- **Cameras**: Modeling lens distortion, resolution, and frame rates
+- **LiDAR**: Simulating laser beam properties, noise, and range limitations
+- **IMUs**: Modeling drift, noise, and dynamic response
+- **Force/Torque sensors**: Simulating measurement noise and bandwidth limitations
+
+## Gazebo Code Examples
+
+### Launching a Simulation with Custom World
+```xml
+<!-- example_world.launch.py -->
+from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import PathJoinSubstitution
+from launch_ros.substitutions import FindPackageShare
+
+def generate_launch_description():
+    world_path = PathJoinSubstitution([
+        FindPackageShare("my_robot_simulation"),
+        "worlds",
+        "my_world.sdf"
+    ])
+
+    gzserver_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            FindPackageShare("gazebo_ros"),
+            "/launch/gzserver.launch.py"
+        ]),
+        launch_arguments={
+            "world": world_path,
+            "verbose": "true"
+        }.items()
+    )
+
+    return LaunchDescription([
+        gzserver_launch
+    ])
+```
+
+### Controlling a Robot in Gazebo
+```python
+#!/usr/bin/env python3
+import rclpy
+from rclpy.node import Node
+from geometry_msgs.msg import Twist
+from sensor_msgs.msg import LaserScan
+import math
+
+class GazeboController(Node):
+    def __init__(self):
+        super().__init__('gazebo_controller')
+
+        # Publisher for robot velocity commands
+        self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
+
+        # Subscriber for laser scan data
+        self.scan_sub = self.create_subscription(
+            LaserScan, '/scan', self.scan_callback, 10)
+
+        # Timer for control loop
+        self.timer = self.create_timer(0.1, self.control_loop)
+
+        self.laser_data = None
+        self.obstacle_detected = False
+
+    def scan_callback(self, msg):
+        # Process laser scan to detect obstacles
+        min_distance = min(msg.ranges)
+        self.obstacle_detected = min_distance < 1.0  # 1 meter threshold
+        self.laser_data = msg
+
+    def control_loop(self):
+        cmd_vel = Twist()
+
+        if self.obstacle_detected:
+            # Stop and rotate to find clear path
+            cmd_vel.linear.x = 0.0
+            cmd_vel.angular.z = 0.5  # Rotate in place
+        else:
+            # Move forward safely
+            cmd_vel.linear.x = 0.5
+            cmd_vel.angular.z = 0.0
+
+        self.cmd_vel_pub.publish(cmd_vel)
+
+def main(args=None):
+    rclpy.init(args=args)
+    controller = GazeboController()
+    rclpy.spin(controller)
+    controller.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+### URDF Robot Model Example
+```xml
+<?xml version="1.0"?>
+<robot name="simple_humanoid">
+  <!-- Base Link -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.5 0.3 0.2"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 0.8"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.5 0.3 0.2"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="5.0"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+    </inertial>
+  </link>
+
+  <!-- Head -->
+  <joint name="head_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="head"/>
+    <origin xyz="0 0 0.25" rpy="0 0 0"/>
+  </joint>
+
+  <link name="head">
+    <visual>
+      <geometry>
+        <sphere radius="0.1"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 0.8"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.004" ixy="0.0" ixz="0.0" iyy="0.004" iyz="0.0" izz="0.004"/>
+    </inertial>
+  </link>
+
+  <!-- Left Arm -->
+  <joint name="left_shoulder_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="left_upper_arm"/>
+    <origin xyz="0.3 0.15 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="100" velocity="1"/>
+  </joint>
+
+  <link name="left_upper_arm">
+    <visual>
+      <geometry>
+        <cylinder length="0.3" radius="0.05"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 0.8"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.3" radius="0.05"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.5"/>
+      <inertia ixx="0.005" ixy="0.0" ixz="0.0" iyy="0.005" iyz="0.0" izz="0.0005"/>
+    </inertial>
+  </link>
+</robot>
+```
+
+## Unity Simulation Concepts
+
+Unity Robotics provides several key components for robotic simulation:
+
+- **ROS-TCP-Connector**: Enables communication between Unity and ROS 2
+- **Unity Robotics Package (URP)**: Provides robotics-specific components and tools
+- **Synthetic Data Generation**: Creates labeled training data for AI models
+- **Procedural Content Generation**: Automatically creates diverse training environments
+
+## Simulation-to-Reality Transfer Challenges
+
+The sim-to-real gap represents the differences between simulation and reality that can cause algorithms trained in simulation to fail when deployed on physical robots. Key challenges include:
+
+- **Visual Fidelity**: Differences in lighting, textures, and rendering
+- **Physics Modeling**: Simplified physics models vs. real-world complexities
+- **Sensor Noise**: Simulation may not accurately model real sensor imperfections
+- **Actuator Dynamics**: Differences in motor response and control precision
+
+To address these challenges, techniques such as domain randomization, sim-to-real transfer learning, and system identification are employed.
+
+## Simulation Best Practices
+
+1. **Start Simple**: Begin with basic models and gradually add complexity
+2. **Validate Physics**: Ensure simulation parameters match physical robot characteristics
+3. **Test Sensor Models**: Verify sensor simulation matches real hardware behavior
+4. **Iterate Frequently**: Use simulation for rapid prototyping and testing
+5. **Document Differences**: Keep track of known sim-to-real discrepancies
 
 ## Try it yourself
-(Placeholder for simulation or hands-on exercise instructions)
+
+1. **Install Gazebo Garden**:
+   ```bash
+   # On Ubuntu 22.04
+   sudo apt update
+   sudo apt install gazebo
+   ```
+
+2. **Create a simple robot model**:
+   - Create a URDF file for a simple wheeled robot
+   - Include visual, collision, and inertial properties
+   - Add differential drive plugin for movement
+
+3. **Launch a simulation**:
+   - Create a launch file to spawn your robot in Gazebo
+   - Use RViz to visualize robot state and sensor data
+   - Test basic movement commands using teleop tools
+
+4. **Implement obstacle avoidance**:
+   - Write a ROS 2 node that subscribes to laser scan data
+   - Implement a simple wall-following or obstacle avoidance algorithm
+   - Test the algorithm in simulation before considering real hardware
+
+5. **Experiment with physics parameters**:
+   - Adjust friction coefficients and see how they affect robot movement
+   - Modify gravity settings to simulate different environments
+   - Test different control parameters to optimize performance
+
+6. **Explore Unity Robotics** (optional):
+   - Install Unity Hub and Unity 2022.3 LTS
+   - Import the Unity Robotics Package
+   - Connect to ROS 2 using the TCP connector
+   - Create a simple scene with a robot and navigation environment
+
+Through these exercises, you'll gain hands-on experience with digital twin concepts and simulation environments that are essential for developing robust robotic systems. The skills developed in simulation will directly translate to real-world robotic applications.
