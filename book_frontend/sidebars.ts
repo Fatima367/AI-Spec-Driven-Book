@@ -54,9 +54,9 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Hardware',
-      link: {type: 'generated-index'},
-      items: ['hardware-lab'],
+      label: 'Hardware Lab',
+      link: {type: 'doc', id: 'hardware-lab/index'},
+      items: ['hardware-lab/index'],
     },
     {
       type: 'category',
