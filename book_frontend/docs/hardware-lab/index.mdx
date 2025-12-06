@@ -122,15 +122,15 @@ Humanoid robots require deterministic real-time processing. Any hardware failure
 ### Sensor Hardware Specifications
 
 #### Vision Systems
-- **Stereo Cameras**: Global shutter cameras with <1ms latency
+- **Stereo Cameras**: Global shutter cameras with {'<'}1ms latency
 - **RGB-D Sensors**: Intel RealSense D455 or equivalent
 - **Wide-Angle Lenses**: 120°+ field of view for environmental awareness
 - **Frame Rate**: Minimum 30 FPS, 60+ FPS for high-speed applications
 
 #### Inertial Measurement Units
 - **IMU Specifications**:
-  - Gyroscope bias stability: <10°/hr
-  - Accelerometer noise density: <100 μg/√Hz
+  - Gyroscope bias stability: {'<'}10°/hr
+  - Accelerometer noise density: {'<'}100 μg/√Hz
   - Magnetometer: 3-axis with hard/soft iron compensation
   - Update rate: 1 kHz minimum
 
@@ -142,7 +142,7 @@ Humanoid robots require deterministic real-time processing. Any hardware failure
 ### Communication Hardware
 
 - **Real-Time Ethernet**: EtherCAT or PROFINET for deterministic communication
-- **Wireless Communication**: 802.11ax with <5ms latency for remote monitoring
+- **Wireless Communication**: 802.11ax with {'<'}5ms latency for remote monitoring
 - **CAN Bus**: Isolated CAN transceivers for motor control communication
 - **Serial Interfaces**: Multiple RS-485/RS-232 for legacy device integration
 
@@ -152,10 +152,10 @@ Humanoid robots require deterministic real-time processing. Any hardware failure
 
 For humanoid robotics applications, the following benchmarks should be achieved:
 
-- **Neural Network Inference**: <10ms for perception models
+- **Neural Network Inference**: {'<'}10ms for perception models
 - **Control Loop Frequency**: 1 kHz minimum for joint control
-- **Trajectory Planning**: <50ms for motion planning algorithms
-- **Sensor Fusion**: <5ms for multi-sensor data integration
+- **Trajectory Planning**: {'<'}50ms for motion planning algorithms
+- **Sensor Fusion**: {'<'}5ms for multi-sensor data integration
 
 :::tip[Benchmark Validation]
 Regularly test hardware performance using standardized robotics benchmarks such as the ROS2 performance test suite and humanoid-specific metrics like Zero-Moment Point (ZMP) calculation time.
