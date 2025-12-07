@@ -4,19 +4,6 @@ import '@testing-library/jest-dom';
 import Chatbot from '../Chatbot';
 import { selectionService } from '../../../services/selection_service';
 
-// Simple API configuration for tests
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL ||
-                    process.env.NODE_ENV === 'production'
-                    ? 'https://ai-spec-driven-book-backend.vercel.app' // Replace with your actual Vercel deployment URL
-                    : 'http://127.0.0.1:8000';
-
-const API_VERSION = '/api/v1';
-const API_CONFIG = {
-  CHAT_ENDPOINT: `${API_BASE_URL}${API_VERSION}/chat`,
-  INGEST_ENDPOINT: `${API_BASE_URL}${API_VERSION}/ingest`,
-  QUERY_ENDPOINT: `${API_BASE_URL}${API_VERSION}/query`
-};
-
 // Mock the fetch API
 global.fetch = jest.fn();
 
@@ -75,7 +62,7 @@ describe('Chatbot', () => {
     });
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
-      API_CONFIG.CHAT_ENDPOINT,
+      'https://ai-spec-driven-book-backend.vercel.app/api/v1/chat',
       expect.objectContaining({
         method: 'POST',
         body: JSON.stringify({
@@ -106,7 +93,7 @@ describe('Chatbot', () => {
     });
 
     expect(fetch).toHaveBeenCalledWith(
-      API_CONFIG.CHAT_ENDPOINT,
+      'https://ai-spec-driven-book-backend.vercel.app/api/v1/chat',
       expect.objectContaining({
         body: JSON.stringify({
           query: 'Explain this',

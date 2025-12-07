@@ -3,19 +3,6 @@ import './Chatbot.css';
 import { selectionService } from '../../services/selection_service'; // Import the selectionService
 import { FaCommentAlt, FaTimes, FaPaperPlane, FaRobot } from 'react-icons/fa'; // Import icons
 
-// Simple API configuration
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL ||
-                    process.env.NODE_ENV === 'production'
-                    ? 'https://ai-spec-driven-book-backend.vercel.app' // Replace with your actual Vercel deployment URL
-                    : 'http://127.0.0.1:8000';
-
-const API_VERSION = '/api/v1';
-const API_CONFIG = {
-  CHAT_ENDPOINT: `${API_BASE_URL}${API_VERSION}/chat`,
-  INGEST_ENDPOINT: `${API_BASE_URL}${API_VERSION}/ingest`,
-  QUERY_ENDPOINT: `${API_BASE_URL}${API_VERSION}/query`
-};
-
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -44,7 +31,7 @@ const Chatbot = () => {
 
     try {
       // Call the backend API to get chat response
-      const response = await fetch(API_CONFIG.CHAT_ENDPOINT, {
+      const response = await fetch('https://ai-spec-driven-book-backend.vercel.app/api/v1/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
