@@ -4,8 +4,8 @@ import os
 import glob
 from typing import List
 
-from ..services.embedding_service import get_embeddings
-from ..services.qdrant_service import get_qdrant_client
+from src.services.embedding_service import get_embeddings
+from src.services.qdrant_service import get_qdrant_client
 
 router = APIRouter()
 
