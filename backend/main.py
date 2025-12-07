@@ -9,9 +9,14 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Configure CORS for production deployment
 origins = [
-    "https://physical-ai-n-humanoid-robotics.vercel.app",
-    "http://localhost:3000",  # for local testing
+    "https://physical-ai-humanoid-robotics-textbook.vercel.app",  # Original production URL
+    "https://physical-ai-n-humanoid-robotics.vercel.app",  # Alternative production URL
+    "http://localhost:3000",  # Local Docusaurus frontend
+    "http://localhost:3001",  # Alternative local frontend
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
 ]
 
 app.add_middleware(
@@ -20,9 +25,11 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    # Allow credentials for better user tracking if needed
+    allow_credentials=True,
 )
 
-# Include API routes
+# Include API routes with proper versioning
 app.include_router(ingest.router, prefix="/api/v1", tags=["ingest"])
 app.include_router(query.router, prefix="/api/v1", tags=["query"])
 app.include_router(chat.router, prefix="/api/v1", tags=["chat"])
@@ -33,7 +40,7 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy"}
+    return {"status": "healthy", "version": "1.0.0"}
 
-# Important for Vercel!
+# Required for Vercel deployment
 
