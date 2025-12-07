@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api import ingest, query, chat
-from mangum import Mangum
+
 
 app = FastAPI(
     title="RAG Chatbot API",
@@ -36,4 +36,4 @@ async def health_check():
     return {"status": "healthy"}
 
 # Important for Vercel!
-handler = Mangum(app)
+
