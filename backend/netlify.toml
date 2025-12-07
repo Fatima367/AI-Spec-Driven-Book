@@ -1,0 +1,45 @@
+[build]
+  command = "pip install -r requirements.txt"
+  functions = "netlify/functions"
+  publish = "public"
+
+[template.environment]
+  GEMINI_API_KEY = "Your Gemini API key"
+  QDRANT_API_KEY = "Your Qdrant API key"
+  QDRANT_CLUSTER_URL = "Your Qdrant cluster URL"
+
+[functions]
+  # Set timeout to maximum (60 seconds for paid plans, 10 seconds for free)
+  timeout = 30
+  # Set memory (128MB to 3008MB in 64MB increments)
+  memory = 1024
+
+[[redirects]]
+  from = "/api/v1/chat"
+  to = "/.netlify/functions/chat"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/query"
+  to = "/.netlify/functions/query"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/ingest"
+  to = "/.netlify/functions/ingest"
+  status = 200
+
+[[redirects]]
+  from = "/health"
+  to = "/.netlify/functions/health"
+  status = 200
+
+[[redirects]]
+  from = "/"
+  to = "/.netlify/functions/health"
+  status = 200
+
+[dev]
+  command = "python -m uvicorn main:app --reload"
+  targetPort = 8000
+  port = 8888
