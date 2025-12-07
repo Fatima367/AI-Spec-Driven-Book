@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Physical AI & Humanoid Robotics Textbook',
   tagline: 'Learn Physical AI with Humanoid Robotics',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/FavIcon-logo2.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -28,7 +28,7 @@ const config: Config = {
   organizationName: 'gemini-book', // Usually your GitHub org/user name.
   projectName: 'AI-Spec-Driven-Book', // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -38,6 +38,9 @@ const config: Config = {
     locales: ['en'],
   },
 
+  plugins: [
+    './src/plugins/personalization-plugin',
+  ],
   presets: [
     [
       'classic',
@@ -77,7 +80,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/Textbook Cover Physical AI & Humanoid Robotics.png',
     colorMode: {
       respectPrefersColorScheme: true,
     },
@@ -85,14 +88,13 @@ const config: Config = {
       title: 'Physical AI & Humanoid Robotics',
       logo: {
         alt: 'Physical AI & Humanoid Robotics Textbook Logo',
-        src: 'img/logo.svg',
+        src: 'img/FavIcon-logo2.png',
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          to: '/docs/intro',
+          label: 'Book',
           position: 'left',
-          label: 'Chapters',
         },
         {
           to: '/login',
@@ -120,10 +122,6 @@ const config: Config = {
             {
               label: 'Introduction',
               to: '/docs/intro',
-            },
-            {
-              label: 'Chapters',
-              to: '/docs/',
             },
             {
               label: 'Module 1: ROS2',
@@ -170,7 +168,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook. Built with Docusaurus. Made by Fatima Faisal`,
     },
     prism: {
       theme: prismThemes.github,

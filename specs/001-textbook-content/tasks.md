@@ -99,25 +99,25 @@ This implementation follows an incremental approach with three priority-ordered 
 
 **Tests**: Manual verification of hardware specifications and admonition formatting
 
-- [x] T070 Create basic content structure for hardware-lab.mdx with hero section and learning objectives
-- [x] T071 Add personalization buttons to hardware-lab.mdx at the top
-- [x] T072 Add Workstation specifications (RTX 4070+) to hardware-lab.mdx using :::tip admonitions
-- [x] T073 Add Edge Kit specifications (Jetson Orin) to hardware-lab.mdx using :::tip admonitions
-- [x] T074 Add critical hardware requirements using :::danger admonitions in hardware-lab.mdx
-- [x] T075 Include additional hardware recommendations using appropriate admonitions
-- [x] T076 Verify all hardware specs meet the requirements from the feature spec
-- [x] T077 Test admonition formatting renders correctly in the browser
+- [ ] T070 Create basic content structure for hardware-lab.mdx with hero section and learning objectives
+- [ ] T071 Add personalization buttons to hardware-lab.mdx at the top
+- [ ] T072 Add Workstation specifications (RTX 4070+) to hardware-lab.mdx using :::tip admonitions
+- [ ] T073 Add Edge Kit specifications (Jetson Orin) to hardware-lab.mdx using :::tip admonitions
+- [ ] T074 Add critical hardware requirements using :::danger admonitions in hardware-lab.mdx
+- [ ] T075 Include additional hardware recommendations using appropriate admonitions
+- [ ] T076 Verify all hardware specs meet the requirements from the feature spec
+- [ ] T077 Test admonition formatting renders correctly in the browser
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
 **Goal**: Complete the implementation with final touches and cross-cutting concerns
 
-- [x] T080 Review all content for consistency in style and formatting
-- [x] T081 Verify all Mermaid diagrams render correctly in each chapter where applicable
-- [x] T082 Test personalization buttons functionality (UI only, backend integration in separate feature)
-- [x] T083 Verify sidebar navigation works smoothly across all chapters
-- [x] T084 Run Docusaurus build to ensure no errors in static site generation
-- [x] T085 Update any placeholder content with final text based on syllabus
-- [x] T086 Perform final quality assurance check on all generated content
-- [x] T087 Document any additional setup instructions in README
-- [x] T088 Create a summary of all generated chapters and their word counts
+- [ ] T080 Review all content for consistency in style and formatting
+- [ ] T081 Verify all Mermaid diagrams render correctly in each chapter where applicable
+- [ ] T082 Test personalization buttons functionality (UI only, backend integration in separate feature)
+- [ ] T083 Verify sidebar navigation works smoothly across all chapters
+- [ ] T084 Run Docusaurus build to ensure no errors in static site generation
+- [ ] T085 Update any placeholder content with final text based on syllabus
+- [ ] T086 Perform final quality assurance check on all generated content
+- [ ] T087 Document any additional setup instructions in README
+- [ ] T088 Create a summary of all generated chapters and their word counts

@@ -1,0 +1,31 @@
+.personalize-btn, .urdu-translate-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  margin: 8px;
+  background: linear-gradient(90deg, #00a8c0 0%, #005a99 100%); /* Softer, less harsh gradient */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.personalize-btn:hover, .urdu-translate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 168, 192, 0.3); /* Match the softer color */
+  background: linear-gradient(90deg, #008fa0 0%, #004a80 100%); /* Darker on hover for contrast */
+}
+
+.personalize-btn:active, .urdu-translate-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.personalize-btn:focus, .urdu-translate-btn:focus {
+  outline: 2px solid #00a8c0; /* Match the softer primary color */
+  outline-offset: 2px;
+}

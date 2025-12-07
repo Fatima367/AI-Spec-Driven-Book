@@ -4,8 +4,6 @@ import { usePluginData } from '@docusaurus/useGlobalData';
 import OriginalProvider from '@theme-original/Layout';
 import SkipToContent from '@theme/SkipToContent';
 import AnnouncementBar from '@theme/AnnouncementBar';
-import Navbar from '@theme/Navbar';
-import Footer from '@theme/Footer';
 import Chatbot from '../components/Chatbot/Chatbot';
 
 export default function Layout(props) {

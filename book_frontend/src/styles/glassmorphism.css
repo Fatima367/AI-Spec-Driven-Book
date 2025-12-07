@@ -2,7 +2,7 @@
 
 /* Main glass card styling */
 .glass-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(30, 30, 40, 0.15); /* Slightly darker for better readability */
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid rgba(255, 255, 255, 0.1);

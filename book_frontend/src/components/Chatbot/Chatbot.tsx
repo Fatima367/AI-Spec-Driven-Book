@@ -1,144 +1,171 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Chatbot.css';
-import { ChatKit, useChatKit } from '@openai/chatkit-react';
+import { selectionService } from '../../services/selection_service'; // Import the selectionService
+import { FaCommentAlt, FaTimes, FaPaperPlane, FaRobot } from 'react-icons/fa'; // Import icons
 
 const Chatbot = () => {
-  const [initialThread, setInitialThread] = useState<string | null>(null);
-  const [isReady, setIsReady] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
-    const savedThread = localStorage.getItem('chatkit-thread-id');
-    setInitialThread(savedThread);
-    setIsReady(true);
-  }, []);
+    scrollToBottom();
+  }, [messages]);
 
-  const { control } = useChatKit({
-    api: {
-      url: 'http://localhost:8000/chatkit', // Backend ChatKit endpoint
-      domainKey: 'localhost', // Required for local development
-    },
-    initialThread: initialThread,
-    theme: {
-      colorScheme: 'dark',
-      color: {
-        grayscale: { hue: 220, tint: 6, shade: -1 },
-        accent: { primary: '#4cc9f0', level: 1 },
-      },
-      radius: 'round',
-    },
-    startScreen: {
-      greeting: 'Hello! I\'m your Physical AI & Humanoid Robotics book assistant. I\'m here to help you with questions about the book content. How can I assist you today?',
-      prompts: [
-        { label: 'Hello', prompt: 'Say hello and introduce yourself' },
-        { label: 'Help', prompt: 'What can you help me with regarding the book?' },
-        { label: 'Sources', prompt: 'Can you show me sources for your answers?' },
-      ],
-    },
-    composer: {
-      placeholder: 'Ask a question about the book content...',
-    },
-    onThreadChange: ({ threadId }) => {
-      if (threadId) localStorage.setItem('chatkit-thread-id', threadId);
-    },
-    onError: ({ error }) => console.error('ChatKit error:', error),
-  });
+  const handleSendMessage = async () => {
+    if (!inputValue.trim() || isLoading) return;
 
-  if (!isReady) return <div className="chatbot-loading">Loading...</div>;
+    const userMessage = { id: Date.now(), text: inputValue, sender: 'user' };
+    setMessages(prev => [...prev, userMessage]);
+    setInputValue('');
+    setIsLoading(true);
+
+    // Get selected text from the selectionService
+    const currentSelectedText = selectionService.getSelectedText();
+
+    try {
+      // Call the backend API to get chat response
+      const response = await fetch('http://127.0.0.1:8000/api/v1/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: inputValue,
+          user_id: 'anonymous-user',
+          selected_text: currentSelectedText // Use selected text from service
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const botMessage = {
+          id: Date.now() + 1,
+          text: data.answer,
+          sender: 'bot',
+          citations: data.citations || []
+        };
+        setMessages(prev => [...prev, botMessage]);
+      } else {
+        const errorMessage = {
+          id: Date.now() + 1,
+          text: 'Sorry, I encountered an error processing your request. Please try again.',
+          sender: 'bot'
+        };
+        setMessages(prev => [...prev, errorMessage]);
+      }
+    } catch (error) {
+      const errorMessage = {
+        id: Date.now() + 1,
+        text: 'Sorry, I\'m having trouble connecting to the server. Please try again later.',
+        sender: 'bot'
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  const toggleChat = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <div className="chatbot-container">
-      {/* Floating Chat Button (bottom-right) */}
-      {!isChatOpen && (
-        <button
-          onClick={() => setIsChatOpen(true)}
-          style={{
-            position: 'fixed',
-            bottom: '2rem',
-            right: '2rem',
-            width: '60px',
-            height: '60px',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #4361ee, #4cc9f0)',
-            border: 'none',
-            cursor: 'pointer',
-            boxShadow: '0 4px 20px rgba(76, 201, 240, 0.4)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 100,
-            fontSize: '24px'
-          }}
-        >
-          <span role="img" aria-label="chat">💬</span>
-        </button>
-      )}
-
-      {/* Chat Popup (bottom-right) */}
-      {isChatOpen && (
-        <>
-          {/* Backdrop */}
-          <div
-            onClick={() => setIsChatOpen(false)}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0, 0, 0, 0.3)',
-              zIndex: 999
-            }}
-          />
-
-          {/* Popup Window */}
-          <div style={{
-            position: 'fixed',
-            bottom: '2rem',
-            right: '2rem',
-            width: '420px',
-            height: '600px',
-            maxWidth: 'calc(100vw - 4rem)',
-            maxHeight: 'calc(100vh - 4rem)',
-            background: '#16213e',
-            borderRadius: '1rem',
-            boxShadow: '0 10px 50px rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            flexDirection: 'column',
-            overflow: 'hidden',
-            zIndex: 1000,
-          }}>
-            {/* Header */}
-            <div style={{
-              padding: '1rem',
-              background: '#0f3460',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}>
-              <span style={{ color: '#4cc9f0', fontWeight: 'bold' }}>Book Assistant</span>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <button
-                  onClick={() => { localStorage.removeItem('chatkit-thread-id'); window.location.reload() }}
-                  style={{ padding: '0.4rem 0.6rem', background: '#4361ee', color: 'white', border: 'none', borderRadius: '0.375rem', cursor: 'pointer', fontSize: '0.7rem' }}
-                >
-                  New Chat
-                </button>
-                <button
-                  onClick={() => setIsChatOpen(false)}
-                  style={{ padding: '0.4rem', background: 'transparent', color: '#a0a0a0', border: '1px solid #a0a0a0', borderRadius: '0.375rem', cursor: 'pointer' }}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
-                </button>
-              </div>
+      {isOpen ? (
+        <div className="chatbot-window">
+          <div className="chatbot-header">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <FaRobot color="#00E0FF" />
+              <h3>Book Assistant</h3>
             </div>
-
-            {/* Chat Content */}
-            <div style={{ flex: 1, overflow: 'hidden' }}>
-              <ChatKit control={control} className="h-full w-full" />
-            </div>
+            <button className="chatbot-close" onClick={toggleChat}>
+              <FaTimes />
+            </button>
           </div>
-        </>
+          <div className="chatbot-messages">
+            {messages.length === 0 ? (
+              <div className="chatbot-welcome">
+                <p>Hello! I'm your book assistant. Ask me anything about the content of this book, and I'll help you find the information you need.</p>
+              </div>
+            ) : (
+              messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`chatbot-message ${
+                    message.sender === 'user' ? 'user-message' : 'bot-message'
+                  }`}
+                >
+                  <div className="message-content">
+                    {message.text}
+                  </div>
+                  {message.sender === 'bot' && message.citations && message.citations.length > 0 && (
+                    <div className="citations">
+                      <p>Sources:</p>
+                      <ul>
+                        {message.citations.map((citation, index) => (
+                          <li key={index}>
+                            <a href={citation.url} target="_blank" rel="noopener noreferrer">
+                              {citation.doc_id || `Source ${index + 1}`}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
+            {isLoading && (
+              <div className="chatbot-message bot-message">
+                <div className="message-content">
+                  <div className="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+          <div className="chatbot-input-area">
+            <textarea
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Ask a question about the book content..."
+              className="chatbot-input"
+              rows="1"
+            />
+            <button
+              onClick={handleSendMessage}
+              disabled={!inputValue.trim() || isLoading}
+              className="chatbot-send-button"
+            >
+              <FaPaperPlane />
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button className="chatbot-button" onClick={toggleChat}>
+          <span>Ask AI</span>
+          <FaRobot style={{ marginLeft: '6px', fontSize: '0.9em' }} />
+        </button>
       )}
     </div>
   );

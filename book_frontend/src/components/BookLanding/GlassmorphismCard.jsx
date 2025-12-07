@@ -25,7 +25,7 @@ const GlassmorphismCard = () => {
         maxWidth: '800px',
         padding: '40px',
         display: 'grid',
-        gridTemplateColumns: '1fr 300px', // Left side for content, right for search
+        gridTemplateColumns: '1fr', // Single column layout
         gap: '30px',
         alignItems: 'start'
       }}
@@ -55,16 +55,16 @@ const GlassmorphismCard = () => {
           {synopsis}
         </p>
 
-        {/* CTA Button */}
-        <div data-testid="left-aligned">
-          <CTAButton />
+        {/* CTA Button and Search - side by side on desktop, stacked on mobile */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }} data-testid="left-aligned">
+          <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <CTAButton />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1, minWidth: '200px' }}>
+              <h3 style={{ marginBottom: '0', color: 'white', fontSize: '1rem', fontWeight: '500' }} tabIndex="0">Search Chapters</h3>
+              <SearchInput placeholder="Search Chapters..." />
+            </div>
+          </div>
         </div>
-      </div>
-
-      {/* Right side: Search input */}
-      <div data-testid="right-aligned">
-        <h3 style={{ marginBottom: '15px', color: 'white', fontSize: '1.2rem' }} tabIndex="0">Search Chapters</h3>
-        <SearchInput placeholder="Search Chapters..." />
       </div>
 
       {/* Add responsive styles via CSS class */}
@@ -72,12 +72,7 @@ const GlassmorphismCard = () => {
         @media (max-width: 768px) {
           div[data-testid="glassmorphism-card"] {
             padding: 25px;
-            grid-template-columns: 1fr !important; /* Stack elements on mobile */
             text-align: center;
-          }
-
-          div[data-testid="right-aligned"] {
-            margin-top: 20px;
           }
 
           [data-testid="left-aligned"] {
@@ -90,6 +85,12 @@ const GlassmorphismCard = () => {
             right: 0 !important;
             order: -1; /* Move navigation to top on mobile */
             margin-bottom: 15px;
+          }
+
+          /* On mobile, stack CTA button and search vertically */
+          div[style*="display: flex"] > div[style*="flex-direction: column"] {
+            display: flex !important;
+            flex-direction: column !important;
           }
         }
 
@@ -108,6 +109,10 @@ const GlassmorphismCard = () => {
 
           .synopsis {
             font-size: 1rem !important;
+          }
+
+          div[style*="gap: 15px"] {
+            flex-direction: column !important;
           }
         }
       `}</style>
