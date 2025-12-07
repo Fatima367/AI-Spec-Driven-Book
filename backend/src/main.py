@@ -22,8 +22,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Important for Vercel!
-handler = Mangum(app)
 
 # Include API routes
 app.include_router(ingest.router, prefix="/api/v1", tags=["ingest"])
@@ -37,3 +35,7 @@ async def root():
 @app.get("/health")
 async def health_check():
     return {"status": "healthy"}
+
+
+# Important for Vercel!
+handler = Mangum(app)
