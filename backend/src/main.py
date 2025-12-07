@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .api import ingest, query, chat
+from mangum import Mangum
 
 app = FastAPI(
     title="RAG Chatbot API",
@@ -20,6 +21,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Important for Vercel!
+handler = Mangum(app)
 
 # Include API routes
 app.include_router(ingest.router, prefix="/api/v1", tags=["ingest"])
