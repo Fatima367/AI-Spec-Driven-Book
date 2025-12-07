@@ -1,5 +1,5 @@
 import os
-from qdrant_client import QdrantClient
+from qdrant_client import QdrantClient, models
 
 def get_qdrant_client() -> QdrantClient:
     qdrant_api_key = os.getenv("QDRANT_API_KEY")
@@ -11,7 +11,5 @@ def get_qdrant_client() -> QdrantClient:
     client = QdrantClient(
         url=qdrant_cluster_url,
         api_key=qdrant_api_key,
-        # Ensure HTTPS is used for production
-        https=True,
     )
     return client
