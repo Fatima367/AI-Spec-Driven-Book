@@ -12,4 +12,42 @@ This project aims to create a comprehensive textbook on Physical AI & Humanoid R
 
 ## Getting Started
 
-Further instructions will be added here on how to set up and run the project components.
+To set up and run the project locally, follow these steps:
+
+### 1. Backend Setup
+
+1.  **Navigate to the backend directory:**
+    ```bash
+    cd backend
+    ```
+2.  **Create and activate a virtual environment:**
+    ```bash
+    python -m venv .venv
+    ./.venv/Scripts/activate  # On Windows
+    source ./.venv/bin/activate # On macOS/Linux
+    ```
+3.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+4.  **Run the backend server:**
+    ```bash
+    uvicorn main:app --reload --port 8000
+    ```
+    The backend API will be accessible at `http://127.0.0.1:8000`.
+
+### 2. Frontend Setup
+
+1.  **Navigate to the frontend directory:**
+    ```bash
+    cd book_frontend
+    ```
+2.  **Install dependencies:**
+    ```bash
+    yarn install
+    ```
+3.  **Start the development server:**
+    ```bash
+    yarn start
+    ```
+    This will open the book's frontend in your browser, typically at `http://localhost:3000`.
