@@ -45,7 +45,7 @@ export default {
 
 The docs version dropdown appears in your navbar:
 
-![Docs Version Dropdown](./img/docsVersionDropdown.png)
+![Physical AI & Humanoid Robotics Textbook Cover](../../img/Textbook Cover Physical AI & Humanoid Robotics.png)
 
 ## Update an existing version
 

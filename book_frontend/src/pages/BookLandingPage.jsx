@@ -60,7 +60,7 @@ const BookLandingPage = () => {
       description="A book about the intersection of physical AI and humanoid robotics"
       wrapperClassName="book-landing-page"
     >
-      <div style={{ position: 'relative', minHeight: '100vh' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         {/* Background Spheres */}
         <BackgroundSpheres />
 
@@ -169,7 +169,7 @@ const BookLandingPage = () => {
                     e.target.style.boxShadow = 'none';
                   }}
                 >
-                  <h3 style={{ fontSize: '1.5rem', marginBottom: '15px', fontWeight: '600', color: '#00E0FF' }}>{module.title}</h3>
+                  <h3 style={{ fontSize: '1.5rem', marginBottom: '15px', fontWeight: '600', color: '#00a8c0' }}>{module.title}</h3>
                   <p style={{ fontSize: '1.1rem', opacity: 0.9 }}>{module.description}</p>
                 </div>
               ))}
@@ -237,18 +237,17 @@ const BookLandingPage = () => {
 
         {/* Chatbot */}
         <Chatbot />
-      </div>
 
-      {/* Custom Footer for Landing Page */}
-      <footer style={{
-        position: 'relative',
-        zIndex: 2,
-        backgroundColor: 'rgba(15, 15, 35, 0.95)',
-        backdropFilter: 'blur(10px)',
-        color: 'white',
-        padding: '40px 20px',
-        borderTop: '1px solid rgba(255, 255, 255, 0.1)'
-      }}>
+        {/* Custom Footer for Landing Page */}
+        <footer style={{
+          marginTop: 'auto',
+          zIndex: 2,
+          backgroundColor: 'rgba(15, 15, 35, 0.95)',
+          backdropFilter: 'blur(10px)',
+          color: 'white',
+          padding: '40px 20px',
+          borderTop: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
         <div style={{
           maxWidth: '1200px',
           margin: '0 auto',
@@ -257,7 +256,7 @@ const BookLandingPage = () => {
           gap: '40px'
         }}>
           <div>
-            <h3 style={{ fontSize: '1.3rem', marginBottom: '20px', color: '#00E0FF' }}>Book Content</h3>
+            <h3 style={{ fontSize: '1.3rem', marginBottom: '20px', color: '#00a8c0' }}>Book Content</h3>
             <ul style={{ listStyle: 'none', padding: 0 }}>
               <li style={{ marginBottom: '10px' }}><a href="/docs/intro" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none' }}>Introduction</a></li>
               <li style={{ marginBottom: '10px' }}><a href="/docs/module1-ros2/" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none' }}>Module 1: ROS2</a></li>
@@ -267,14 +266,14 @@ const BookLandingPage = () => {
             </ul>
           </div>
           <div>
-            <h3 style={{ fontSize: '1.3rem', marginBottom: '20px', color: '#00E0FF' }}>Resources</h3>
+            <h3 style={{ fontSize: '1.3rem', marginBottom: '20px', color: '#00a8c0' }}>Resources</h3>
             <ul style={{ listStyle: 'none', padding: 0 }}>
               <li style={{ marginBottom: '10px' }}><a href="/docs/" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none' }}>Documentation</a></li>
               <li style={{ marginBottom: '10px' }}><a href="https://github.com/gemini-book/AI-Spec-Driven-Book" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none' }}>GitHub</a></li>
             </ul>
           </div>
           <div>
-            <h3 style={{ fontSize: '1.3rem', marginBottom: '20px', color: '#00E0FF' }}>Legal</h3>
+            <h3 style={{ fontSize: '1.3rem', marginBottom: '20px', color: '#00a8c0' }}>Legal</h3>
             <ul style={{ listStyle: 'none', padding: 0 }}>
               <li style={{ marginBottom: '10px' }}><a href="/privacy" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none' }}>Privacy Policy</a></li>
               <li style={{ marginBottom: '10px' }}><a href="/terms" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none' }}>Terms of Service</a></li>
@@ -292,6 +291,7 @@ const BookLandingPage = () => {
           <p>© {new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook. Built with Docusaurus.</p>
         </div>
       </footer>
+      </div>
     </Layout>
   );
 };

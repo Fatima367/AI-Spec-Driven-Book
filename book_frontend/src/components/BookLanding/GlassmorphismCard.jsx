@@ -10,7 +10,7 @@ import SearchInput from '../common/SearchInput';
 const GlassmorphismCard = () => {
   // Using actual book content from the textbook
   const title = "Physical AI & Humanoid Robotics";
-  const subtitle = "Tutorial • Educational • 2024";
+  const subtitle = "Tutorial • Educational • 2025";
   const synopsis = "This textbook guides you through the journey of creating embodied intelligence—AI systems that function in reality, comprehend physical laws, and engage naturally with human environments. Explore the intersection of digital AI with the physical world and understand how humanoid robots can bridge the gap between traditional AI models and real-world applications.";
 
   return (
