@@ -3,7 +3,19 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Chatbot from '../Chatbot';
 import { selectionService } from '../../../services/selection_service';
-import { API_CONFIG } from '../../../config/apiConfig';
+
+// Simple API configuration for tests
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL ||
+                    process.env.NODE_ENV === 'production'
+                    ? 'https://ai-spec-driven-book-backend.vercel.app' // Replace with your actual Vercel deployment URL
+                    : 'http://127.0.0.1:8000';
+
+const API_VERSION = '/api/v1';
+const API_CONFIG = {
+  CHAT_ENDPOINT: `${API_BASE_URL}${API_VERSION}/chat`,
+  INGEST_ENDPOINT: `${API_BASE_URL}${API_VERSION}/ingest`,
+  QUERY_ENDPOINT: `${API_BASE_URL}${API_VERSION}/query`
+};
 
 // Mock the fetch API
 global.fetch = jest.fn();

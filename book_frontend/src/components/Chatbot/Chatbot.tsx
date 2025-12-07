@@ -2,7 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Chatbot.css';
 import { selectionService } from '../../services/selection_service'; // Import the selectionService
 import { FaCommentAlt, FaTimes, FaPaperPlane, FaRobot } from 'react-icons/fa'; // Import icons
-import { API_CONFIG } from '../../config/apiConfig'; // Import API configuration
+
+// Simple API configuration
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL ||
+                    process.env.NODE_ENV === 'production'
+                    ? 'https://ai-spec-driven-book-backend.vercel.app' // Replace with your actual Vercel deployment URL
+                    : 'http://127.0.0.1:8000';
+
+const API_VERSION = '/api/v1';
+const API_CONFIG = {
+  CHAT_ENDPOINT: `${API_BASE_URL}${API_VERSION}/chat`,
+  INGEST_ENDPOINT: `${API_BASE_URL}${API_VERSION}/ingest`,
+  QUERY_ENDPOINT: `${API_BASE_URL}${API_VERSION}/query`
+};
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
