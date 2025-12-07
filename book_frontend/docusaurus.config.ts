@@ -14,11 +14,10 @@ const config: Config = {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
-  // Set the production url of your site here
-  url: 'https://Fatima367.github.io',
+  url: 'https://physical-ai-n-humanoid-robotics.vercel.app/', // <--- Update this with your actual Vercel deployment URL
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/AI-Spec-Driven-Book/',
+  // For Vercel root deployment, it should often be '/'
+  baseUrl: '/',
 
   // Add the mermaid theme
   themes: ['@docusaurus/theme-mermaid'],
