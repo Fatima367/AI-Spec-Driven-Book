@@ -4,8 +4,9 @@ import os
 import glob
 from typing import List
 
-from ..services.embedding_service import get_embeddings
-from ..services.qdrant_service import get_qdrant_client
+from services.embedding_service import get_embeddings
+from services.qdrant_service import get_qdrant_client
+from api.ingest import DocumentChunk # Reuse DocumentChunk model
 
 router = APIRouter()
 

@@ -2,18 +2,17 @@
   "version": 2,
   "builds": [
     {
-      "src": "src/main.py",
-      "use": "@vercel/python"
+      "src": "main.py",
+      "use": "@vercel/python@4.2.2"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "src/main.py"
-    },
-    {
       "src": "/(.*)",
-      "dest": "src/main.py"
+      "dest": "main.py"
     }
-  ]
+  ],
+  "env": {
+    "PYTHONUNBUFFERED": "1"
+  }
 }

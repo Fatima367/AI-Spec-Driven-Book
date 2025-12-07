@@ -1,7 +1,8 @@
-fastapi
-uvicorn
-qdrant-client
-openai
-pydantic
-python-dotenv
-mangum
+fastapi==0.104.1
+mangum==0.17.0
+google-generativeai==0.7.2
+pydantic==2.6.0
+python-dotenv==1.0.0
+qdrant-client==2.8.0
+uvicorn==0.24.0
+httpx==0.25.2
