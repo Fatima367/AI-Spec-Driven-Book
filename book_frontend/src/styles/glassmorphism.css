@@ -2,14 +2,16 @@
 
 /* Main glass card styling */
 .glass-card {
-  background: rgba(30, 30, 40, 0.15); /* Slightly darker for better readability */
+  background: rgba(
+    var(--ifm-background-color-rgb),
+    0.15
+  ); /* Use background color from theme */
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 /* Add noise texture overlay for frosted effect */
@@ -28,7 +30,7 @@
 
 /* Navigation links styling */
 .nav-link {
-  color: white;
+  color: var(--ifm-text-color);
   text-decoration: none;
   font-weight: 500;
   font-size: 1rem;
@@ -36,7 +38,7 @@
 }
 
 .nav-link:hover {
-  color: #00E0FF; /* Electric Cyan accent on hover */
+  color: var(--ifm-color-primary-light); /* Electric Cyan accent on hover */
 }
 
 /* CTA Button styling */
@@ -46,9 +48,13 @@
   justify-content: center;
   gap: 10px;
   padding: 16px 40px;
-  background: linear-gradient(90deg, #00E0FF 0%, #002BFF 100%);
+  background: linear-gradient(
+    90deg,
+    var(--ifm-color-primary-light) 0%,
+    var(--ifm-color-primary-dark) 100%
+  );
   border-radius: 50px;
-  color: white;
+  color: var(--ifm-text-color);
   text-decoration: none;
   font-weight: bold;
   text-transform: uppercase;
@@ -103,29 +109,6 @@
   100% {
     transform: translateX(-50%) rotate(360deg);
   }
-}
-
-/* Typography styles */
-.title {
-  color: white;
-  font-weight: bold;
-  font-size: 2.5rem;
-  line-height: 1.2;
-  margin: 0;
-}
-
-.subtitle {
-  color: white;
-  font-size: 1rem;
-  opacity: 0.7;
-  margin: 0 0 1rem 0;
-}
-
-.synopsis {
-  color: #A0A0B0; /* Muted grey-blue */
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin: 0 0 1.5rem 0;
 }
 
 /* Responsive design adjustments */

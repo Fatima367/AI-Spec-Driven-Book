@@ -65,17 +65,16 @@ footer {
 }
 
 .navbar {
-  background-color: rgba(2, 5, 16, 0.85) !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: var(--ifm-background-color) !important;
   border-bottom: 1px solid rgba(0, 140, 160, 0.3) !important; /* Softer border */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* Ensure it stays on top of other content */
 }
 
 .footer {
-  background: linear-gradient(135deg, #020510 0%, #0a0f20 100%);
+  background-color: var(--ifm-background-color);
   border-top: 1px solid rgba(0, 140, 160, 0.3); /* Softer border */
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
   margin-top: 50px;
 }
 

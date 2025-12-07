@@ -71,7 +71,7 @@ export default {
 
 The locale dropdown now appears in your navbar:
 
-![Locale Dropdown](./img/localeDropdown.png)
+![Physical AI & Humanoid Robotics Textbook Cover](../../img/Textbook Cover Physical AI & Humanoid Robotics.png)
 
 ## Build your localized site
 
