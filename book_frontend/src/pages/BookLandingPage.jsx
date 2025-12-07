@@ -60,7 +60,7 @@ const BookLandingPage = () => {
       description="A book about the intersection of physical AI and humanoid robotics"
       wrapperClassName="book-landing-page"
     >
-      <div style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}>
+      <div style={{ position: 'relative', minHeight: '100vh' }}>
         {/* Background Spheres */}
         <BackgroundSpheres />
 

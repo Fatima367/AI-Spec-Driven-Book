@@ -6,14 +6,14 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  /* Book theme colors from spec */
-  --ifm-color-primary: #00E0FF; /* Electric Cyan */
-  --ifm-color-primary-dark: #00C0E0;
-  --ifm-color-primary-darker: #00A0C0;
-  --ifm-color-primary-darkest: #0080A0;
-  --ifm-color-primary-light: #20E5FF;
-  --ifm-color-primary-lighter: #40EAFF;
-  --ifm-color-primary-lightest: #60F0FF;
+  /* Book theme colors from spec - using softer, less harsh colors */
+  --ifm-color-primary: #00a8c0; /* Softer cyan-blue */
+  --ifm-color-primary-dark: #008fa0;
+  --ifm-color-primary-darker: #007a8a;
+  --ifm-color-primary-darkest: #006570;
+  --ifm-color-primary-light: #20b8d0;
+  --ifm-color-primary-lighter: #40c8e0;
+  --ifm-color-primary-lightest: #60d8f0;
 
   /* Background and text colors */
   --ifm-background-color: #020510; /* Deep void navy/black */
@@ -48,6 +48,20 @@
 body {
   background-color: #020510 !important;
   color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Footer stick to bottom */
+footer {
+  margin-top: auto;
 }
 
 .navbar {
@@ -65,8 +79,139 @@ body {
   margin-top: 50px;
 }
 
+/* Sidebar theme consistency */
+.sidebar {
+  background-color: #020510 !important; /* Match the main background */
+  color: #ffffff !important;
+}
+
+.menu {
+  background-color: #020510 !important; /* Match the main background */
+  color: #ffffff !important;
+}
+
+/* Sidebar link styles */
+.menu__list-item > a,
+.menu__link {
+  color: #a0a0b0 !important; /* Softer text color */
+  transition: all 0.2s ease;
+}
+
+.menu__list-item > a:hover,
+.menu__link:hover {
+  color: #00a8c0 !important; /* Softer cyan on hover */
+  background-color: rgba(0, 168, 192, 0.1) !important; /* Subtle background on hover */
+}
+
+.menu__list-item > a.menu__link--active,
+.menu__link--active {
+  color: #00a8c0 !important; /* Softer cyan for active */
+  background-color: rgba(0, 168, 192, 0.15) !important; /* Slightly more prominent active state */
+  border-left: 3px solid #00a8c0 !important; /* Add left border to match content sections */
+}
+
+/* Sidebar category styles */
+.menu__caret,
+.menu__list-item-collapsible > a {
+  color: #a0a0b0 !important; /* Softer text color */
+}
+
+.menu__caret:hover,
+.menu__list-item-collapsible > a:hover {
+  color: #00a8c0 !important; /* Softer cyan on hover */
+}
+
+/* Table of Contents in sidebar */
+.theme-doc-sidebar-menu {
+  background-color: #020510 !important;
+}
+
+/* Mobile sidebar */
+.navbar-sidebar {
+  background-color: #020510 !important;
+}
+
+/* Document content theme consistency */
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  color: #ffffff !important;
+  border-bottom: 1px solid rgba(0, 168, 192, 0.3) !important;
+}
+
+.markdown h1 {
+  border-bottom: 2px solid rgba(0, 168, 192, 0.5) !important;
+}
+
+.markdown a {
+  color: #00a8c0 !important;
+}
+
+.markdown a:hover {
+  color: #00c8e6 !important;
+  text-decoration: underline;
+}
+
+.markdown p,
+.markdown li,
+.markdown blockquote {
+  color: #e0e0e0 !important;
+}
+
+/* Code blocks styling */
+.prism-code {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(0, 168, 192, 0.2) !important;
+  border-radius: 8px !important;
+}
+
+/* Blockquote styling */
+blockquote {
+  border-left: 4px solid #00a8c0 !important;
+  background-color: rgba(0, 168, 192, 0.1) !important;
+  color: #d0d0d0 !important;
+  padding: 16px !important;
+  margin: 16px 0 !important;
+  border-radius: 0 8px 8px 0 !important;
+}
+
+/* Table styling */
+.markdown table {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+.markdown table th,
+.markdown table td {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 8px 12px !important;
+}
+
+.markdown table th {
+  background-color: rgba(0, 168, 192, 0.15) !important;
+  color: #ffffff !important;
+}
+
+/* Callout/admonition blocks */
+.alert {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-left: 4px solid #00a8c0 !important;
+}
+
+/* Main document container */
+.docItemContainer,
+.container {
+  background-color: transparent !important;
+}
+
 .button {
-  background: linear-gradient(90deg, #008ca0 0%, #004a80 100%) !important; /* Much softer, less harsh gradient */
+  background: linear-gradient(90deg, #007a8a 0%, #003a60 100%) !important; /* Even softer, less harsh gradient */
   color: white !important;
   border-radius: 50px !important;
   border: none !important;
@@ -74,7 +219,7 @@ body {
 
 .button:hover {
   transform: scale(1.05) !important;
-  box-shadow: 0 10px 20px rgba(0, 140, 160, 0.3) !important; /* Even softer shadow color */
+  box-shadow: 0 10px 20px rgba(0, 122, 138, 0.3) !important; /* Match the softer color */
 }
 
 /* Personalization buttons styling */
@@ -94,7 +239,7 @@ body {
 .personalization-btn {
   padding: 12px 24px;
   margin: 0;
-  background: linear-gradient(90deg, #004a80 0%, #002a5a 100%); /* Much softer, less harsh blue */
+  background: linear-gradient(90deg, #006570 0%, #004050 100%); /* Even softer, less harsh blue */
   color: white;
   border: none;
   border-radius: 8px;
@@ -108,8 +253,8 @@ body {
 
 .personalization-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 74, 128, 0.3);
-  background: linear-gradient(90deg, #003f70 0%, #00204a 100%);
+  box-shadow: 0 6px 12px rgba(0, 101, 112, 0.3); /* Match the softer color */
+  background: linear-gradient(90deg, #005560 0%, #003040 100%); /* Slightly darker on hover */
 }
 
 .personalization-btn:active {
@@ -118,13 +263,13 @@ body {
 }
 
 .personalization-btn:focus {
-  outline: 2px solid #004a80;
+  outline: 2px solid #006570; /* Match the softer primary color */
   outline-offset: 2px;
 }
 
 .personalization-btn.active {
-  background: linear-gradient(90deg, #006ca0 0%, #004a80 100%); /* Softer active color */
-  box-shadow: 0 4px 8px rgba(0, 108, 160, 0.4);
+  background: linear-gradient(90deg, #008fa0 0%, #006570 100%); /* Softer active color */
+  box-shadow: 0 4px 8px rgba(0, 143, 160, 0.4); /* Match the softer color */
 }
 
 /* Content level display - show beginner level by default, hide others */
@@ -138,14 +283,14 @@ body {
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
-  border-left: 3px solid #008ca0; /* Softer border color */
+  border-left: 3px solid #006570; /* Match the softer theme */
 }
 
 .content-level.active {
-  display: block;
+  display: block !important;
   margin-top: 20px;
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
-  border-left: 3px solid #008ca0; /* Softer border color */
+  border-left: 3px solid #006570; /* Match the softer theme */
 }
