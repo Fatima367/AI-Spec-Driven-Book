@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Chatbot.css';
 import { selectionService } from '../../services/selection_service'; // Import the selectionService
 import { FaCommentAlt, FaTimes, FaPaperPlane, FaRobot } from 'react-icons/fa'; // Import icons
+import { API_CONFIG } from '../../config/apiConfig'; // Import API configuration
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +32,7 @@ const Chatbot = () => {
 
     try {
       // Call the backend API to get chat response
-      const response = await fetch('https://ai-spec-driven-book-backend.vercel.app/api/v1/chat', {
+      const response = await fetch(API_CONFIG.CHAT_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

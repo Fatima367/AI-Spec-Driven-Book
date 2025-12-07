@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Chatbot from '../Chatbot';
 import { selectionService } from '../../../services/selection_service';
+import { API_CONFIG } from '../../../config/apiConfig';
 
 // Mock the fetch API
 global.fetch = jest.fn();
@@ -62,7 +63,7 @@ describe('Chatbot', () => {
     });
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
-      'http://127.0.0.1:8000/api/v1/chat',
+      API_CONFIG.CHAT_ENDPOINT,
       expect.objectContaining({
         method: 'POST',
         body: JSON.stringify({
@@ -93,7 +94,7 @@ describe('Chatbot', () => {
     });
 
     expect(fetch).toHaveBeenCalledWith(
-      'http://127.0.0.1:8000/api/v1/chat',
+      API_CONFIG.CHAT_ENDPOINT,
       expect.objectContaining({
         body: JSON.stringify({
           query: 'Explain this',
