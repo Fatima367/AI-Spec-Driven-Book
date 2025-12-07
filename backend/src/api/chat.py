@@ -84,7 +84,7 @@ async def chat_with_bot(request: ChatRequest):
         # This might need adjustment based on available models via the OpenAI-compatible endpoint.
         try:
             chat_response = gemini_llm_client.chat.completions.create(
-                model="gemini-1.5-pro", # Use an appropriate Gemini chat model
+                model="gemini-2.5-flash", # Use an appropriate Gemini chat model
                 messages=prompt_messages,
                 temperature=0.7,
                 max_tokens=500
