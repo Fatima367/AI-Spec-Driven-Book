@@ -8,10 +8,14 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Add CORS middleware
+origins = [
+    "https://physical-ai-n-humanoid-robotics.vercel.app",
+    "http://localhost:3000",  # for local testing
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with specific origins
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
