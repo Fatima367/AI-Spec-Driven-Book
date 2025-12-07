@@ -16,7 +16,7 @@ class DocumentChunk(BaseModel):
     url_slug: str
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "page_content": "This is a chunk of text.",
                 "chapter_title": "Introduction",
