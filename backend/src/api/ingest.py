@@ -4,8 +4,8 @@ import os
 import glob
 from typing import List
 
-from services.embedding_service import get_embeddings
-from services.qdrant_service import get_qdrant_client
+from ..services.embedding_service import get_embeddings
+from ..services.qdrant_service import get_qdrant_client
 
 router = APIRouter()
 
@@ -81,7 +81,7 @@ async def ingest_docs():
                 relative_path = os.path.relpath(file_path, docs_path)
                 # Example: intro.md -> /intro
                 # part1/chapter1.1.md -> /part1/chapter1.1
-                url_slug = "/" + os.path.splitext(relative_path)[0].replace("\", "/")
+                url_slug = "/" + os.path.splitext(relative_path)[0].replace("\\", "/")
                 
                 # Basic title extraction (first heading or filename)
                 chapter_title = os.path.basename(file_path).replace(".md", "").replace(".mdx", "")
