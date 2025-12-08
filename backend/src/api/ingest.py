@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 import os
 import glob
+import uuid
 from typing import List
 
 from ..services.embedding_service import get_embeddings
@@ -10,17 +11,18 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+CHUNK_MAX_LENGTH = 5000 # Define a constant for max chunk length (temporarily increased for debugging)
 
 router = APIRouter()
 
 # Define Pydantic models for Document Chunk
 class DocumentChunk(BaseModel):
-    page_content: str = Field(..., max_length=5000) # Assuming ~4 chars per token, 1200 tokens ~ 4800 chars
+    page_content: str = Field(..., max_length=CHUNK_MAX_LENGTH) # Reduced from 5000 to 1500 for better performance and context
     chapter_title: str
     url_slug: str
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "page_content": "This is a chunk of text.",
                 "chapter_title": "Introduction",
@@ -59,11 +61,14 @@ async def ingest_docs():
         collection_name = "book_content_chunks" # Define a collection name
 
         # Ensure collection exists
-        qdrant_client.recreate_collection(
-            collection_name=collection_name,
-            vectors_config={"size": 3072, "distance": "Cosine"} # Placeholder for vector size, needs to match embedding model output
-        )
+        if not qdrant_client.collection_exists(collection_name=collection_name):
+            qdrant_client.create_collection(
+                collection_name=collection_name,
+                vectors_config={"size": 3072, "distance": "Cosine"} # Placeholder for vector size, needs to match embedding model output
+            )
 
+        batch_size = 100 # Define a batch size for upserts
+        points_to_upsert = []
 
         for file_path in markdown_files:
             with open(file_path, 'r', encoding='utf-8') as f:
@@ -73,19 +78,39 @@ async def ingest_docs():
                 print(f"Warning: Skipping empty file {file_path}")
                 continue
 
-            # Placeholder for actual chunking logic
-            # For now, we'll treat the whole file as one chunk, or split by a simple delimiter
-            # This needs to be replaced with a proper Markdown/text splitter
-            chunks = content.split('\n\n') # Simple split by double newline for now
+            # Improved chunking logic with smaller, more manageable chunks
+            # Split by paragraphs first, then ensure each chunk is under the character limit
+            chunks = []
+            paragraphs = content.split('\n\n')
+
+            # Create chunks that are smaller and more context-aware, respecting CHUNK_MAX_LENGTH
+            current_chunk = ""
+            for paragraph in paragraphs:
+                # If a single paragraph is too long, split it further into CHUNK_MAX_LENGTH pieces
+                while len(paragraph) > CHUNK_MAX_LENGTH:
+                    sub_chunk = paragraph[0:CHUNK_MAX_LENGTH]
+                    chunks.append(sub_chunk.strip())
+                    paragraph = paragraph[CHUNK_MAX_LENGTH:]
+
+                # After handling overly long paragraphs, add to current_chunk or append as new
+                # Ensure current_chunk + paragraph does not exceed CHUNK_MAX_LENGTH
+                if len(current_chunk) + len(paragraph) + 2 > CHUNK_MAX_LENGTH and current_chunk.strip():
+                    chunks.append(current_chunk.strip())
+                    current_chunk = paragraph
+                else:
+                    if current_chunk:
+                        current_chunk += "\n\n" + paragraph
+                    else:
+                        current_chunk = paragraph
+
+            # Don't forget the last chunk
+            if current_chunk.strip():
+                chunks.append(current_chunk.strip())
 
             for i, chunk_content in enumerate(chunks):
                 chunk_content_stripped = chunk_content.strip()
                 if not chunk_content_stripped:
                     continue
-
-                if len(chunk_content_stripped) > 5000: # Enforce max_length for content (rough character count)
-                    print(f"Warning: Chunk in {file_path} exceeds max length (5000 chars) and will be truncated. Consider more robust chunking. Chunk content: {chunk_content_stripped[:200]}...")
-                    chunk_content_stripped = chunk_content_stripped[:5000] # Simple truncation
 
                 # Derive metadata from file_path and chunk_content
                 relative_path = os.path.relpath(file_path, docs_path)
@@ -106,17 +131,32 @@ async def ingest_docs():
 
                 embedding = get_embeddings(document_chunk.page_content)
 
-                qdrant_client.upsert(
-                    collection_name=collection_name,
-                    points=[
-                        {
-                            "id": f"{url_slug}-{i}", # Unique ID for each chunk
-                            "vector": embedding,
-                            "payload": document_chunk.dict()
-                        }
-                    ]
+                point_id = str(uuid.uuid4())  # Generate a proper UUID for Qdrant
+
+                points_to_upsert.append(
+                    {
+                        "id": point_id, # Unique ID for each chunk (UUID format for Qdrant)
+                        "vector": embedding,
+                        "payload": document_chunk.dict()
+                    }
                 )
-                ingested_documents_count += 1
+
+                if len(points_to_upsert) >= batch_size:
+                    qdrant_client.upsert(
+                        collection_name=collection_name,
+                        points=points_to_upsert
+                    )
+                    ingested_documents_count += len(points_to_upsert)
+                    points_to_upsert = [] # Reset the batch
+        
+        # Upsert any remaining points
+        if points_to_upsert:
+            qdrant_client.upsert(
+                collection_name=collection_name,
+                points=points_to_upsert
+            )
+            ingested_documents_count += len(points_to_upsert)
+
 
 
         return {"message": "Ingestion process completed successfully.", "documents_ingested": ingested_documents_count}

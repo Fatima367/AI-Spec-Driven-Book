@@ -4,3 +4,4 @@ qdrant-client
 openai-agents
 pydantic
 python-dotenv
+fastembed

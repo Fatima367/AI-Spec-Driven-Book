@@ -31,7 +31,7 @@ const Chatbot = () => {
 
     try {
       // Call the backend API to get chat response
-      const response = await fetch('https://ai-spec-driven-book-backend.vercel.app/api/v1/chat', {
+      const response = await fetch('https://ai-spec-driven-book-production.up.railway.app/api/v1/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
