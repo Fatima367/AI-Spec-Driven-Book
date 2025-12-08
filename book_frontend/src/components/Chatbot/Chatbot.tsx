@@ -39,7 +39,7 @@ const Chatbot = () => {
         body: JSON.stringify({
           query: inputValue,
           user_id: 'anonymous-user',
-          selected_text: currentSelectedText || " " // Use selected text from service
+          selected_text: currentSelectedText // Use selected text from service
         }),
       });
 
