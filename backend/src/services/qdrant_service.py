@@ -1,5 +1,9 @@
 import os
 from qdrant_client import QdrantClient, models
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 def get_qdrant_client() -> QdrantClient:
     qdrant_api_key = os.getenv("QDRANT_API_KEY")

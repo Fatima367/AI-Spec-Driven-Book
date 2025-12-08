@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .api import ingest, query, chat
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 app = FastAPI(
     title="RAG Chatbot API",

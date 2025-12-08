@@ -6,6 +6,9 @@ from typing import List, Optional
 from ..services.embedding_service import get_embeddings, get_gemini_embedding_client
 from ..services.qdrant_service import get_qdrant_client
 from .ingest import DocumentChunk # Reuse DocumentChunk model
+from dotenv import load_dotenv
+
+load_dotenv()
 
 router = APIRouter()
 
