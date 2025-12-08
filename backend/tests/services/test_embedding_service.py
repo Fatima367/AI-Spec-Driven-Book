@@ -1,9 +1,13 @@
 import os
 import pytest
 from unittest.mock import MagicMock, patch
-from services.embedding_service import get_gemini_embedding_client, get_embeddings
+from src.services.embedding_service import get_gemini_embedding_client, get_embeddings
 from openai import OpenAI
 from openai.types import CreateEmbeddingResponse, Embedding
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 @patch.dict(os.environ, {"GEMINI_API_KEY": "test_gemini_key"})
 def test_get_gemini_embedding_client_success():
@@ -19,7 +23,7 @@ def test_get_gemini_embedding_client_no_api_key():
     with pytest.raises(ValueError, match="GEMINI_API_KEY must be set in environment variables"):
         get_gemini_embedding_client()
 
-@patch('services.embedding_service.get_gemini_embedding_client')
+@patch('src.services.embedding_service.get_gemini_embedding_client')
 @patch.dict(os.environ, {"GEMINI_API_KEY": "test_gemini_key"})
 def test_get_embeddings_success(mock_get_client):
     """Test successful embedding generation."""
@@ -38,7 +42,7 @@ def test_get_embeddings_success(mock_get_client):
     mock_client.embeddings.create.assert_called_once_with(input=text, model="embedding-001")
     assert embeddings == [0.1, 0.2, 0.3]
 
-@patch('services.embedding_service.get_gemini_embedding_client')
+@patch('src.services.embedding_service.get_gemini_embedding_client')
 @patch.dict(os.environ, {"GEMINI_API_KEY": "test_gemini_key"})
 def test_get_embeddings_api_error(mock_get_client):
     """Test embedding generation with API error."""

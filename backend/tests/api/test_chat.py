@@ -1,19 +1,23 @@
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch, ANY
-from main import app # Assuming main.py is in the same directory as this test file
+from src.main import app
 from openai.types.chat import ChatCompletion, ChatCompletionMessage, ChatCompletionChunk, ChatCompletionMessageDelta
 from openai.types.chat.chat_completion import Choice
 from openai.types.chat.chat_completion_chunk import Choice as ChunkChoice
 from openai.types.completion_usage import CompletionUsage
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 
 # Mock the services before importing the api module to ensure mocks are in place
 @pytest.fixture(autouse=True)
 def mock_services():
-    with patch('api.chat.get_qdrant_client') as mock_get_qdrant_client, \
-         patch('api.chat.get_embeddings') as mock_get_embeddings, \
-         patch('api.chat.get_gemini_embedding_client') as mock_get_gemini_llm_client:
+    with patch('src.api.chat.get_qdrant_client') as mock_get_qdrant_client, \
+         patch('src.api.chat.get_embeddings') as mock_get_embeddings, \
+         patch('src.api.chat.get_gemini_embedding_client') as mock_get_gemini_llm_client:
         
         # Mock Qdrant Client
         mock_qdrant_client = MagicMock()

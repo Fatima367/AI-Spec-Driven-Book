@@ -1,5 +1,9 @@
 import os
 from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 def get_gemini_embedding_client() -> OpenAI:
     gemini_api_key = os.getenv("GEMINI_API_KEY")
@@ -19,7 +23,7 @@ def get_embeddings(text: str) -> list[float]:
     client = get_gemini_embedding_client()
     # Using a common Gemini embedding model identifier
     # If this fails, try 'text-embedding-004' or consult Google's latest documentation
-    model = "embedding-001" 
+    model = "gemini-embedding-001" 
 
     response = client.embeddings.create(
         input=text,

@@ -6,6 +6,10 @@ from typing import List
 
 from ..services.embedding_service import get_embeddings
 from ..services.qdrant_service import get_qdrant_client
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 router = APIRouter()
 
@@ -31,7 +35,13 @@ async def ingest_docs():
     and uploads to Qdrant.
     """
     try:
-        docs_path = os.path.join(os.getcwd(), "book_frontend", "docs")
+        # Determine the project root directory (two levels up from this file: backend/src/api/)
+        project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+        # Construct the docs path relative to project root - FIX APPLIED - VERSION 2
+        # docs_path = os.path.join(project_root, "book_frontend", "docs")
+        docs_path = "/mnt/c/Users/dell/Desktop/AI-Spec-Driven-Book/book_frontend/docs"
+
         if not os.path.exists(docs_path):
             raise HTTPException(status_code=404, detail=f"Docusaurus docs path not found at {docs_path}")
 

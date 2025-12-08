@@ -1,8 +1,12 @@
 import os
 import pytest
 from unittest.mock import MagicMock, patch
-from services.qdrant_service import get_qdrant_client
+from src.services.qdrant_service import get_qdrant_client
 from qdrant_client import QdrantClient
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 @patch.dict(os.environ, {"QDRANT_API_KEY": "test_key", "QDRANT_CLUSTER_URL": "http://test_url"})
 def test_get_qdrant_client_success():
