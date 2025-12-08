@@ -168,7 +168,7 @@ const SearchInput = ({
             WebkitBackdropFilter: 'blur(10px)',
             border: '1px solid rgba(0, 224, 255, 0.3)',
             borderRadius: '8px',
-            zIndex: 10,
+            zIndex: 30,
             maxHeight: '300px',
             overflowY: 'auto',
             marginTop: '5px'
