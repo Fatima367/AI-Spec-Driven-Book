@@ -62,7 +62,7 @@ describe('Chatbot', () => {
     });
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
-      'https://ai-spec-driven-book-production.up.railway.app/api/v1/chat',
+      'https://ai-spec-driven-book-backend.up.railway.app/api/v1/chat',
       expect.objectContaining({
         method: 'POST',
         body: JSON.stringify({
@@ -93,7 +93,7 @@ describe('Chatbot', () => {
     });
 
     expect(fetch).toHaveBeenCalledWith(
-      'https://ai-spec-driven-book-production.up.railway.app/api/v1/chat',
+      'https://ai-spec-driven-book-backend.up.railway.app/api/v1/chat',
       expect.objectContaining({
         body: JSON.stringify({
           query: 'Explain this',
