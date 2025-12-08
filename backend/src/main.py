@@ -13,7 +13,8 @@ app = FastAPI(
 )
 
 origins = [
-    "https://physical-ai-n-humanoid-robotics.vercel.app/",
+    "https://physical-ai-n-humanoid-robotics.vercel.app",  # Without trailing slash
+    "https://physical-ai-n-humanoid-robotics.vercel.app/", # With trailing slash
     "http://localhost:3000"
 ]
 
