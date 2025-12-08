@@ -1,6 +1,6 @@
 # AI-Spec-Driven-Book
 
-This project aims to create a comprehensive textbook on Physical AI & Humanoid Robotics using a Spec-Driven Development (SDD) approach. It includes a backend for content generation and management, and a frontend for displaying the book content.
+This project aims to create a comprehensive textbook on Physical AI & Humanoid Robotics using a Spec-Driven Development (SDD) approach. It includes a backend for RAG chatbot, and a frontend for displaying the book content.
 
 ## Project Structure
 
