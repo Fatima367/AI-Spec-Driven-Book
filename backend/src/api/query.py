@@ -2,9 +2,13 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List
 
-from services.embedding_service import get_embeddings
-from services.qdrant_service import get_qdrant_client
-from api.ingest import DocumentChunk # Reuse the DocumentChunk model
+from ..services.embedding_service import get_embeddings
+from ..services.qdrant_service import get_qdrant_client
+from .ingest import DocumentChunk # Reuse the DocumentChunk model
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 router = APIRouter()
 

@@ -1,13 +1,17 @@
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch, ANY
-from main import app # Assuming main.py is in the same directory as this test file
+from src.main import app
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 # Mock the services before importing the api module to ensure mocks are in place
 @pytest.fixture(autouse=True)
 def mock_services():
-    with patch('api.query.get_qdrant_client') as mock_get_qdrant_client, \
-         patch('api.query.get_embeddings') as mock_get_embeddings:
+    with patch('src.api.query.get_qdrant_client') as mock_get_qdrant_client, \
+         patch('src.api.query.get_embeddings') as mock_get_embeddings:
         
         # Configure mock_get_qdrant_client
         mock_qdrant_client = MagicMock()
