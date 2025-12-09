@@ -3,9 +3,12 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
 
-from services.embedding_service import get_embeddings, get_gemini_embedding_client
-from services.qdrant_service import get_qdrant_client
-from api.ingest import DocumentChunk # Reuse DocumentChunk model
+from ..services.embedding_service import get_embeddings, get_gemini_embedding_client
+from ..services.qdrant_service import get_qdrant_client
+from .ingest import DocumentChunk # Reuse DocumentChunk model
+from dotenv import load_dotenv
+
+load_dotenv()
 
 router = APIRouter()
 
@@ -41,9 +44,9 @@ async def chat_with_bot(request: ChatRequest):
         query_embedding = get_embeddings(retrieval_query_text)
 
         # Retrieve relevant chunks from Qdrant
-        search_result = qdrant_client.query(
+        search_result = qdrant_client.query_points(
             collection_name=collection_name,
-            query_vector=query_embedding,
+            query=query_embedding, # Use query_embedding as the vector argument
             limit=3, # Retrieve top N relevant documents for context
             with_payload=True
         )
@@ -84,7 +87,7 @@ async def chat_with_bot(request: ChatRequest):
         # This might need adjustment based on available models via the OpenAI-compatible endpoint.
         try:
             chat_response = gemini_llm_client.chat.completions.create(
-                model="gemini-2.5-flash", # Use an appropriate Gemini chat model
+                model="gemini-2.5-flash-lite", # Use an appropriate Gemini chat model
                 messages=prompt_messages,
                 temperature=0.7,
                 max_tokens=500
