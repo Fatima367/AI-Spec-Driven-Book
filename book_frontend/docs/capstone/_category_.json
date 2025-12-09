@@ -1,4 +1,11 @@
 {
   "label": "Capstone",
-  "position": 6
+  "position": 6,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Capstone Project: Autonomous Humanoid Development",
+    "description": "Synthesize knowledge from all previous modules to design and implement an autonomous humanoid robot system that integrates ROS 2, simulation environments, AI perception, and VLA models into a cohesive robotic platform."
+  }
 }

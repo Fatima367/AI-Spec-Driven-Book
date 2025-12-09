@@ -1,4 +1,26 @@
-# Chapter 3.2: Locomotion and Manipulation Control
+---
+title: "Chapter 3.2: Locomotion and Manipulation Control"
+sidebar_position: 2
+---
+
+import PersonalizeButton from '@site/src/components/PersonalizationButtons';
+import UrduTranslationButton from '@site/src/components/UrduTranslationButton';
+
+<div style={{ border: '2px solid #4ec9b0', borderRadius: '8px', padding: '20px', backgroundColor: '#1e1e1e', marginBottom: '20px' }}>
+  <h1 style={{ color: '#4ec9b0', margin: '0 0 10px 0' }}>Physical AI & Humanoid Robotics</h1>
+  <p style={{ color: '#d4d4d4', margin: '0' }}>Exploring the intersection of artificial intelligence and physical robotics</p>
+</div>
+
+<PersonalizeButton />
+<UrduTranslationButton />
+
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+- Analyze the principles of bipedal locomotion and dynamic balancing in humanoids
+- Evaluate different manipulation strategies and grasping techniques for humanoid robots
+- Assess whole-body control strategies for coordinating locomotion and manipulation
+- Design control approaches that balance stability and dexterity in humanoid systems
 
 ## 3.2.1 Dynamic Balancing and Bipedal Locomotion
 
@@ -23,6 +45,10 @@ Bipedal locomotion is a hallmark of humanoids, offering the ability to navigate 
 *   **Gait Generation**:
     *   **Trajectory Optimization**: Algorithms that optimize joint trajectories and footstep placements to generate stable and energy-efficient walking gaits.
     *   **Model Predictive Control (MPC)**: Uses a model of the robot and its environment to predict future states and optimize control inputs over a finite horizon, recalculating at each time step. This allows humanoids to react proactively to disturbances and generate adaptive gaits.
+
+:::tip
+The key to successful bipedal locomotion lies in the robot's ability to continuously adjust its center of mass and maintain its balance while moving. This requires sophisticated sensors and real-time control algorithms that can respond quickly to changes in the environment or unexpected disturbances.
+:::
 
 ## 3.2.2 Dexterous Manipulation and Grasping
 
@@ -55,3 +81,7 @@ Whole-Body Control (WBC) is a critical paradigm for humanoids, integrating locom
     *   **Human-Robot Collaboration**: Adjusting posture and force during physical interaction with a human.
 
 WBC represents a significant step towards enabling humanoids to perform truly human-like, versatile tasks in unstructured environments by allowing them to exploit their full physical capabilities.
+
+## Try it yourself
+
+Research and compare the locomotion strategies of two different humanoid robots (e.g., ASIMO and Atlas). Analyze how their different approaches to balance control (ZMP vs. MPC) and actuator types (rigid vs. compliant) influence their gait patterns and overall performance in various terrains.

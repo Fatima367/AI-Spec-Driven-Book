@@ -523,7 +523,7 @@ const Home = () => {
         >
           <p>
             © {new Date().getFullYear()} Physical AI & Humanoid Robotics
-            Textbook. Built with Docusaurus.
+            Textbook. Made by Fatima Faisal.
           </p>
         </div>
       </footer>

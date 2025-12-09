@@ -268,7 +268,7 @@ const BookLandingPage = () => {
           <div>
             <h3 style={{ fontSize: '1.3rem', marginBottom: '20px', color: '#00a8c0' }}>Resources</h3>
             <ul style={{ listStyle: 'none', padding: 0 }}>
-              <li style={{ marginBottom: '10px' }}><a href="/docs/" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none' }}>Documentation</a></li>
+              <li style={{ marginBottom: '10px' }}><a href="/docs/intro" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none' }}>Documentation</a></li>
               <li style={{ marginBottom: '10px' }}><a href="https://github.com/gemini-book/AI-Spec-Driven-Book" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none' }}>GitHub</a></li>
             </ul>
           </div>
@@ -288,7 +288,7 @@ const BookLandingPage = () => {
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.6)'
         }}>
-          <p>© {new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook. Built with Docusaurus.</p>
+          <p>© {new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook. Made by Fatima Faisal.</p>
         </div>
       </footer>
       </div>

@@ -1,4 +1,11 @@
 {
-  "label": "Hardware",
-  "position": 7
+  "label": "Hardware Lab",
+  "position": 7,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Hardware Lab: Physical AI & Humanoid Robotics Infrastructure",
+    "description": "Detailed specifications for workstation and edge computing platforms needed for Physical AI applications, including RTX 4070+ requirements and Jetson Orin deployment configurations."
+  }
 }

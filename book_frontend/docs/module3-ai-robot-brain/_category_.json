@@ -1,4 +1,11 @@
 {
   "label": "NVIDIA Isaac",
-  "position": 4
+  "position": 4,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Module 3: The AI-Robot Brain (NVIDIA Isaac)",
+    "description": "Dive into advanced perception and training with NVIDIA Isaac Sim for photorealistic simulation and synthetic data generation, Isaac ROS for hardware-accelerated VSLAM, and Nav2 for path planning for bipedal humanoid movement."
+  }
 }
