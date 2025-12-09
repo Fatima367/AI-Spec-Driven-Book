@@ -1,4 +1,26 @@
-# Chapter 3.1: Human-Robot Interaction and Safety
+---
+title: "Chapter 3.1: Human-Robot Interaction and Safety"
+sidebar_position: 1
+---
+
+import PersonalizeButton from '@site/src/components/PersonalizationButtons';
+import UrduTranslationButton from '@site/src/components/UrduTranslationButton';
+
+<div style={{ border: '2px solid #4ec9b0', borderRadius: '8px', padding: '20px', backgroundColor: '#1e1e1e', marginBottom: '20px' }}>
+  <h1 style={{ color: '#4ec9b0', margin: '0 0 10px 0' }}>Physical AI & Humanoid Robotics</h1>
+  <p style={{ color: '#d4d4d4', margin: '0' }}>Exploring the intersection of artificial intelligence and physical robotics</p>
+</div>
+
+<PersonalizeButton />
+<UrduTranslationButton />
+
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+- Analyze the principles of safe human-robot interaction and their implementation
+- Evaluate different communication and collaboration methods for humanoids
+- Assess the role of social robotics and emotional intelligence in HRI
+- Design interaction strategies that prioritize safety and user experience
 
 ## 3.1.1 Safe Interaction Principles
 
@@ -16,6 +38,10 @@ Ensuring safety is paramount in environments where humanoids and humans coexist 
     *   **Controllability**: Humans should always have the ability to override or stop the robot's actions. Emergency stop buttons, voice commands, or gesture-based controls provide critical layers of human supervision.
 
 *   **Ethical Guidelines and Standards**: Adherence to international safety standards (e.g., ISO 13482 for personal care robots, ISO/TS 15066 for collaborative robots) and ethical guidelines ensures a baseline for safe design and operation.
+
+:::danger
+Safety should never be compromised for performance. Even in the most advanced humanoid systems, safety mechanisms must be the highest priority and should be designed to fail-safe states. Any system that cannot guarantee human safety should not be deployed in human environments.
+:::
 
 ## 3.1.2 Communication and Collaboration Methods
 
@@ -57,3 +83,8 @@ Social robotics explores how robots can interact with humans in a socially accep
     *   **Customer Service**: Greeting, guiding, providing information in public spaces.
 
 The integration of safe interaction principles with sophisticated communication and social capabilities is crucial for humanoids to seamlessly integrate into human society and fulfill their potential as helpful and trustworthy companions and collaborators.
+
+## Try it yourself
+
+Design a safety protocol for a humanoid robot that will work in a hospital environment alongside doctors, nurses, and patients. Consider both physical safety measures and communication strategies that would make the robot's presence feel natural and trustworthy in a sensitive healthcare setting.
+</new_string>

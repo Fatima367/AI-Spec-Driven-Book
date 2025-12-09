@@ -2,6 +2,22 @@
 
 This project aims to create a comprehensive textbook on Physical AI & Humanoid Robotics using a Spec-Driven Development (SDD) approach. It includes a backend for content generation and management, and a frontend for displaying the book content.
 
+## Textbook Content Overview
+
+The Physical AI & Humanoid Robotics textbook is organized into several modules covering essential topics:
+
+- **Foundations**: History and evolution of humanoids, biomechanics and actuation systems
+- **ROS2**: Robot Operating System 2 fundamentals and node architecture
+- **Simulation**: Digital twin concepts, Gazebo and Unity simulation environments
+- **NVIDIA Isaac**: AI robot brain, Nav2 path planning, Isaac platform components
+- **Humanoids**: Advanced humanoid-specific concepts and applications
+- **VLA**: Vision-Language-Action models, Whisper integration, cognitive planning
+- **Hardware**: Hardware lab specifications and requirements
+- **Capstone**: Autonomous humanoid development project
+
+Each module includes learning objectives, technical content, code examples, diagrams, and practical exercises to reinforce concepts.
+
+
 ## Project Structure
 
 - `backend/`: Contains the backend services, likely for AI model integration and data processing.
@@ -51,3 +67,12 @@ To set up and run the project locally, follow these steps:
     yarn start
     ```
     This will open the book's frontend in your browser, typically at `http://localhost:3000`.
+
+
+## Additional Setup Notes
+
+- The frontend uses Docusaurus
+- Personalization components allow content adaptation based on user preferences
+- Urdu translation support is available through the translation component
+- All content follows a consistent structure with hero sections, learning objectives, and practical exercises
+- The sidebar navigation has been configured to include all textbook chapters for easy access

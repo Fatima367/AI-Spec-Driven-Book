@@ -1,4 +1,11 @@
 {
   "label": "Foundations",
-  "position": 1
+  "position": 1,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Physical AI & Humanoid Robotics Foundations",
+    "description": "Introduction to the fundamental concepts of Physical AI and embodied intelligence that form the foundation of humanoid robotics."
+  }
 }

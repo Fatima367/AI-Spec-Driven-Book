@@ -1,4 +1,26 @@
-# Chapter 1.2: Biomechanics and Actuation Systems
+---
+title: "Chapter 1.2: Biomechanics and Actuation Systems"
+sidebar_position: 2
+---
+
+import PersonalizeButton from '@site/src/components/PersonalizationButtons';
+import UrduTranslationButton from '@site/src/components/UrduTranslationButton';
+
+<div style={{ border: '2px solid #4ec9b0', borderRadius: '8px', padding: '20px', backgroundColor: '#1e1e1e', marginBottom: '20px' }}>
+  <h1 style={{ color: '#4ec9b0', margin: '0 0 10px 0' }}>Physical AI & Humanoid Robotics</h1>
+  <p style={{ color: '#d4d4d4', margin: '0' }}>Exploring the intersection of artificial intelligence and physical robotics</p>
+</div>
+
+<PersonalizeButton />
+<UrduTranslationButton />
+
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+- Explain how humanoid robots mimic human biomechanics in their design
+- Compare different types of actuators and their applications in humanoid robotics
+- Analyze the challenges of power management and energy efficiency in humanoid robots
+- Evaluate the trade-offs between different actuation systems for specific applications
 
 ## 1.2.1 Mimicking Human Anatomy and Movement
 
@@ -7,6 +29,10 @@ The design of humanoid robots draws heavily from human biomechanics, aiming to r
 *   **Skeletal Structure**: Humanoid robots often feature a modular skeletal design, incorporating links (representing bones) and joints (representing articulations). The number of degrees of freedom (DoF) in these joints directly influences the robot's maneuverability and dexterity. Common joint types include revolute (like elbows and knees) and prismatic (less common in humanoids, but analogous to linear movement).
 *   **Joint Kinematics and Dynamics**: Kinematics describes the motion of these joints without considering the forces, while dynamics analyzes the forces and torques causing motion. Replicating human-like movement requires sophisticated inverse kinematics (determining joint angles for a desired end-effector position) and inverse dynamics (calculating joint torques needed to achieve a desired motion).
 *   **Balance and Stability**: Bipedal locomotion, a hallmark of human movement, presents significant challenges for robots. Humanoids must maintain balance dynamically, often employing zero moment point (ZMP) control, whole-body control, and compliant actuation to absorb impacts and adapt to uneven terrain.
+
+:::caution
+Maintaining balance in humanoid robots is one of the most challenging aspects of their design. Unlike wheeled or tracked robots, bipedal robots must constantly adjust their center of mass to maintain stability, making them inherently unstable systems that require sophisticated control algorithms.
+:::
 
 ## 1.2.2 Types of Actuators
 
@@ -42,3 +68,8 @@ Energy supply is a critical aspect for untethered humanoid robots. The efficienc
 *   **Energy Regeneration**: Some humanoid systems incorporate regenerative braking, where kinetic energy from deceleration or descent is converted back into electrical energy and stored in batteries, enhancing overall efficiency.
 *   **Thermal Management**: Actuators and power electronics generate heat, which must be dissipated effectively to prevent overheating and maintain performance. Cooling systems (passive or active) are crucial, especially in high-power-density designs.
 *   **Fuel Cells**: A promising but less common alternative, fuel cells convert chemical energy (e.g., from hydrogen) into electricity. They offer higher energy density than batteries but are currently more complex, larger, and expensive for most humanoid applications.
+
+## Try it yourself
+
+Create a comparison chart that outlines the advantages and disadvantages of electric, hydraulic, and pneumatic actuators for different humanoid robot applications (e.g., walking, manipulation, dynamic movement). Consider factors like power density, precision, cost, maintenance, and safety in your analysis.
+</new_string>

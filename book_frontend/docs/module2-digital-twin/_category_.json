@@ -1,4 +1,11 @@
 {
   "label": "Simulation",
-  "position": 3
+  "position": 3,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Module 2: The Digital Twin (Gazebo & Unity)",
+    "description": "Explore physics simulation and environment building, simulating gravity, collisions, and sensors like LiDAR and depth cameras. This module provides a safe, efficient environment for development and testing."
+  }
 }

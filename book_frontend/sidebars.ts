@@ -20,13 +20,20 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Foundations',
       link: {type: 'generated-index'},
-      items: [],
+      items: [
+        'part1/chapter1.1',
+        'part1/chapter1.2'
+      ],
     },
     {
       type: 'category',
       label: 'ROS2',
       link: {type: 'generated-index'},
-      items: ['module1-ros2/index'],
+      items: [
+        'module1-ros2/index',
+        'part2/chapter2.1',
+        'part2/chapter2.2'
+      ],
     },
     {
       type: 'category',
@@ -38,7 +45,11 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'NVIDIA Isaac',
       link: {type: 'generated-index'},
-      items: ['module3-ai-robot-brain/index'],
+      items: [
+        'module3-ai-robot-brain/index',
+        'part3/chapter3.1',
+        'part3/chapter3.2'
+      ],
     },
     {
       type: 'category',
@@ -50,7 +61,11 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'VLA',
       link: {type: 'generated-index'},
-      items: ['module4-vla/index'],
+      items: [
+        'module4-vla/index',
+        'part4/chapter4.1',
+        'part4/chapter4.2'
+      ],
     },
     {
       type: 'category',

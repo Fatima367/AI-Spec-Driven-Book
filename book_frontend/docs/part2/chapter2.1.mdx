@@ -1,4 +1,26 @@
-# Chapter 2.1: Sensors and Environmental Awareness
+---
+title: "Chapter 2.1: Sensors and Environmental Awareness"
+sidebar_position: 1
+---
+
+import PersonalizeButton from '@site/src/components/PersonalizationButtons';
+import UrduTranslationButton from '@site/src/components/UrduTranslationButton';
+
+<div style={{ border: '2px solid #4ec9b0', borderRadius: '8px', padding: '20px', backgroundColor: '#1e1e1e', marginBottom: '20px' }}>
+  <h1 style={{ color: '#4ec9b0', margin: '0 0 10px 0' }}>Physical AI & Humanoid Robotics</h1>
+  <p style={{ color: '#d4d4d4', margin: '0' }}>Exploring the intersection of artificial intelligence and physical robotics</p>
+</div>
+
+<PersonalizeButton />
+<UrduTranslationButton />
+
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+- Analyze the different types of sensors used in humanoid robots for environmental awareness
+- Compare the advantages and limitations of various sensor technologies
+- Explain the principles of sensor fusion and its importance in humanoid robotics
+- Evaluate the challenges and solutions in integrating multiple sensor systems
 
 ## 2.1.1 Visual Perception (Cameras, LiDAR)
 
@@ -15,6 +37,10 @@ Visual perception is fundamental for humanoid robots to understand their surroun
     *   **2D LiDAR**: Scans a single plane, commonly used for simultaneous localization and mapping (SLAM) in mobile robotics, providing accurate distance measurements to obstacles.
     *   **3D LiDAR**: Scans across multiple planes, providing dense 3D representations of the environment. Crucial for complex outdoor navigation, terrain mapping, and detailed object reconstruction.
     *   **Applications**: SLAM, obstacle avoidance, terrain mapping, environmental modeling, precise localization, human detection in dynamic environments.
+
+:::tip
+The combination of cameras and LiDAR provides complementary information: cameras offer rich color and texture data for object recognition, while LiDAR provides precise geometric information for navigation and mapping. This combination is often essential for humanoid robots operating in complex environments.
+:::
 
 ## 2.1.2 Tactile and Proprioceptive Sensing
 
@@ -53,3 +79,8 @@ Individual sensors provide partial and often noisy information. Sensor fusion is
     *   **Calibration**: Precisely calibrating the intrinsic and extrinsic parameters of each sensor is essential.
     *   **Computational Cost**: Advanced fusion algorithms can be computationally demanding, requiring powerful onboard processing.
     *   **Data Association**: Correctly associating measurements from different sensors with the same environmental features or robot states.
+
+## Try it yourself
+
+Design a simple sensor fusion system for a humanoid robot that needs to navigate through a room with obstacles. Identify which sensors would be most useful for this task and describe how you would combine their data to create a more robust navigation system than any single sensor could provide.
+</new_string>

@@ -1,4 +1,11 @@
 {
   "label": "VLA",
-  "position": 5
+  "position": 5,
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Module 4: Vision-Language-Action (VLA) Models",
+    "description": "Explore the convergence of LLMs and robotics, implementing voice-to-action systems using OpenAI Whisper and cognitive planning that translates natural language into sequences of ROS 2 actions."
+  }
 }

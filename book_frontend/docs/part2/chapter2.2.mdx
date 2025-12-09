@@ -1,4 +1,26 @@
-# Chapter 2.2: AI, Learning, and Decision Making
+---
+title: "Chapter 2.2: AI, Learning, and Decision Making"
+sidebar_position: 2
+---
+
+import PersonalizeButton from '@site/src/components/PersonalizationButtons';
+import UrduTranslationButton from '@site/src/components/UrduTranslationButton';
+
+<div style={{ border: '2px solid #4ec9b0', borderRadius: '8px', padding: '20px', backgroundColor: '#1e1e1e', marginBottom: '20px' }}>
+  <h1 style={{ color: '#4ec9b0', margin: '0 0 10px 0' }}>Physical AI & Humanoid Robotics</h1>
+  <p style={{ color: '#d4d4d4', margin: '0' }}>Exploring the intersection of artificial intelligence and physical robotics</p>
+</div>
+
+<PersonalizeButton />
+<UrduTranslationButton />
+
+## Learning Objectives
+
+By the end of this chapter, you will be able to:
+- Explain the different machine learning approaches used in humanoid robotics
+- Analyze path planning and navigation techniques for humanoid robots
+- Evaluate cognitive architectures that enable intelligent behavior in humanoids
+- Compare the advantages and challenges of different AI decision-making approaches
 
 ## 2.2.1 Machine Learning Applications in Humanoids
 
@@ -20,6 +42,10 @@ Machine learning (ML) has become an indispensable tool in humanoid robotics, ena
 *   **Imitation Learning/Learning from Demonstration (LfD)**:
     *   **Concept**: Robots learn by observing human demonstrations of tasks, inferring the underlying skills and policies.
     *   **Applications**: Learning complex manipulation sequences (e.g., pouring water, opening doors), teaching precise trajectories for assembly tasks, and acquiring social behaviors. LfD can significantly reduce the need for extensive manual programming or time-consuming RL exploration.
+
+:::note
+Reinforcement learning has shown remarkable success in humanoid robotics, particularly for learning complex motor skills. However, training in simulation and transferring to real robots (sim-to-real transfer) remains a significant challenge due to the reality gap between simulated and real environments.
+:::
 
 ## 2.2.2 Path Planning and Navigation
 
@@ -69,3 +95,8 @@ Cognitive architectures provide a framework for integrating various AI component
     *   **Components**: Modules for understanding human intent (through speech, gesture, gaze), generating appropriate robot responses (speech synthesis, facial expressions, body language), and maintaining shared mental models of tasks and goals.
 
 The development of sophisticated cognitive architectures is key to moving humanoids beyond pre-programmed behaviors towards truly intelligent and autonomous agents capable of complex human-like cognition.
+
+## Try it yourself
+
+Research and compare the cognitive architectures of two different humanoid robots (e.g., ASIMO and Pepper). Analyze how their different design goals and target applications influence their cognitive architecture choices, and identify the key components that enable intelligent behavior in each robot.
+</new_string>
