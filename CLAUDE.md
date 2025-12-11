@@ -211,3 +211,10 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
+
+## Active Technologies
+- TypeScript/JavaScript for frontend, Python 3.10+ for backend + BetterAuth (https://www.better-auth.com/), Docusaurus (React), FastAPI, Neon Postgres (004-betterauth-integration)
+- Neon Postgres for user data, Qdrant Cloud for vector storage (RAG) (004-betterauth-integration)
+
+## Recent Changes
+- 004-betterauth-integration: Added TypeScript/JavaScript for frontend, Python 3.10+ for backend + BetterAuth (https://www.better-auth.com/), Docusaurus (React), FastAPI, Neon Postgres

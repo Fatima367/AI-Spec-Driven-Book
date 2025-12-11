@@ -1,7 +1,16 @@
 fastapi
 uvicorn
 qdrant-client
-openai-agents
+openai
 pydantic
 python-dotenv
 fastembed
+sqlmodel
+asyncpg
+passlib[bcrypt]
+httpx
+pytest
+aiosqlite
+sqlalchemy
+bcrypt
+python-jose[cryptography]

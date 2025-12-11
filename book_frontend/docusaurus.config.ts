@@ -39,6 +39,7 @@ const config: Config = {
 
   plugins: [
     './src/plugins/personalization-plugin',
+    './src/plugins/auth-plugin',
   ],
   presets: [
     [
@@ -110,6 +111,7 @@ const config: Config = {
           label: 'GitHub',
           position: 'right',
         },
+
       ],
     },
     footer: {
@@ -149,7 +151,7 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/Fatima367/AI-Spec-Driven-Book',
+              href: 'https://github.com/gemini-book/AI-Spec-Driven-Book',
             },
           ],
         },
