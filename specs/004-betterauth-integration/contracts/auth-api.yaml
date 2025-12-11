@@ -1,0 +1,299 @@
+# Authentication API Contract
+
+## Overview
+API contract for BetterAuth integration with user background data collection for the Physical AI & Humanoid Robotics textbook application.
+
+## Base URL
+`/api/auth`
+
+## Authentication Endpoints
+
+### POST /signup
+Register a new user with background information.
+
+**Request:**
+```json
+{
+  "email": "user@example.com",
+  "password": "securePassword123",
+  "firstName": "John",
+  "lastName": "Doe",
+  "softwareExperience": "intermediate",
+  "hardwareExperience": "beginner",
+  "technicalBackground": "computer_science",
+  "primaryProgrammingLanguage": "python"
+}
+```
+
+**Response:**
+- 201 Created: User successfully registered
+```json
+{
+  "user": {
+    "id": "user-uuid",
+    "email": "user@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "softwareExperience": "intermediate",
+    "hardwareExperience": "beginner",
+    "technicalBackground": "computer_science",
+    "primaryProgrammingLanguage": "python",
+    "backgroundCompleted": true,
+    "createdAt": "2025-12-10T10:00:00Z",
+    "updatedAt": "2025-12-10T10:00:00Z"
+  },
+  "session": {
+    "id": "session-uuid",
+    "expiresAt": "2025-12-11T10:00:00Z"
+  }
+}
+```
+
+- 400 Bad Request: Validation errors
+```json
+{
+  "error": "ValidationError",
+  "message": "Invalid input data",
+  "details": [
+    {
+      "field": "email",
+      "message": "Invalid email format"
+    }
+  ]
+}
+```
+
+- 409 Conflict: Email already exists
+```json
+{
+  "error": "Conflict",
+  "message": "Email already registered"
+}
+```
+
+### POST /login
+Authenticate user with email and password.
+
+**Request:**
+```json
+{
+  "email": "user@example.com",
+  "password": "securePassword123"
+}
+```
+
+**Response:**
+- 200 OK: Login successful
+```json
+{
+  "user": {
+    "id": "user-uuid",
+    "email": "user@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "softwareExperience": "intermediate",
+    "hardwareExperience": "beginner",
+    "technicalBackground": "computer_science",
+    "primaryProgrammingLanguage": "python",
+    "backgroundCompleted": true,
+    "createdAt": "2025-12-10T10:00:00Z",
+    "updatedAt": "2025-12-10T10:00:00Z"
+  },
+  "session": {
+    "id": "session-uuid",
+    "expiresAt": "2025-12-11T10:00:00Z"
+  }
+}
+```
+
+- 401 Unauthorized: Invalid credentials
+```json
+{
+  "error": "Unauthorized",
+  "message": "Invalid email or password"
+}
+```
+
+### POST /logout
+End the current user session.
+
+**Request:**
+- Headers: `Authorization: Bearer {session_token}`
+
+**Response:**
+- 200 OK: Logout successful
+```json
+{
+  "message": "Successfully logged out"
+}
+```
+
+- 401 Unauthorized: Invalid or expired session
+```json
+{
+  "error": "Unauthorized",
+  "message": "Invalid or expired session"
+}
+```
+
+## Profile Management Endpoints
+
+### GET /profile
+Get current user's profile with background information.
+
+**Request:**
+- Headers: `Authorization: Bearer {session_token}`
+
+**Response:**
+- 200 OK: Profile retrieved successfully
+```json
+{
+  "id": "user-uuid",
+  "email": "user@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "softwareExperience": "intermediate",
+  "hardwareExperience": "beginner",
+  "technicalBackground": "computer_science",
+  "primaryProgrammingLanguage": "python",
+  "backgroundCompleted": true,
+  "createdAt": "2025-12-10T10:00:00Z",
+  "updatedAt": "2025-12-10T10:30:00Z"
+}
+```
+
+- 401 Unauthorized: Invalid or expired session
+```json
+{
+  "error": "Unauthorized",
+  "message": "Invalid or expired session"
+}
+```
+
+### PUT /profile
+Update user's profile information (excluding email/password which are handled by auth system).
+
+**Request:**
+- Headers: `Authorization: Bearer {session_token}`
+```json
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "softwareExperience": "advanced",
+  "hardwareExperience": "intermediate",
+  "technicalBackground": "computer_science",
+  "primaryProgrammingLanguage": "python"
+}
+```
+
+**Response:**
+- 200 OK: Profile updated successfully
+```json
+{
+  "id": "user-uuid",
+  "email": "user@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "softwareExperience": "advanced",
+  "hardwareExperience": "intermediate",
+  "technicalBackground": "computer_science",
+  "primaryProgrammingLanguage": "python",
+  "backgroundCompleted": true,
+  "createdAt": "2025-12-10T10:00:00Z",
+  "updatedAt": "2025-12-10T11:00:00Z"
+}
+```
+
+- 400 Bad Request: Validation errors
+```json
+{
+  "error": "ValidationError",
+  "message": "Invalid input data",
+  "details": [
+    {
+      "field": "softwareExperience",
+      "message": "Must be one of: beginner, intermediate, advanced"
+    }
+  ]
+}
+```
+
+- 401 Unauthorized: Invalid or expired session
+```json
+{
+  "error": "Unauthorized",
+  "message": "Invalid or expired session"
+}
+```
+
+### PUT /profile/background
+Update only the user's background information.
+
+**Request:**
+- Headers: `Authorization: Bearer {session_token}`
+```json
+{
+  "softwareExperience": "advanced",
+  "hardwareExperience": "intermediate",
+  "technicalBackground": "electrical_engineering",
+  "primaryProgrammingLanguage": "cpp"
+}
+```
+
+**Response:**
+- 200 OK: Background updated successfully
+```json
+{
+  "id": "user-uuid",
+  "email": "user@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "softwareExperience": "advanced",
+  "hardwareExperience": "intermediate",
+  "technicalBackground": "electrical_engineering",
+  "primaryProgrammingLanguage": "cpp",
+  "backgroundCompleted": true,
+  "createdAt": "2025-12-10T10:00:00Z",
+  "updatedAt": "2025-12-10T11:00:00Z"
+}
+```
+
+- 401 Unauthorized: Invalid or expired session
+```json
+{
+  "error": "Unauthorized",
+  "message": "Invalid or expired session"
+}
+```
+
+## Error Handling
+
+### Common Error Responses
+
+All endpoints may return the following common errors:
+
+- 401 Unauthorized: When authentication is required but not provided or invalid
+- 429 Too Many Requests: When rate limiting is triggered
+- 500 Internal Server Error: When an unexpected server error occurs
+
+### Error Response Format
+```json
+{
+  "error": "ErrorType",
+  "message": "Human-readable error message",
+  "details": [
+    {
+      "field": "field_name",
+      "message": "Specific validation error message"
+    }
+  ]
+}
+```
+
+## Security Considerations
+
+1. All authentication-related endpoints must use HTTPS
+2. Session tokens must be transmitted via secure cookies or Authorization header
+3. Rate limiting should be implemented to prevent brute force attacks
+4. Passwords must be hashed using industry-standard algorithms (handled by BetterAuth)
+5. Input validation must be performed on all user-provided data

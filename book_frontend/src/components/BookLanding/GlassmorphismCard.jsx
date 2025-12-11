@@ -7,7 +7,7 @@ import SearchInput from '../common/SearchInput';
  * Glassmorphism card component for the book landing page
  * Features a frosted glass effect with backdrop blur
  */
-const GlassmorphismCard = () => {
+const GlassmorphismCard = ({ onOpenLogin, onOpenSignup }) => {
   // Using actual book content from the textbook
   const title = "Physical AI & Humanoid Robotics";
   const subtitle = "Tutorial • Educational • 2025";
@@ -41,7 +41,7 @@ const GlassmorphismCard = () => {
           top: '20px',
           right: '20px'
         }}>
-          <NavigationLinks />
+          <NavigationLinks onOpenLogin={onOpenLogin} onOpenSignup={onOpenSignup} />
         </div>
 
         {/* Title and subtitle */}

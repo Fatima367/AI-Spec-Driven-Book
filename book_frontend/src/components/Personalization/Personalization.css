@@ -1,0 +1,38 @@
+.content-personalizer {
+  margin: 1rem 0;
+}
+
+.personalization-controls {
+  margin-bottom: 1rem;
+}
+
+.personalize-button, .reset-button {
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border: 1px solid #007cba;
+  background-color: #007cba;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.personalize-button:hover, .reset-button:hover {
+  background-color: #005a87;
+}
+
+.personalized-content {
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #fafafa;
+}
+
+.advanced-content {
+  background-color: #f0f8ff;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-left: 3px solid #007cba;
+  font-size: 0.9rem;
+  color: #555;
+}

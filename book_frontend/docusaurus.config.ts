@@ -14,17 +14,18 @@ const config: Config = {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
-  url: 'https://physical-ai-n-humanoid-robotics.vercel.app/', // <--- Update this with your actual Vercel deployment URL
+  // Set the production url of your site here
+  url: 'https://gemini-book.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For Vercel root deployment, it should often be '/'
-  baseUrl: '/',
+  // For GitHub pages deployment, it is often '/<projectName>/'
+  baseUrl: '/AI-Spec-Driven-Book/',
 
   // Add the mermaid theme
   themes: ['@docusaurus/theme-mermaid'],
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'Fatima367', // Usually your GitHub org/user name.
+  organizationName: 'gemini-book', // Usually your GitHub org/user name.
   projectName: 'AI-Spec-Driven-Book', // Usually your repo name.
 
   onBrokenLinks: 'warn',
@@ -39,6 +40,7 @@ const config: Config = {
 
   plugins: [
     './src/plugins/personalization-plugin',
+    './src/plugins/auth-plugin',
   ],
   presets: [
     [
@@ -49,7 +51,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/Fatima367/AI-Spec-Driven-Book/tree/main/book_frontend',
+            'https://github.com/gemini-book/AI-Spec-Driven-Book/tree/main/book_frontend',
         },
         blog: {
           showReadingTime: true,
@@ -60,7 +62,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/Fatima367/AI-Spec-Driven-Book/tree/main/book_frontend',
+            'https://github.com/gemini-book/AI-Spec-Driven-Book/tree/main/book_frontend',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -106,10 +108,11 @@ const config: Config = {
           position: 'right',
         },
         {
-          href: 'https://github.com/Fatima367/AI-Spec-Driven-Book',
+          href: 'https://github.com/gemini-book/AI-Spec-Driven-Book',
           label: 'GitHub',
           position: 'right',
         },
+
       ],
     },
     footer: {
@@ -149,7 +152,7 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/Fatima367/AI-Spec-Driven-Book',
+              href: 'https://github.com/gemini-book/AI-Spec-Driven-Book',
             },
           ],
         },
@@ -167,7 +170,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook. Made by Fatima Faisal.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook. Built with Docusaurus. Made by Fatima Faisal`,
     },
     prism: {
       theme: prismThemes.github,
