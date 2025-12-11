@@ -274,6 +274,7 @@ const BookLandingPage = () => {
         {/* Custom Footer for Landing Page */}
         <footer style={{
           marginTop: 'auto',
+          marginBottom: '-22rem',
           zIndex: 2,
           backgroundColor: 'rgba(15, 15, 35, 0.95)',
           backdropFilter: 'blur(10px)',
