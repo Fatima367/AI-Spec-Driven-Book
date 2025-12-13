@@ -1,0 +1,468 @@
+---
+title: "ماڈیول 3: AI روبوٹ دماغ (NVIDIA Isaac)"
+sidebar_position: 1
+---
+
+import { PersonalizeButton, UrduTranslationButton } from '@site/src/components/PersonalizationButtons';
+import Mermaid from '@theme/Mermaid';
+
+<PersonalizeButton />
+<UrduTranslationButton />
+
+# ماڈیول 3: AI روبوٹ دماغ (NVIDIA Isaac)
+
+<img src="/img/module3.png" alt="ماڈیول 3: AI روبوٹ دماغ اور ڈیجیٹل ٹوئن" />
+
+## سیکھنے کے اہداف
+- NVIDIA Isaac پلیٹ فارم آرکیٹیکچر اور AI پاورڈ روبوٹکس میں اس کے کردار کو سمجھنا
+- NVIDIA Isaac ٹولز اور لائبریریز کا استعمال کرتے ہوئے ادراک سسٹم نافذ کرنا
+- ہیومنائیڈ روبوٹس میں جدید راستہ منصوبہ بندی کے لیے Nav2 کو کنفیگر اور ڈپلائی کرنا
+- حقیقی وقت کے ادراک اور فیصلہ سازی کے لیے GPU تیز کار AI ماڈلز کو ضم کرنا
+- فوٹو ریئل سٹک تقلید اور مصنوعی ڈیٹا تخلیق کے لیے Isaac Sim کو تلاش کرنا
+- ہارڈ ویئر تیز کار ادراک اور کنٹرول کے لیے Isaac ROS میں مہارت حاصل کرنا
+
+## NVIDIA Isaac پلیٹ فارم کا تعارف
+
+NVIDIA Isaac پلیٹ فارم AI پاورڈ روبوٹکس سسٹم تیار کرنے کے لیے ایک جامع ماحولیاتی نظام کی نمائندگی کرتا ہے۔ یہ ہارڈ ویئر (Jetson پلیٹ فارمز)، سافٹ ویئر (Isaac ROS، Isaac Sim)، اور AI فریم ورکس (Triton Inference Server، TAO ٹول کٹ) کو جوڑتا ہے تاکہ ذہین روبوٹس کی ترقی کو تیز کیا جا سکے۔ یہ پلیٹ فارم خاص طور پر حقیقی وقت کے AI استدلال کی کمپیوٹیشنل ضروریات کو پورا کرنے کے لیے ڈیزائن کیا گیا ہے، جو پیچیدہ ادراک، منصوبہ بندی، اور کنٹرول کی ضرورت والے ہیومنائیڈ روبوٹکس ایپلی کیشنز کے لیے مثالی ہے۔
+
+Isaac پلیٹ فارم کنارے پر AI لانے کی اہم چیلنج کو حل کرتا ہے، جہاں روبوٹس کو محدود کمپیوٹیشنل وسائل کے ساتھ حقیقی وقت میں ذہین فیصلے کرنا ہوتے ہیں۔ NVIDIA کی GPU تیز کاری اور مخصوص AI لائبریریز کا فائدہ اٹھاتے ہوئے، یہ پلیٹ فارم روبوٹس کو سینسر ڈیٹا کو پروسیس کرنے، پیچیدہ نیورل نیٹ ورکس چلانے، اور کم تاخیر اور زیادہ کارکردگی کے ساتھ ذہین رویے انجام دینے کی اجازت دیتا ہے۔
+
+## Isaac پلیٹ فارم کے اجزاء
+
+### Isaac Sim
+Isaac Sim NVIDIA کی روبوٹکس تقلید ایپلی کیشن ہے جو Omniverse پلیٹ فارم پر تعمیر کی گئی ہے۔ یہ AI ماڈلز کے لیے مصنوعی تربیتی ڈیٹا اور مختلف ورچوئل ماحول میں روبوٹکس الگورتھم کی جانچ کے لیے فوٹو ریئل سٹک تقلید کی صلاحیات فراہم کرتا ہے۔
+
+Isaac Sim کی کلیدی خصوصیات:
+- PhysX فزکس انجن کا استعمال کرتے ہوئے فوٹو ریئل سٹک رینڈرنگ
+- AI ماڈلز کی تربیت کے لیے مصنوعی ڈیٹا تخلیق
+- مضبوط AI ماڈل تربیت کے لیے ڈومین رینڈمائزیشن
+- ROS 2 اور Isaac ROS کے ساتھ انضمام
+- پیچیدہ ہیومنائیڈ روبوٹ ماڈلز کی حمایت
+
+### Isaac ROS
+Isaac ROS روبوٹکس سسٹم کے لیے GPU تیز کار ادراک اور کنٹرول کی صلاحیات فراہم کرتا ہے۔ یہ NVIDIA Jetson پلیٹ فارمز پر چلنے والے عام روبوٹکس الگورتھم کے ہارڈ ویئر تیز کار نفاذات کو شامل کرتا ہے۔
+
+Isaac ROS اجزاء میں شامل ہیں:
+- **Isaac ROS Apriltag**: GPU تیز کار AprilTag کا پتہ لگانا
+- **Isaac ROS DNN استدلال**: ہارڈ ویئر تیز کار گہری سیکھنے کا استدلال
+- **Isaac ROS اسٹیریو DNN**: GPU تیز کار اسٹیریو وژن اور گہرائی کا تخمینہ
+- **Isaac ROS Visual SLAM**: ہارڈ ویئر تیز کار ہم وقتی مقام کاری اور نقشہ کاری
+- **Isaac ROS مینیپولیٹر**: GPU تیز کار معکوس کائینیمیٹکس اور مینیپولیٹر کنٹرول
+
+<Mermaid chart={`graph TD;
+    A[Sensor Data] --> B{Isaac ROS Processing};
+    B --> C[GPU-accelerated Perception];
+    B --> D[Hardware-accelerated Control];
+    C --> E[AI Decision Making];
+    D --> F[Robot Actuation];
+    E --> G[Navigation Planning];
+    G --> D;
+`} />
+
+## ہیومنائیڈ روبوٹس کے لیے Nav2 راستہ منصوبہ بندی
+
+نیویگیشن2 (Nav2) ROS 2 کے لیے جدید ترین نیویگیشن فریم ورک ہے جو راستہ منصوبہ بندی، رکاوٹ سے بچاؤ، اور مقام کاری کی صلاحیات فراہم کرتا ہے۔ ہیومنائیڈ روبوٹس کے لیے، Nav2 کو دو پاؤں والی حرکت کے نمونوں اور منفرد کائینیمیٹکس پابندیوں کو سنبھالنے کے لیے خصوصی کنفیگریشن کی ضرورت ہوتی ہے۔
+
+### Nav2 آرکیٹیکچر کے اجزاء
+
+Nav2 سسٹم کئی اہم اجزاء پر مشتمل ہوتا ہے جو خود کار نیویگیشن کو ممکن بنانے کے لیے ایک ساتھ کام کرتے ہیں:
+
+- **نیویگیشن سرور**: نیویگیشن سسٹم کو منظم کرتا ہے اور ریاست کی منتقلی کا نظم کرتا ہے
+- **پلانر سرور**: A* یا Dijkstra جیسے الگورتھم کا استعمال کرتے ہوئے عالمی راستہ منصوبے تیار کرتا ہے
+- **کنٹرولر سرور**: مقامی راستہ کے پیچھے چلنے اور رکاوٹ سے بچاؤ کو انجام دیتا ہے
+- **ریکوری سرور**: ریکوری کے رویوں کے ساتھ نیویگیشن کی ناکامیوں کو سنبھالتا ہے
+- **لائف سائیکل مینیجر**: نیویگیشن اجزاء کی لائف سائیکل کی حالت کا نظم کرتا ہے
+
+### ہیومنائیڈ روبوٹس کے لیے Nav2 کنفیگریشن
+
+ہیومنائیڈ روبوٹس اپنی دو پاؤں والی حرکت اور انسان نما شکل کی وجہ سے منفرد نیویگیشن چیلنج پیش کرتے ہیں۔ نیویگیشن کنفیگریشن کو درج ذیل کا خیال رکھنا چاہیے:
+
+- **پاؤں کا راستہ منصوبہ بندی**: دو پاؤں والی چلنے کے لیے مستحکم پاؤں کی ترتیبات تیار کرنا
+- **ZMP (Zero Moment Point) کنٹرول**: حرکت کے دوران توازن برقرار رکھنا
+- **قدم کی اونچائی کی پابندیاں**: مختلف زمینوں کے لیے قدم کی اونچائی کا نظم کرنا
+- **توازن کی بازیافت**: توازن کے نقصان کے لیے بازیافت کے رویے نافذ کرنا
+
+## NVIDIA Isaac کوڈ کی مثالیں
+
+### Isaac ROS ادراک پائپ لائن
+```python
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import Image, CameraInfo
+from cv_bridge import CvBridge
+import numpy as np
+import cv2
+
+class IsaacPerceptionNode(Node):
+    def __init__(self):
+        super().__init__('isaac_perception_node')
+
+        # کیمرہ اور گہرائی ڈیٹا کے لیے سبسکرائبرز تخلیق کریں
+        self.image_sub = self.create_subscription(
+            Image, '/camera/rgb/image_raw', self.image_callback, 10)
+        self.depth_sub = self.create_subscription(
+            Image, '/camera/depth/image_raw', self.depth_callback, 10)
+
+        # پروسیس کردہ نتائج کے لیے پبلشر تخلیق کریں
+        self.result_pub = self.create_publisher(Image, '/perception/result', 10)
+
+        self.bridge = CvBridge()
+        self.latest_depth = None
+
+    def image_callback(self, msg):
+        # ROS تصویر کو OpenCV فارمیٹ میں تبدیل کریں
+        cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+
+        # GPU تیز کار پروسیسنگ لاگو کریں (یہاں شبیہہ کی گئی)
+        processed_image = self.process_with_gpu(cv_image)
+
+        # نتائج شائع کریں
+        result_msg = self.bridge.cv2_to_imgmsg(processed_image, encoding='bgr8')
+        self.result_pub.publish(result_msg)
+
+    def depth_callback(self, msg):
+        # گہرائی کی معلومات کو پروسیس کریں
+        self.latest_depth = self.bridge.imgmsg_to_cv2(msg, desired_encoding='32FC1')
+
+    def process_with_gpu(self, image):
+        # GPU تیز کار پروسیسنگ کی شبیہہ
+        # حقیقی نفاذ میں، یہ Isaac ROS یا CUDA کا استعمال کرے گا
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        edges = cv2.Canny(gray, 50, 150)
+        return cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)
+
+def main(args=None):
+    rclpy.init(args=args)
+    perception_node = IsaacPerceptionNode()
+    rclpy.spin(perception_node)
+    perception_node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+### ہیومنائیڈ نیویگیشن کے لیے Nav2 کنفیگریشن
+```yaml
+# humanoid_nav2_config.yaml
+amcl:
+  ros__parameters:
+    use_sim_time: True
+    alpha1: 0.2
+    alpha2: 0.2
+    alpha3: 0.2
+    alpha4: 0.2
+    alpha5: 0.2
+    base_frame_id: "base_footprint"
+    beam_skip_distance: 0.5
+    beam_skip_error_threshold: 0.9
+    beam_skip_threshold: 0.3
+    do_beamskip: false
+    global_frame_id: "map"
+    lambda_short: 0.1
+    laser_likelihood_max_dist: 2.0
+    laser_max_range: 10.0
+    laser_min_range: -1.0
+    laser_model_type: "likelihood_field"
+    max_beams: 60
+    max_particles: 2000
+    min_particles: 500
+    odom_frame_id: "odom"
+    pf_err: 0.05
+    pf_z: 0.99
+    recovery_alpha_fast: 0.0
+    recovery_alpha_slow: 0.0
+    resample_interval: 1
+    robot_model_type: "nav2_amcl::DifferentialMotionModel"
+    save_pose_rate: 0.5
+    sigma_hit: 0.2
+    tf_broadcast: true
+    transform_tolerance: 1.0
+    update_min_a: 0.2
+    update_min_d: 0.25
+    z_hit: 0.5
+    z_max: 0.05
+    z_rand: 0.5
+    z_short: 0.05
+
+bt_navigator:
+  ros__parameters:
+    use_sim_time: True
+    global_frame: map
+    robot_base_frame: base_link
+    odom_topic: /odom
+    bt_loop_duration: 10
+    default_server_timeout: 20
+    enable_groot_monitoring: True
+    groot_zmq_publisher_port: 1666
+    groot_zmq_server_port: 1667
+    # BT XML فائلیں جہاں واقع ہیں اس کا راستہ متعین کریں
+    default_nav_through_poses_bt_xml: "nav2_bt_xml_v0.14/nav_through_poses_w_replanning_and_recovery.xml"
+    default_nav_to_pose_bt_xml: "nav2_bt_xml_v0.14/nav_to_pose_w_replanning_and_recovery.xml"
+    plugin_lib_names:
+    - nav2_compute_path_to_pose_action_bt_node
+    - nav2_compute_path_through_poses_action_bt_node
+    - nav2_smooth_path_action_bt_node
+    - nav2_follow_path_action_bt_node
+    - nav2_spin_action_bt_node
+    - nav2_wait_action_bt_node
+    - nav2_assisted_teleop_action_bt_node
+    - nav2_back_up_action_bt_node
+    - nav2_drive_on_heading_bt_node
+    - nav2_clear_costmap_service_bt_node
+    - nav2_is_stuck_condition_bt_node
+    - nav2_goal_reached_condition_bt_node
+    - nav2_goal_updated_condition_bt_node
+    - nav2_globally_updated_goal_condition_bt_node
+    - nav2_is_path_valid_condition_bt_node
+    - nav2_initial_pose_received_condition_bt_node
+    - nav2_reinitialize_global_localization_service_bt_node
+    - nav2_rate_controller_bt_node
+    - nav2_distance_controller_bt_node
+    - nav2_speed_controller_bt_node
+    - nav2_truncate_path_action_bt_node
+    - nav2_truncate_path_local_action_bt_node
+    - nav2_goal_updater_node_bt_node
+    - nav2_recovery_node_bt_node
+    - nav2_pipeline_sequence_bt_node
+    - nav2_round_robin_node_bt_node
+    - nav2_transform_available_condition_bt_node
+    - nav2_time_expired_condition_bt_node
+    - nav2_path_expiring_timer_condition
+    - nav2_distance_traveled_condition_bt_node
+    - nav2_single_trigger_bt_node
+    - nav2_is_battery_low_condition_bt_node
+    - nav2_navigate_through_poses_action_bt_node
+    - nav2_navigate_to_pose_action_bt_node
+    - nav2_remove_passed_goals_action_bt_node
+    - nav2_planner_selector_bt_node
+    - nav2_controller_selector_bt_node
+    - nav2_goal_checker_selector_bt_node
+    - nav2_controller_cancel_bt_node
+    - nav2_path_longer_on_approach_bt_node
+    - nav2_wait_cancel_bt_node
+    - nav2_spin_cancel_bt_node
+    - nav2_back_up_cancel_bt_node
+    - nav2_assisted_teleop_cancel_bt_node
+    - nav2_drive_on_heading_cancel_bt_node
+
+controller_server:
+  ros__parameters:
+    use_sim_time: True
+    controller_frequency: 20.0
+    min_x_velocity_threshold: 0.001
+    min_y_velocity_threshold: 0.5
+    min_theta_velocity_threshold: 0.001
+    failure_tolerance: 0.3
+    progress_checker_plugin: "progress_checker"
+    goal_checker_plugins: ["humanoid_goal_checker"]  # ہیومنائیڈ کے لیے حسب ضرورت گول چیکر
+    controller_plugins: ["FollowPath"]
+
+    # ہیومنائیڈ مخصوص کنٹرولر
+    FollowPath:
+      plugin: "nav2_mppi_controller::MPPIController"
+      time_steps: 50
+      model_dt: 0.05
+      batch_size: 2000
+      vx_std: 0.2
+      vy_std: 0.2
+      wz_std: 0.3
+      vx_max: 0.5
+      vx_min: -0.2
+      vy_max: 0.3
+      wz_max: 0.3
+      vx_scale: 1.0
+      vy_scale: 1.0
+      wz_scale: 1.0
+      xy_goal_tolerance: 0.25
+      yaw_goal_tolerance: 0.2
+      stateful: True
+      critics: ["BaseObstacleCritic", "GoalCritic", "PathAlignCritic", "PreferForwardCritic"]
+      BaseObstacleCritic:
+        cost_scaling_factor: 1.0
+        inflation_radius: 0.5
+      GoalCritic:
+        cost_scaling_factor: 5.0
+        threshold_to_consider_goal: 1.0
+      PathAlignCritic:
+        cost_scaling_factor: 10.0
+        max_path_occupancy_ratio: 0.3
+        path_angle_thresh: 1.0
+      PreferForwardCritic:
+        cost_scaling_factor: 10.0
+        threshold_to_consider_forward: 1.0
+
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      update_frequency: 5.0
+      publish_frequency: 2.0
+      global_frame: odom
+      robot_base_frame: base_link
+      use_sim_time: True
+      rolling_window: true
+      width: 6
+      height: 6
+      resolution: 0.05
+      robot_radius: 0.3  # ہیومنائیڈ روبوٹ رداس
+      plugins: ["voxel_layer", "inflation_layer"]
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        cost_scaling_factor: 3.0
+        inflation_radius: 0.55
+      voxel_layer:
+        plugin: "nav2_costmap_2d::VoxelLayer"
+        enabled: True
+        publish_voxel_map: True
+        origin_z: 0.0
+        z_resolution: 0.2
+        z_voxels: 8
+        max_obstacle_height: 2.0
+        mark_threshold: 0
+        observation_sources: scan
+        scan:
+          topic: /scan
+          max_obstacle_height: 2.0
+          clearing: True
+          marking: True
+          data_type: "LaserScan"
+          raytrace_max_range: 3.0
+          raytrace_min_range: 0.0
+          obstacle_max_range: 2.5
+          obstacle_min_range: 0.0
+      always_send_full_costmap: True
+
+global_costmap:
+  global_costmap:
+    ros__parameters:
+      update_frequency: 1.0
+      publish_frequency: 1.0
+      global_frame: map
+      robot_base_frame: base_link
+      use_sim_time: True
+      robot_radius: 0.3
+      resolution: 0.05
+      track_unknown_space: true
+      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: True
+        observation_sources: scan
+        scan:
+          topic: /scan
+          max_obstacle_height: 2.0
+          clearing: True
+          marking: True
+          data_type: "LaserScan"
+          raytrace_max_range: 3.0
+          raytrace_min_range: 0.0
+          obstacle_max_range: 2.5
+          obstacle_min_range: 0.0
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        map_subscribe_transient_local: True
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        cost_scaling_factor: 3.0
+        inflation_radius: 0.55
+      always_send_full_costmap: True
+
+planner_server:
+  ros__parameters:
+    expected_planner_frequency: 20.0
+    use_sim_time: True
+    planner_plugins: ["GridBased"]
+    GridBased:
+      plugin: "nav2_navfn_planner::NavfnPlanner"
+      tolerance: 0.5
+      use_astar: false
+      allow_unknown: true
+```
+
+## Nav2 راستہ منصوبہ بندی ڈائیگرام
+
+<Mermaid chart={`graph TD;
+    A[Start Pose] --> B[Global Path Planner];
+    B --> C[Path Optimization];
+    C --> D[Local Path Planner];
+    D --> E[Footstep Planner for Humanoid];
+    E --> F[Balance Controller];
+    F --> G[Robot Execution];
+    G --> H{Goal Reached?};
+    H -->|No| I[Obstacle Detected?];
+    I -->|Yes| J[Local Replanning];
+    J --> D;
+    I -->|No| K[Continue Navigation];
+    K --> G;
+    H -->|Yes| L[Navigation Complete];
+    B -.-> M[Map Server];
+    D -.-> N[Costmap Server];
+    F -.-> O[Sensor Feedback];
+    O --> F;
+`} />
+
+## Isaac AI انضمام
+
+روبوٹ کے فیصلہ سازی کے عمل میں AI کا انضمام کئی کلیدی اجزاء کو شامل کرتا ہے:
+
+### ادراک پائپ لائن
+- **چیز کا پتہ لگانا**: ماحول میں چیزوں کو پہچاننے کے لیے GPU تیز کار ماڈلز کا استعمال
+- **سیمینٹک سیگمینٹیشن**: منظر کی تشکیل اور چیزوں کے رشتے کو سمجھنا
+- **گہرائی کا تخمینہ**: 2D تصاویر سے 3D معلومات نکالنا
+- **SLAM**: نیویگیشن کے لیے ہم وقتی مقام کاری اور نقشہ کاری
+
+### فیصلہ سازی
+- **بیہیویئر ٹریز**: پیچیدہ روبوٹ رویوں کے لیے منظم نقطہ نظر
+- **رینفورسمنٹ لرننگ**: ماحولیاتی تعامل کے ذریعے بہترین رویے سیکھنا
+- **راستہ منصوبہ بندی**: رکاوٹوں سے بچتے ہوئے بہترین راستے کا حساب
+- **انسان-روبوٹ بات چیت**: انسانی حکم کو سمجھنا اور جواب دینا
+
+### کنٹرول سسٹم
+- **موشن منصوبہ بندی**: پیچیدہ حرکتوں کے لیے جوڑوں کے راستے کا حساب
+- **توازن کنٹرول**: ہیومنائیڈ روبوٹس کے لیے استحکام برقرار رکھنا
+- **ہتھیلی**: چیز کے تعامل کے لیے روبوٹک بازوؤں اور ہاتھوں کو کنٹرول کرنا
+
+## GPU تیز کار AI ماڈلز
+
+NVIDIA Isaac مختلف AI کاموں کے لیے GPU تیز کاری کا فائدہ اٹھاتا ہے:
+
+- **TensorRT کی اصلاح**: Jetson پلیٹ فارمز پر استدلال کے لیے نیورل نیٹ ورکس کی اصلاح
+- **TAO ٹول کٹ**: مخصوص روبوٹکس ایپلی کیشنز کے لیے پہلے سے تربیت یافتہ ماڈلز کو بہتر بنانا
+- **CUDA انضمام**: مخصوص پروسیسنگ کے لیے CUDA کرنلز کا براہ راست انضمام
+- **Multi-GPU اسکیلنگ**: متعدد GPU یونٹس پر AI کام کے بوجھ کو تقسیم کرنا
+
+## خود کوشش کریں
+
+1. **NVIDIA Isaac ROS سیٹ اپ کریں**:
+   ```bash
+   # Isaac ROS انحصاریات انسٹال کریں
+   sudo apt update
+   sudo apt install nvidia-isaa-ros-dev
+   ```
+
+2. **ایک Isaac ادراک نوڈ تخلیق کریں**:
+   - GPU تیز کار چیز کے پتہ لگانے کی پائپ لائن نافذ کریں
+   - سینسر پروسیسنگ کے لیے Isaac ROS پیکجز کا استعمال کریں
+   - اپنے روبوٹ کے موجودہ ROS 2 سسٹم کے ساتھ انضمام کریں
+
+3. **اپنے روبوٹ کے لیے Nav2 کنفیگر کریں**:
+   - ایک حسب ضرورت Nav2 کنفیگریشن فائل تخلیق کریں
+   - اپنے روبوٹ کی کائینیمیٹکس پابندیوں کے لیے پیرامیٹرز ایڈجسٹ کریں
+   - حقیقی دنیا کے ڈپلائمنٹ سے پہلے تقلید میں نیویگیشن کی جانچ کریں
+
+4. **راستہ منصوبہ بندی نافذ کریں**:
+   - ایک سادہ نیویگیشن گول پبلشر تخلیق کریں
+   - عالمی اور مقامی راستہ منصوبہ بندی کی صلاحیات کی جانچ کریں
+   - مختلف راستہ منصوبہ بندی الگورتھم کے ساتھ تجربہ کریں
+
+5. **ہیومنائیڈ نیویگیشن کے لیے اصلاح کریں**:
+   - دو پاؤں والی حرکت کے لیے Nav2 کنفیگریشن میں تبدیلی کریں
+   - حسب ضرورت پاؤں کا راستہ منصوبہ بندی نافذ کریں
+   - توازن بازیافت کے رویوں کی جانچ کریں
+
+6. **AI ادراک کو ضم کریں**:
+   - تربیت یافتہ چیز کے پتہ لگانے کا ماڈل ڈپلائی کریں
+   - ادراک کا نتیجہ نیویگیشن سسٹم سے منسلک کریں
+   - چیز سے بچاؤ کے ساتھ خود کار نیویگیشن کی جانچ کریں
+
+ان مشقوں کے ذریعے، آپ NVIDIA Isaac کی AI صلاحیات اور Nav2 راستہ منصوبہ بندی کے ساتھ ہاتھ سے کام کا تجربہ حاصل کریں گے، جو آپ کو جدید AI پاورڈ روبوٹکس سسٹم تیار کرنے کے لیے تیار کرے گا جن میں جدید نیویگیشن اور ادراک کی صلاحیات ہوں گی۔

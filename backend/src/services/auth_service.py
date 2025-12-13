@@ -210,11 +210,29 @@ class AuthService:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
             user_id: str = payload.get("sub")
+            exp: int = payload.get("exp")
+
+            # Check if token is expired
+            if exp and datetime.now(timezone.utc).timestamp() > exp:
+                return None
+
             if user_id is None:
                 return None
             return user_id
         except JWTError:
             return None
+
+    def is_token_expired(self, token: str) -> bool:
+        """Check if the token is expired without raising an exception."""
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            exp: int = payload.get("exp")
+
+            if exp and datetime.now(timezone.utc).timestamp() > exp:
+                return True
+            return False
+        except JWTError:
+            return True  # Consider invalid tokens as expired
 
     async def get_current_user_by_token(self, token: str) -> Optional[UserProfileResponse]:
         """Get user profile by token."""

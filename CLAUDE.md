@@ -215,6 +215,8 @@ See `.specify/memory/constitution.md` for code quality, testing, performance, se
 ## Active Technologies
 - TypeScript/JavaScript for frontend, Python 3.10+ for backend + BetterAuth (https://www.better-auth.com/), Docusaurus (React), FastAPI, Neon Postgres (004-betterauth-integration)
 - Neon Postgres for user data, Qdrant Cloud for vector storage (RAG) (004-betterauth-integration)
+- TypeScript/JavaScript for frontend, Python 3.10+ for backend + Docusaurus (React), FastAPI, BetterAuth (https://www.better-auth.com/), Qdrant Cloud for vector storage, Neon Postgres for user data (005-personalization-urdu)
+- Neon Postgres (user profiles and authentication), File system (MDX content), Qdrant Cloud (vector storage for RAG) (005-personalization-urdu)
 
 ## Recent Changes
 - 004-betterauth-integration: Added TypeScript/JavaScript for frontend, Python 3.10+ for backend + BetterAuth (https://www.better-auth.com/), Docusaurus (React), FastAPI, Neon Postgres

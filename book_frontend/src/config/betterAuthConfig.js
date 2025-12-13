@@ -28,7 +28,11 @@ const betterAuthConfig = {
       hardwareExperience: true,
       technicalBackground: true,
       primaryProgrammingLanguage: true,
-      backgroundCompleted: true
+      backgroundCompleted: true,
+      // Personalization fields
+      learningMode: true,
+      difficultyLevel: true,
+      focusArea: true
     }
   },
   // Session configuration

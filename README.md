@@ -76,3 +76,28 @@ To set up and run the project locally, follow these steps:
 - Urdu translation support is available through the translation component
 - All content follows a consistent structure with hero sections, learning objectives, and practical exercises
 - The sidebar navigation has been configured to include all textbook chapters for easy access
+
+## Personalization and Urdu Translation Features
+
+The textbook includes advanced personalization and Urdu translation capabilities that enhance the learning experience for users with diverse backgrounds and language preferences:
+
+### Personalization
+- **User Profile Integration**: Content is personalized based on user's software/hardware experience level, technical background, and learning preferences
+- **Adaptive Content**: Users can click the "Personalize for Me" button on any chapter page to receive content adapted to their profile
+- **Intelligent Adaptation**: The system adjusts complexity, explanations, and focus areas based on user preferences
+- **Authentication Required**: Personalization features require user authentication for profile access
+- **Session Management**: Proper session handling ensures personalization remains active during user sessions
+
+### Urdu Translation
+- **Bilingual Access**: Users can access Urdu translations via the "اردو میں ترجمہ کریں" button on chapter pages
+- **File Management**: Urdu content files are stored as separate MDX files with 'urdu-' prefix (e.g., `urdu-chapter1.1.mdx`)
+- **Navigation Control**: Urdu files are excluded from the main navigation sidebar to maintain clean organization
+- **Synchronized Updates**: Content synchronization ensures Urdu translations stay updated with English content changes
+- **Cultural Appropriateness**: Translations maintain technical accuracy while being culturally appropriate for Urdu-speaking audiences
+
+### Technical Implementation
+- **Backend API**: Personalization endpoints at `/api/v1/personalize/{chapter_id}` handle content adaptation
+- **Authentication Middleware**: JWT-based authentication ensures secure access to personalization features
+- **Content Synchronization**: Automated tools keep Urdu translations synchronized with source content
+- **Error Handling**: Comprehensive error handling for session expiration and authentication failures
+- **Performance Optimization**: Caching and efficient algorithms ensure fast response times for personalized content
