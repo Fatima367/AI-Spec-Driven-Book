@@ -26,15 +26,23 @@ export default function NavbarAuth() {
       {isAuthenticated ? (
         <button
           onClick={handleLogout}
-          className="navbar__link"
+          className="navbar__item navbar__link"
           style={{
-            color: 'white',
+            color: 'inherit',
             background: 'none',
             border: 'none',
             cursor: 'pointer',
             padding: 'var(--ifm-navbar-item-padding-vertical) var(--ifm-navbar-item-padding-horizontal)',
             fontSize: 'var(--ifm-font-size-base)',
+            fontWeight: 'var(--ifm-font-weight-base)',
             textDecoration: 'none',
+            fontFamily: 'inherit',
+            lineHeight: 'var(--ifm-navbar-item-height)',
+            display: 'flex',
+            alignItems: 'center',
+            height: 'var(--ifm-navbar-item-height)',
+            outline: 'none',
+            WebkitFontSmoothing: 'antialiased',
           }}
         >
           Logout
@@ -43,8 +51,9 @@ export default function NavbarAuth() {
         <div style={{ display: 'flex', gap: '15px' }}>
           <Link
             to="/login"
+            className="navbar__item navbar__link"
             style={{
-              color: 'white',
+              color: 'inherit',
               padding: 'var(--ifm-navbar-item-padding-vertical) var(--ifm-navbar-item-padding-horizontal)',
               textDecoration: 'none',
             }}
@@ -53,8 +62,9 @@ export default function NavbarAuth() {
           </Link>
           <Link
             to="/signup"
+            className="navbar__item navbar__link"
             style={{
-              color: 'white',
+              color: 'inherit',
               padding: 'var(--ifm-navbar-item-padding-vertical) var(--ifm-navbar-item-padding-horizontal)',
               textDecoration: 'none',
             }}
