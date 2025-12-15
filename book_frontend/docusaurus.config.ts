@@ -11,7 +11,7 @@ const config: Config = {
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
+    // v4: true, // Temporarily disabled due to theme resolution issues
   },
 
   url: 'https://physical-ai-n-humanoid-robotics.vercel.app/', // <--- Update this with your actual Vercel deployment URL
@@ -34,7 +34,15 @@ const config: Config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'ur'], // Adding Urdu locale
+    localeConfigs: {
+      en: {
+        label: 'English',
+      },
+      ur: {
+        label: 'اردو',
+      },
+    },
   },
 
   plugins: [
@@ -47,10 +55,23 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          // Exclude draft files but include Urdu files for direct access
+          exclude: ['**/_*.{md,mdx}'],
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/Fatima367/AI-Spec-Driven-Book/tree/main/book_frontend',
+          // Use different sidebars based on locale
+          sidebarItemsGenerator: async ({ defaultSidebarItemsGenerator, ...args }) => {
+            if (args.locale === 'ur') {
+              // For Urdu locale, use the urduSidebar
+              const sidebarConfig = await import('./sidebars.ts');
+              const urduSidebar = sidebarConfig.default.urduSidebar;
+              return urduSidebar;
+            }
+            // For other locales, use default behavior
+            return defaultSidebarItemsGenerator(args);
+          },
         },
         blog: {
           showReadingTime: true,
@@ -90,11 +111,16 @@ const config: Config = {
         alt: 'Physical AI & Humanoid Robotics Textbook Logo',
         src: 'img/FavIcon-logo2.png',
       },
+      hideOnScroll: false, // Disable navbar hiding on scroll
       items: [
         {
           to: '/docs/intro',
           label: 'Book',
           position: 'left',
+        },
+        {
+          type: 'localeDropdown',
+          position: 'right',
         },
         {
           to: '/login',
