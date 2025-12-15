@@ -123,13 +123,23 @@ export default function NavbarContent(): ReactNode {
             {isAuthenticated ? (
               <button
                 onClick={handleLogout}
+                className="navbar__item navbar__link"
                 style={{
-                  color: 'white',
+                  color: 'inherit',
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
                   padding: 'var(--ifm-navbar-item-padding-vertical) var(--ifm-navbar-item-padding-horizontal)',
                   fontSize: 'var(--ifm-font-size-base)',
+                  fontWeight: 'var(--ifm-font-weight-base)',
+                  textDecoration: 'none',
+                  fontFamily: 'inherit',
+                  lineHeight: 'var(--ifm-navbar-item-height)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  height: 'var(--ifm-navbar-item-height)',
+                  outline: 'none',
+                  WebkitFontSmoothing: 'antialiased',
                 }}
               >
                 Logout
