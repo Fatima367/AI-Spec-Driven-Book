@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from .api import ingest, query, chat
+from .api.personalize import personalize_router
 from .api.auth import auth_router
 from dotenv import load_dotenv
 import os
@@ -72,6 +73,7 @@ async def startup_event():
 app.include_router(ingest.router, prefix="/api/v1", tags=["ingest"])
 app.include_router(query.router, prefix="/api/v1", tags=["query"])
 app.include_router(chat.router, prefix="/api/v1", tags=["chat"])
+app.include_router(personalize_router, prefix="/api/v1", tags=["personalize"])
 app.include_router(auth_router, prefix="/api/v1", tags=["auth"])
 
 @app.get("/")

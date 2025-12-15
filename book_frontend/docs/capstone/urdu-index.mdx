@@ -1,0 +1,466 @@
+---
+title: "کیپ اسٹون پروجیکٹ: خود کار انسان نما ترقی"
+sidebar_position: 1
+---
+
+import { PersonalizeButton, UrduTranslationButton } from '@site/src/components/PersonalizationButtons';
+import Mermaid from '@theme/Mermaid';
+
+<PersonalizeButton />
+<UrduTranslationButton />
+
+# کیپ اسٹون پروجیکٹ: خود کار انسان نما ترقی
+
+## سیکھنے کے اہداف
+- تمام پچھلے ماڈیولز سے علم کو یکجا کریں تاکہ ایک خودکار انسان نما روبوٹ سسٹم کو ڈیزائن اور نافذ کیا جا سکے
+- ROS 2، تقلیدی ماحول، AI ادراک، اور VLA ماڈلز کو ایک مربوط روبوٹکس پلیٹ فارم میں ضم کریں
+- ایک جامع سسٹم آرکیٹیکچر تیار کریں جو نیویگیشن، ہتھیلی، ادراک، اور انسانی بات چیت کو سنبھالتا ہے
+- قابل اعتماد انسان نما آپریشن کے لیے حفاظتی میکانزم اور خرابی کی بازیافت کی طریقہ کار کو نافذ کریں
+- متعدد آپریشنل منظرناموں میں سسٹم کی کارکردگی کا جائزہ لیں اور بہتر بنائیں
+- مکمل انسان نما سسٹم کے ڈیزائن اور نفاذ کو دستاویز کریں اور پیش کریں
+
+## خودکار انسان نما پروجیکٹ کا تعارف
+
+کیپ اسٹون پروجیکٹ فزیکل اے آئی اور ہیومنائیڈ روبوٹکس کے ذریعے آپ کے سفر کا اختتام نمائندہ ہے۔ آپ ایک مکمل خودکار ہیومنائیڈ روبوٹ سسٹم کو ڈیزائن، نافذ اور جائزہ لیں گے جو پچھلے ماڈیولز میں کور کردہ تمام ٹیکنالوجیز اور تصورات کو ضم کرتا ہے۔ یہ پروجیکٹ آپ کو روبوٹکس سسٹمز کے بارے میں جامع طور پر سوچنے کے لیے چیلنج کرتا ہے، نہ کہ صرف انفرادی اجزاء کے بارے میں، بلکہ حقیقی دنیا کے منظرناموں میں ان کی پیچیدہ بات چیت کو بھی سمجھنا۔
+
+خودکار ہیومنائیڈ قابل ہوگا:
+
+- محفوظ اور کارآمد طریقے سے انسانی ماحول میں نیویگیٹ کرنا
+- قدرتی زبان کے حکم کو سمجھنا اور انجام دینا
+- انسان نما چالاکی کے ساتھ اشیاء کو ہتھیلنا
+- تعاونی کاموں میں انسانوں کے ساتھ قدرتی طریقے سے بات چیت کرنا
+- متحرک اور غیر منظم ماحول کے لیے موافق ہونا
+
+## سسٹم آرکیٹیکچر کا جائزہ
+
+خودکار ہیومنائیڈ سسٹم متعدد ذیلی سسٹمز کو ضم کرتا ہے جو باہم مل کر ذہین رویہ کے قابل بناتے ہیں:
+
+<Mermaid chart={`graph TB;
+    A[Human Interaction] --> B{Cognitive System};
+    B --> C[Language Understanding];
+    B --> D[Task Planning];
+    B --> E[Behavior Selection];
+
+    F[Perception System] --> G[Object Detection];
+    F --> H[SLAM & Mapping];
+    F --> I[Human Detection];
+
+    J[Navigation System] --> K[Path Planning];
+    J --> L[Path Following];
+    J --> M[Obstacle Avoidance];
+
+    N[Manipulation System] --> O[Grasp Planning];
+    N --> P[Arm Control];
+    N --> Q[Hand Control];
+
+    C --> R[Humanoid Controller];
+    D --> R;
+    E --> R;
+    G --> R;
+    H --> R;
+    I --> R;
+    K --> R;
+    L --> R;
+    M --> R;
+    O --> R;
+    P --> R;
+    Q --> R;
+
+    R --> S[Humanoid Robot];
+    S --> T[Sensor Feedback];
+    T --> F;
+    T --> J;
+    T --> N;
+`} />
+
+## پروجیکٹ کے مراحل اور نفاذ کی حکمت عملی
+
+### مرحلہ 1: سسٹم ڈیزائن اور آرکیٹیکچر
+- کل سسٹم کے آرکیٹیکچر اور اجزاء کے انٹرفیسز کی وضاحت کریں
+- پروجیکٹ کی ضروریات کی بنیاد پر مناسب ہارڈ ویئر اور سافٹ ویئر پلیٹ فارمز منتخب کریں
+- مختلف ذیلی سسٹمز کے درمیان رابطے کے پروٹوکولز کو قائم کریں
+- تفصیلی سسٹم کی خصوصیات اور انٹرفیس کی وضاحتیں تیار کریں
+
+### مرحلہ 2: کور انفراسٹرکچر کی ترقی
+- ROS 2 رابطے کی پشت کو نافذ کریں
+- تقلیدی ماحول (Isaac Sim یا Gazebo) کو سیٹ کریں
+- مناسب سینسرز اور ایکٹوایٹرز کے ساتھ ہیومنائیڈ روبوٹ ماڈل کو ضم کریں
+- بنیادی حرکت اور توازن کنٹرول سسٹمز کو قائم کریں
+
+### مرحلہ 3: ادراک سسٹم کی انضمام
+- چیز کا پتہ لگانے اور پہچاننے کے لیے بصری ادراک نافذ کریں
+- ماحول کے نقشے اور مقام کے لیے SLAM کو ضم کریں
+- انسان کا پتہ لگانے اور ٹریکنگ کی صلاحیتوں کو تیار کریں
+- ہتھیلی کے منصوبہ بندی کے لیے اثاثہ کا پتہ لگانے کو تخلیق کریں
+
+### مرحلہ 4: سوچ اور تعامل کے سسٹم
+- قدرتی زبان کی سمجھ اور عمل کے منصوبہ بندی کے لیے VLA ماڈلز کو ضم کریں
+- انسانی بات چیت کے لیے گفتگو کی پہچان اور ترجمہ نافذ کریں
+- کام کے منصوبہ بندی اور انجام دہی کے سسٹم تیار کریں
+- سیاق و سباق کے خیال رکھنے والے سلوک کے انتخاب کے میکانزم تخلیق کریں
+
+### مرحلہ 5: نیویگیشن اور ہتھیلی
+- دو پاؤں والی حرکت کے ساتھ ہیومنائیڈ مخصوص نیویگیشن نافذ کریں
+- پیچیدہ چیز کے تعاملات کے لیے ہتھیلی کی منصوبہ بندی تیار کریں
+- حفاظتی میکانزم اور ہنگامی روک تھام کی طریقہ کار کو ضم کریں
+- حقیقی وقت کے آپریشن کے لیے سسٹم کی کارکردگی کو بہتر بنائیں
+
+### مرحلہ 6: انضمام اور جانچ
+- تمام ذیلی سسٹمز کو ایک مربوط سسٹم میں ضم کریں
+- تقلید اور جسمانی ہارڈ ویئر پر جامع جانچ کریں
+- متعدد منظرناموں میں سسٹم کی کارکردگی کا جائزہ لیں
+- سیکھنے والی باتوں اور سسٹم کی حدود کو دستاویز کریں
+
+## تفصیلی نفاذ کے اقدامات
+
+### 1. روبوٹ ماڈل اور تقلیدی سیٹ اپ
+مناسب ڈگریوں کی آزادی اور سینسرز کے ساتھ ایک ہیومنائیڈ روبوٹ ماڈل کو تخلیق یا منتخب کریں۔ اس پروجیکٹ کے لیے، ایک ماڈل پر غور کریں جس میں:
+
+- انسان نما حرکت کے لیے 20+ ڈگریاں آزادی
+- بصری ادراک کے لیے RGB-D کیمرے
+- توازن اور ہتھیلی کے لیے IMU اور قوت/ٹارک سینسرز
+- صprecise کنٹرول کے قابل ایکٹوایٹرز
+
+```python
+# مثال: تقلید میں ہیومنائیڈ روبوٹ کو سیٹ کرنا
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import JointState, Image, CameraInfo
+from geometry_msgs.msg import Twist, PoseStamped
+from std_msgs.msg import String
+import tf2_ros
+
+class HumanoidController(Node):
+    def __init__(self):
+        super().__init__('humanoid_controller')
+
+        # مختلف ذیلی سسٹمز کے لیے پبلشرز
+        self.joint_cmd_pub = self.create_publisher(JointState, '/joint_commands', 10)
+        self.nav_cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.speech_pub = self.create_publisher(String, '/tts_input', 10)
+
+        # سینسر ڈیٹا کے لیے سبسکرائبرز
+        self.joint_state_sub = self.create_subscription(
+            JointState, '/joint_states', self.joint_state_callback, 10)
+        self.rgb_sub = self.create_subscription(
+            Image, '/camera/rgb/image_raw', self.rgb_callback, 10)
+        self.depth_sub = self.create_subscription(
+            Image, '/camera/depth/image_raw', self.depth_callback, 10)
+
+        # روبوٹ ٹرانسفارم کے لیے TF براڈکاسٹر
+        self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)
+
+        # روبوٹ اسٹیٹ کو شروع کریں
+        self.current_joints = {}
+        self.robot_pose = PoseStamped()
+
+        # کنٹرول لوپ کو سیٹ کریں
+        self.control_timer = self.create_timer(0.05, self.control_loop)  # 20 Hz
+
+    def joint_state_callback(self, msg):
+        """موجودہ جوڑ کی پوزیشنز کو اپ ڈیٹ کریں"""
+        for name, position in zip(msg.name, msg.position):
+            self.current_joints[name] = position
+
+    def rgb_callback(self, msg):
+        """RGB کیمرہ ڈیٹا کو پروسیس کریں"""
+        # ادراک کے لیے بصری ان پٹ کو پروسیس کریں
+        pass
+
+    def depth_callback(self, msg):
+        """گہرائی کیمرہ ڈیٹا کو پروسیس کریں"""
+        # نیویگیشن اور ہتھیلی کے لیے گہرائی کی معلومات کو پروسیس کریں
+        pass
+
+    def control_loop(self):
+        """ہیومنائیڈ روبوٹ کے لیے مرکزی کنٹرول لوپ"""
+        # یہیں سب سسٹمز کی انضمام ہوتی ہے
+        # ادراک، منصوبہ بندی، اور کنٹرول کے فیصلے یہیں کیے جاتے ہیں
+        pass
+
+def main(args=None):
+    rclpy.init(args=args)
+    humanoid_controller = HumanoidController()
+    rclpy.spin(humanoid_controller)
+    humanoid_controller.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+### 2. ہیومنائیڈ روبوٹس کے لیے نیویگیشن سسٹم
+ایسے نیویگیشن کو نافذ کریں جو دو پاؤں والی حرکت کو مدنظر رکھے:
+
+```yaml
+# humanoid_navigation_config.yaml
+# ہیومنائیڈ مخصوص نیویگیشن کے لیے کنفیگریشن
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      robot_radius: 0.4  # ہیومنائیڈ حفاظت کے لیے بڑا رداس
+      plugins: ["voxel_layer", "inflation_layer"]
+      inflation_layer:
+        cost_scaling_factor: 4.0  # حفاظت کے لیے زیادہ انتظام
+        inflation_radius: 0.8
+
+controller_server:
+  ros__parameters:
+    controller_frequency: 10.0  # مستحکم ہیومنائیڈ کنٹرول کے لیے کم فریکوینسی
+    controller_plugins: ["HumanoidMPPIC"]
+
+    HumanoidMPPIC:
+      plugin: "nav2_mppi_controller::MPPIController"
+      time_steps: 30
+      model_dt: 0.1
+      vx_max: 0.3  # استحکام کے لیے سست
+      vx_min: -0.1
+      wz_max: 0.2  # توازن کے لیے سست گردش
+      # ہیومنائیڈ مخصوص پیرامیٹرز
+      step_size: 0.1  # دو پاؤں والی چلنے کے لیے قدم کا سائز
+      balance_threshold: 0.1  # توازن برقرار رکھنے کے پیرامیٹرز
+```
+
+### 3. ہیومنائیڈ کمانڈز کے لیے VLA انضمام
+پیچیدہ ہیومنائیڈ کاموں کے لیے وژن-زبان-عمل کا پائپ لائن نافذ کریں:
+
+```python
+# vla_humanoid_integration.py
+import json
+from typing import List, Dict, Any
+from dataclasses import dataclass
+
+@dataclass
+class HumanoidAction:
+    action_type: str
+    parameters: Dict[str, Any]
+    priority: int = 1
+    safety_level: str = "normal"  # normal, caution, critical
+
+class HumanoidVLAIntegrator:
+    def __init__(self):
+        self.action_mapping = {
+            "walk": self.execute_walk,
+            "move_to": self.execute_move_to,
+            "pick_up": self.execute_pick_up,
+            "place": self.execute_place,
+            "greet": self.execute_greet,
+            "follow": self.execute_follow,
+            "wait": self.execute_wait,
+        }
+
+    def process_command(self, command: str, visual_context: Dict[str, Any]) -> List[HumanoidAction]:
+        """
+        قدرتی زبان کے حکم کو پروسیس کریں اور ہیومنائیڈ اعمال کی ترتیب لوٹائیں
+        """
+        # حقیقت میں یہ LLM کال کے ساتھ ہوگا
+        # اس مثال کے لیے، ہم ایک سادہ قاعدہ پر مبنی نقطہ نظر استعمال کریں گے
+        actions = []
+
+        if "walk to" in command or "go to" in command:
+            location = self.extract_location(command)
+            actions.append(HumanoidAction(
+                action_type="move_to",
+                parameters={"location": location},
+                priority=2
+            ))
+        elif "pick up" in command or "grab" in command:
+            obj = self.extract_object(command)
+            actions.append(HumanoidAction(
+                action_type="pick_up",
+                parameters={"object": obj},
+                priority=3
+            ))
+        elif "place" in command or "put" in command:
+            obj = self.extract_object(command)
+            location = self.extract_location(command)
+            actions.extend([
+                HumanoidAction(
+                    action_type="move_to",
+                    parameters={"location": location},
+                    priority=2
+                ),
+                HumanoidAction(
+                    action_type="place",
+                    parameters={"object": obj, "location": location},
+                    priority=3
+                )
+            ])
+
+        return actions
+
+    def execute_action_sequence(self, actions: List[HumanoidAction]) -> bool:
+        """
+        اعمال کی ترتیب کو محفوظ طریقے سے انجام دیں
+        """
+        for action in actions:
+            if not self.execute_single_action(action):
+                self.get_logger().error(f"Action failed: {action}")
+                return False
+        return True
+
+    def execute_single_action(self, action: HumanoidAction) -> bool:
+        """
+        ایک ہیومنائیڈ عمل کو انجام دیں
+        """
+        if action.action_type in self.action_mapping:
+            try:
+                return self.action_mapping[action.action_type](action.parameters)
+            except Exception as e:
+                self.get_logger().error(f"Action execution failed: {e}")
+                return False
+        else:
+            self.get_logger().warn(f"Unknown action type: {action.action_type}")
+            return False
+
+    def extract_location(self, command: str) -> str:
+        """حکم سے مقام نکالیں"""
+        # سادہ نکالنا - عمل میں، NLP تکنیکوں کو استعمال کریں
+        if "kitchen" in command:
+            return "kitchen"
+        elif "living room" in command:
+            return "living_room"
+        elif "bedroom" in command:
+            return "bedroom"
+        else:
+            return "unknown"
+
+    def extract_object(self, command: str) -> str:
+        """حکم سے چیز نکالیں"""
+        # سادہ نکالنا - عمل میں، NLP تکنیکوں کو استعمال کریں
+        objects = ["cup", "bottle", "book", "ball", "phone", "keys"]
+        for obj in objects:
+            if obj in command:
+                return obj
+        return "unknown"
+
+    def execute_walk(self, params: Dict[str, Any]) -> bool:
+        """چلنے کا عمل انجام دیں"""
+        # دو پاؤں والی چلنے کے لیے نفاذ
+        return True
+
+    def execute_move_to(self, params: Dict[str, Any]) -> bool:
+        """مقام پر جانے کو انجام دیں"""
+        # مقام پر نیویگیشن کے لیے نفاذ
+        return True
+
+    def execute_pick_up(self, params: Dict[str, Any]) -> bool:
+        """چیز اٹھانے کو انجام دیں"""
+        # ہتھیلی کے لیے نفاذ
+        return True
+
+    def execute_place(self, params: Dict[str, Any]) -> bool:
+        """چیز رکھنے کو انجام دیں"""
+        # چیز رکھنے کے لیے نفاذ
+        return True
+
+    def execute_greet(self, params: Dict[str, Any]) -> bool:
+        """ملاقات کا سلوک انجام دیں"""
+        # سماجی بات چیت کے لیے نفاذ
+        return True
+
+    def execute_follow(self, params: Dict[str, Any]) -> bool:
+        """پیروی کا سلوک انجام دیں"""
+        # شخص کی پیروی کے لیے نفاذ
+        return True
+
+    def execute_wait(self, params: Dict[str, Any]) -> bool:
+        """انتظار کا سلوک انجام دیں"""
+        # انتظار کے لیے نفاذ
+        return True
+```
+
+## حفاظت اور خرابی کا سامنا
+
+ہیومنائیڈ روبوٹکس میں حفاظت سب سے اہم ہے۔ حفاظتی میکانزم کے متعدد طبقات نافذ کریں:
+
+### 1. موشن حفاظت
+- جوڑ کی حد کا اطلاق
+- تصادم سے بچاؤ
+- توازن برقرار رکھنا
+- ہنگامی روک تھام کی طریقہ کار
+
+### 2. سلوک حفاظت
+- حکم کی توثیق
+- سیاق و سباق کے خیال رکھنے والا عمل کی فلٹریشن
+- انسانی حفاظتی زونز
+- قابل پیش گوئی سلوک کے نمونے
+
+### 3. سسٹم حفاظت
+- مہذب کمی کا عمل
+- خرابی کی بازیافت کی طریقہ کار
+- سسٹم کی نگرانی
+- فائل سیف اسٹیٹس
+
+## کارکردگی کا جائزہ
+
+اپنے خودکار ہیومنائیڈ سسٹم کا متعدد جہتوں میں جائزہ لیں:
+
+### 1. وظیفہ کارکردگی
+- کام مکمل کرنے کی شرح
+- نیویگیشن کی درستی
+- ہتھیلی کی کامیابی کی شرح
+- حکم کے جواب میں وقت
+
+### 2. حفاظتی کارکردگی
+- حفاظتی مداخلتوں کی تعداد
+- تصادم سے بچاؤ کی مؤثرتا
+- انسانی حفاظت کی پاسداری
+- سسٹم کی استحکام
+
+### 3. بات چیت کی معیار
+- قدرتی زبان کی سمجھ کی درستی
+- انسان-روبوٹ بات چیت کی معیار
+- کام کی انجام دہی کی قدرتی نوعیت
+- سماجی سلوک کی مناسب نوعیت
+
+## خود کوشش کریں
+
+1. **اپنے ہیومنائیڈ سسٹم کے آرکیٹیکچر کو ڈیزائن کریں**:
+   - تمام اہم اجزاء اور ان کی بات چیت کو دکھانے والے ایک سسٹم ڈائیگرام کو تخلیق کریں
+   - اپنے ہیومنائیڈ (یا تقلیدی) روبوٹ کے لیے ہارڈ ویئر کی خصوصیات کو منصوبہ بند کریں
+   - ROS 2 پیکجز اور نوڈز کا استعمال کرتے ہوئے سافٹ ویئر آرکیٹیکچر کو منصوبہ بند کریں
+
+2. **ترقی کا ماحول سیٹ کریں**:
+   ```bash
+   # کیپ اسٹون پروجیکٹ کے لیے ایک ورک سپیس تخلیق کریں
+   mkdir -p ~/capstone_ws/src
+   cd ~/capstone_ws
+
+   # ہر ذیلی سسٹم کے لیے پیکجز کو کلون یا تخلیق کریں
+   # ورک سپیس کو بنائیں اور سورس کریں
+   colcon build
+   source install/setup.bash
+   ```
+
+3. **بنیادی روبوٹ کنٹرول کو نافذ کریں**:
+   - ایک بنیادی ہیومنائیڈ کنٹرولر نوڈ تخلیق کریں
+   - جوڑ کی حالت کے اشاعت اور سبسکرپشن کو نافذ کریں
+   - تقلید میں بنیادی حرکت کو ٹیسٹ کریں
+
+4. **ادراک کے سسٹم کو ضم کریں**:
+   - کیمرہ اور سینسر پروسیسنگ کو سیٹ کریں
+   - Isaac ROS یا اس کے مماثل کا استعمال کرتے ہوئے چیز کا پتہ لگانے کو نافذ کریں
+   - مختلف روشنی کی حالت میں ادراک کو ٹیسٹ کریں
+
+5. **نیویگیشن کی صلاحیتوں کو تیار کریں**:
+   - ہیومنائیڈ نیویگیشن کے لیے Nav2 کو کنفیگر کریں
+   - راستہ منصوبہ بندی اور رکاوٹ سے بچاؤ کو ٹیسٹ کریں
+   - دو پاؤں والی مخصوص حرکت کے نمونے نافذ کریں
+
+6. **VLA انضمام تخلیق کریں**:
+   - ایک سادہ زبان کی سمجھ کا سسٹم نافذ کریں
+   - اسپیچ ٹو ٹیکسٹ سروس سے منسلک کریں
+   - بنیادی حکم کے انجام دہی کو ٹیسٹ کریں
+
+7. **مکمل سسٹم انضمام کو تیار کریں**:
+   - تمام ذیلی سسٹمز کو ساتھ جوڑیں
+   - سسٹم اسٹیٹ مینجمنٹ کو نافذ کریں
+   - اختتام سے اختتام تک کارکردگی کو ٹیسٹ کریں
+
+8. **جائزہ لیں اور بہتر بنائیں**:
+   - تقلید میں جامع ٹیسٹس چلائیں
+   - بٹنیکس کی شناخت کریں اور کارکردگی کو بہتر بنائیں
+   - سسٹم کی صلاحیتوں اور حدود کو دستاویز کریں
+
+اس کیپ اسٹون پروجیکٹ کے ذریعے، آپ کتاب میں حاصل کردہ تمام علم کو ایک کارآمد خودکار ہیومنائیڈ سسٹم میں جمع کریں گے، جو فزیکل اے آئی اور ہیومنائیڈ روبوٹکس کے تصورات کی ماہری کا مظاہرہ کرے گا۔

@@ -137,6 +137,59 @@ export const authService = {
       console.error('Update background error:', error);
       throw error;
     }
+  },
+
+  // Update user profile with personalization preferences
+  async updateProfile(profileData) {
+    try {
+      // Get the session token from wherever it's stored
+      const token = localStorage.getItem('session_token'); // or however the token is stored
+
+      const response = await fetch(API_CONFIG.AUTH_ENDPOINTS.UPDATE_PROFILE, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profileData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to update profile');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Update profile error:', error);
+      throw error;
+    }
+  },
+
+  // Get user's personalization preferences
+  async getPersonalizationProfile() {
+    try {
+      // Get the session token from wherever it's stored
+      const token = localStorage.getItem('session_token'); // or however the token is stored
+
+      const response = await fetch(`${API_CONFIG.BASE_URL}/api/v1/personalize/profile`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to get personalization profile');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Get personalization profile error:', error);
+      throw error;
+    }
   }
 };
 

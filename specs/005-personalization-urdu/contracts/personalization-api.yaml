@@ -1,0 +1,86 @@
+# Personalization API Contract
+
+## Personalize Content Endpoint
+
+### POST /api/personalize/{chapter_id}
+
+**Description**: Personalizes chapter content based on user profile and preferences while maintaining strict adherence to the Physical AI & Humanoid Robotics syllabus.
+
+**Authentication**: Required - Bearer token from BetterAuth
+
+**Path Parameters**:
+- `chapter_id` (string, required): ID of the chapter to personalize
+
+**Request Body**:
+```json
+{
+  "user_preferences": {
+    "difficulty_level": "basic|intermediate|advanced",
+    "focus_area": "theory|practice",
+    "learning_mode": "beginner|advanced"
+  }
+}
+```
+
+**Request Headers**:
+- `Authorization`: Bearer {token}
+- `Content-Type`: application/json
+
+**Success Response (200)**:
+```json
+{
+  "success": true,
+  "content": "Personalized content string...",
+  "message": "Content personalized successfully",
+  "syllabus_compliance": {
+    "aligned": true,
+    "missing_topics": [],
+    "module_coverage": "ROS2|Gazebo|Isaac|VLA"
+  }
+}
+```
+
+**Error Responses**:
+- `401`: Unauthorized - User not authenticated
+- `403`: Forbidden - User doesn't have permission to access this content
+- `404`: Not Found - Chapter with the given ID doesn't exist
+- `500`: Internal Server Error - Failed to personalize content
+- `503`: Service Unavailable - Syllabus compliance validation failed
+
+**Example Request**:
+```bash
+curl -X POST \
+  https://api.example.com/api/personalize/part1/chapter1.1 \
+  -H "Authorization: Bearer {token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_preferences": {
+      "difficulty_level": "basic",
+      "focus_area": "practice"
+    }
+  }'
+```
+
+**Example Response**:
+```json
+{
+  "success": true,
+  "content": "# Personalized Chapter Content\n\nThis is the personalized version of the chapter based on your preferences...",
+  "message": "Content personalized successfully",
+  "syllabus_compliance": {
+    "aligned": true,
+    "missing_topics": [],
+    "module_coverage": "Physical AI Principles"
+  }
+}
+```
+
+## Validation Rules
+- User must be authenticated
+- Chapter ID must exist in the system
+- User preferences must be valid enum values
+- Content must be returned in proper MDX format
+- Personalized content must maintain syllabus compliance with Physical AI & Humanoid Robotics course
+- All core learning outcomes must be preserved regardless of personalization level
+- Module-specific requirements (ROS 2, Gazebo, Isaac, VLA) must be maintained
+- Technical accuracy of robotics and AI concepts must be preserved

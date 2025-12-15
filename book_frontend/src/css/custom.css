@@ -53,6 +53,81 @@ body {
   min-height: 100vh;
 }
 
+/* Ensure deep, rich background is applied to all base elements */
+html {
+  background: #020510 !important; /* Deep void navy/black */
+  background-color: #020510 !important;
+}
+
+body,
+#app,
+.main-wrapper,
+.container,
+.DocSearch--container,
+#__docusaurus,
+div[class*="docMainContainer"],
+div[class*="docPage"],
+div[class*="docItem"],
+div[class*="main"],
+main,
+.content,
+article {
+  background: #020510 !important; /* Deep void navy/black - solid color, not gradient, to match original */
+  background-color: #020510 !important;
+}
+
+/* Ensure proper background for RTL layout specifically - using the original deep color */
+html[dir="rtl"],
+html[dir="rtl"] body,
+html[dir="rtl"] #app,
+html[dir="rtl"] .main-wrapper,
+html[dir="rtl"] .container,
+html[dir="rtl"] .DocSearch--container,
+html[dir="rtl"] #__docusaurus,
+html[dir="rtl"] div[class*="docMainContainer"],
+html[dir="rtl"] div[class*="docPage"],
+html[dir="rtl"] div[class*="docItem"],
+html[dir="rtl"] div[class*="main"],
+html[dir="rtl"] main,
+html[dir="rtl"] .content,
+html[dir="rtl"] article {
+  background: #020510 !important; /* Deep void navy/black - solid color */
+  background-color: #020510 !important;
+}
+
+/* Ensure background applies to all content containers in both LTR and RTL */
+.sidebar,
+html[dir="rtl"] .sidebar,
+.menu,
+html[dir="rtl"] .menu,
+.navbar-sidebar,
+html[dir="rtl"] .navbar-sidebar,
+.theme-doc-sidebar-menu,
+html[dir="rtl"] .theme-doc-sidebar-menu,
+.docSidebarContainer,
+html[dir="rtl"] .docSidebarContainer,
+.docItemContainer,
+html[dir="rtl"] .docItemContainer,
+.docItemWrapper,
+html[dir="rtl"] .docItemWrapper,
+.docMain,
+html[dir="rtl"] .docMain,
+.docArticle,
+html[dir="rtl"] .docArticle {
+  background: #020510 !important;
+  background-color: #020510 !important;
+}
+
+/* Ensure footer styling in both LTR and RTL - using the original deep color */
+footer,
+html[dir="rtl"] footer,
+.footer,
+html[dir="rtl"] .footer {
+  background: #020510 !important; /* Deep void navy/black */
+  background-color: #020510 !important;
+  border-top: 1px solid rgba(0, 140, 160, 0.3) !important;
+}
+
 .main-wrapper {
   flex: 1 0 auto;
   display: flex;
@@ -64,7 +139,8 @@ footer {
   margin-top: auto;
 }
 
-.navbar {
+.navbar,
+html[dir="rtl"] .navbar {
   background-color: var(--ifm-background-color) !important;
   border-bottom: 1px solid rgba(0, 140, 160, 0.3) !important; /* Softer border */
   position: sticky;
@@ -72,21 +148,59 @@ footer {
   z-index: 1000; /* Ensure it stays on top of other content */
 }
 
-.footer {
+/* Main content wrapper styling */
+.main-wrapper,
+html[dir="rtl"] .main-wrapper {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer,
+html[dir="rtl"] .footer {
   background-color: var(--ifm-background-color);
   border-top: 1px solid rgba(0, 140, 160, 0.3); /* Softer border */
   margin-top: 50px;
 }
 
-/* Sidebar theme consistency */
-.sidebar {
+/* Sidebar theme consistency and border for separation from content */
+.sidebar,
+html[dir="rtl"] .sidebar {
   background-color: #020510 !important; /* Match the main background */
   color: #ffffff !important;
 }
 
-.menu {
+/* Add border to the sidebar to separate from content - higher specificity */
+div[class*="sidebar"],
+div[class*="DocSidebarContainer"],
+.sidebar-container {
+  border-right: 1px solid rgba(0, 140, 160, 0.3) !important; /* Add border to separate from content */
+}
+
+/* RTL version of sidebar border */
+html[dir="rtl"] div[class*="sidebar"],
+html[dir="rtl"] div[class*="DocSidebarContainer"],
+html[dir="rtl"] .sidebar-container {
+  border-left: 1px solid rgba(0, 140, 160, 0.3) !important; /* In RTL, border should be on the left */
+  border-right: none !important;
+}
+
+/* Additional specific selectors for sidebar container */
+.navbar-sidebar__item,
+html[dir="rtl"] .navbar-sidebar__item {
+  border-right: 1px solid rgba(0, 140, 160, 0.3) !important;
+}
+
+.menu,
+html[dir="rtl"] .menu {
   background-color: #020510 !important; /* Match the main background */
   color: #ffffff !important;
+}
+
+/* Mobile sidebar */
+.navbar-sidebar,
+html[dir="rtl"] .navbar-sidebar {
+  background-color: #020510 !important;
 }
 
 /* Sidebar link styles */
@@ -140,6 +254,8 @@ footer {
   color: #ffffff !important;
   border-bottom: 1px solid rgba(0, 168, 192, 0.3) !important;
 }
+
+/* Document content theme consistency */
 
 .markdown h1 {
   border-bottom: 2px solid rgba(0, 168, 192, 0.5) !important;

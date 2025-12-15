@@ -81,6 +81,74 @@ const sidebars: SidebarsConfig = {
     },
   ],
 
+  // Urdu sidebar using the same structure as English
+  urduSidebar: [
+    'urdu-intro',
+    {
+      type: 'category',
+      label: 'Foundations',
+      link: {type: 'generated-index'},
+      items: [
+        'part1/urdu-chapter1.1',
+        'part1/urdu-chapter1.2'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'ROS2',
+      link: {type: 'generated-index'},
+      items: [
+        'module1-ros2/urdu-index',
+        'part2/urdu-chapter2.1',
+        'part2/urdu-chapter2.2'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Simulation',
+      link: {type: 'generated-index'},
+      items: ['module2-digital-twin/urdu-index'],
+    },
+    {
+      type: 'category',
+      label: 'NVIDIA Isaac',
+      link: {type: 'generated-index'},
+      items: [
+        'module3-ai-robot-brain/urdu-index',
+        'part3/urdu-chapter3.1',
+        'part3/urdu-chapter3.2'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Humanoids',
+      link: {type: 'generated-index'},
+      items: [],
+    },
+    {
+      type: 'category',
+      label: 'VLA',
+      link: {type: 'generated-index'},
+      items: [
+        'module4-vla/urdu-index',
+        'part4/urdu-chapter4.1',
+        'part4/urdu-chapter4.2'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Hardware',
+      link: {type: 'generated-index'},
+      items: ['urdu-hardware-lab'],
+    },
+    {
+      type: 'category',
+      label: 'Capstone',
+      link: {type: 'generated-index'},
+      items: ['capstone/urdu-index'],
+    },
+  ],
+
   // But you can create a sidebar manually
   /*
   tutorialSidebar: [

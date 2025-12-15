@@ -133,9 +133,17 @@ async def signup(request: Request):
 
 
 @auth_router.post("/login", response_model=AuthResponse)
-async def login(request: Request, login_data: LoginRequest):
+async def login(request: Request):
     """Authenticate user with email and password."""
     try:
+        # Parse JSON body manually to get raw data
+        body = await request.json()
+        print(f"Raw login request data: {body}")  # Debug logging
+
+        # Create the login data manually to bypass potential Pydantic issues
+        from ..models import LoginRequest
+        login_data = LoginRequest(**body)
+
         # Validate email format
         if "@" not in login_data.email or "." not in login_data.email:
             raise HTTPException(status_code=400, detail="Invalid email format")
@@ -161,6 +169,7 @@ async def login(request: Request, login_data: LoginRequest):
             session=session_response
         )
     except Exception as e:
+        print(f"Login exception: {str(e)}")  # Debug logging
         raise HTTPException(status_code=500, detail=f"An error occurred during login: {str(e)}")
 
 

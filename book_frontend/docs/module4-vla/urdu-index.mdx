@@ -1,0 +1,468 @@
+---
+title: "ماڈیول 4: وژن-زبان-عمل (VLA) ماڈلز"
+sidebar_position: 1
+---
+
+import { PersonalizeButton, UrduTranslationButton } from '@site/src/components/PersonalizationButtons';
+import Mermaid from '@theme/Mermaid';
+
+<PersonalizeButton />
+<UrduTranslationButton />
+
+# ماڈیول 4: وژن-زبان-عمل (VLA) ماڈلز
+
+<img src="/img/module4.png" alt="ماڈیول 4: وژن-زبان-عمل (VLA) ماڈلز" />
+
+## سیکھنے کے اہداف
+- وژن-زبان-عمل (VLA) ماڈلز کے بنیادی اصولوں اور جسمانی AI میں ان کے کردار کو سمجھنا
+- وہ VLA سسٹم نافذ کرنا جو قدرتی زبان کے حکم کو روبوٹک اعمال میں ترجمہ کریں
+- گفتگو سے متن کی پروسیسنگ اور سوچنے کے منصوبہ بندی کے لیے Whisper کو ضم کرنا
+- ایسے سوچنے والے منصوبہ بندی کے سسٹم ڈیزائن کرنا جو قدرتی زبان کو ROS 2 اعمال کی ترتیب میں ترجمہ کریں
+- روبوٹک ہتھیلی کے لیے OpenVLA اور دیگر اوپن سورس VLA فریم ورکس کو تلاش کرنا
+- VLA پر مبنی انسان-روبوٹ بات چیت میں چیلنجوں اور مواقع کا جائزہ لینا
+
+## وژن-زبان-عمل (VLA) ماڈلز کا تعارف
+
+وژن-زبان-عمل (VLA) ماڈلز روبوٹکس میں ایک نمونہ تبدیلی کی نمائندگی کرتے ہیں، جو روبوٹس کو پیچیدہ، قدرتی زبان کے حکم کو سمجھنے اور انہیں مناسب جسمانی اعمال میں ترجمہ کرنے کے قابل بناتے ہیں۔ روایتی روبوٹک سسٹم کے برعکس جن کو ہر کام کے لیے صریح پروگرامنگ کی ضرورت ہوتی ہے، VLA ماڈلز وژن-زبان ڈیٹا سیٹس پر بڑے پیمانے پر پہلے سے تربیت کا فائدہ اٹھاتے ہیں تاکہ جسمانی دنیا کی عام سمجھ کو تیار کیا جا سکے، جسے پھر روبوٹک سسٹم کو کنٹرول کرنے کے لیے ایڈاپٹ کیا جا سکے۔
+
+VLA ماڈلز تین اہم اقسام کو جوڑتے ہیں: بصری ادراک (ماحول کو سمجھنا)، زبانی سمجھ (انسانی حکم کی تشریح)، اور عمل تخلیق (جسمانی کام انجام دینا)۔ یہ انضمام روبوٹس کو قدرتی زبان کی ہدایات کی بنیاد پر پیچیدہ کام انجام دینے کی اجازت دیتا ہے، انسانی مواصلات اور روبوٹک انجام کے درمیان فاصلہ پُر کرتا ہے۔
+
+VLA ماڈلز میں تبدیلی اس بات سے آتی ہے کہ بڑے ڈیٹا سیٹس کی تصویر-متن کی جوڑیوں پر تربیت یافتہ فاؤنڈیشن ماڈلز کو پھر عمل کی ترتیب شامل کرنے کے لیے توسیع دی جاتی ہے۔ یہ پہلے سے تربیت ماڈلز کو جگہ کے رشتے، چیز کی سہولت، اور زبان اور جسمانی اعمال کے درمیان ربط کو سمجھنے کے قابل بناتی ہے۔
+
+## VLA آرکیٹیکچر اور اجزاء
+
+### ملٹی-موڈل فاؤنڈیشن ماڈلز
+VLA سسٹم عام طور پر ان ملٹی-موڈل فاؤنڈیشن ماڈلز پر تعمیر ہوتے ہیں جو بصری اور متنی دونوں ان پٹس کو ایک ساتھ پروسیس کر سکتے ہیں۔ یہ ماڈل اکثر ٹرانسفارمر آرکیٹیکچر کا استعمال کرتے ہیں جن میں مختلف اقسام کے لحاظ سے مشترکہ نمائندگیاں ہوتی ہیں، جو انہیں بصری مناظر اور زبانی تفصیل کے درمیان ربط کو سمجھنے کے قابل بناتی ہے۔
+
+### بصری پروسیسنگ پائپ لائن
+بصری پروسیسنگ کا جزو سنبھالتا ہے:
+- چیز کا پتہ لگانا اور پہچاننا
+- منظر کی سمجھ اور جگہ کے رشتے
+- گہرائی کا تخمینہ اور 3D منظر کی تعمیر نو
+- بصری سہولت کا پتہ لگانا (چیزوں کے ساتھ کون سے اعمال ممکن ہیں)
+
+### زبانی سمجھ کا ماڈیول
+زبانی جزو پروسیس کرتا ہے:
+- قدرتی زبان کی تشریح اور سیمینٹک سمجھ
+- پیچیدہ حکم سے مقصد کی پہچان
+- بصری ان پٹ کی بنیاد پر سیاق و سباق کی سمجھ
+- قابل عمل اقدامات میں کام کی تقسیم
+
+### عمل تخلیق اور منصوبہ بندی
+عمل کا جزو:
+- زبانی حکم کو روبوٹک اعمال سے ملانا
+- مقاصد کو حاصل کرنے کے لیے اعمال کی ترتیب منصوبہ بند کرنا
+- منصوبہ بند کردہ اعمال کی حفاظت اور قابلیت یقینی بنانا
+- فیڈ بیک اور خرابی کی بازیافت سنبھالنا
+
+<Mermaid chart={`graph TD;
+    A[Human Language Command] --> B{VLA Model};
+    B --> C[Visual Scene Analysis];
+    C --> D[Command Interpretation];
+    D --> E[Action Planning];
+    E --> F[Robot Execution];
+    F --> G{Success?};
+    G -->|No| H[Error Recovery];
+    H --> E;
+    G -->|Yes| I[Task Complete];
+    B -.-> J[Visual Input];
+    J --> B;
+    F -.-> K[Sensor Feedback];
+    K --> F;
+`} />
+
+## Whisper اور LLMs کے ساتھ VLA نفاذ
+
+### Whisper کے ساتھ گفتگو سے متن کی پروسیسنگ
+Whisper ایک اوپن سورس آٹومیٹک گفتگو کی پہچان (ASR) سسٹم ہے جو بولی گئی زبان کو متن میں تبدیل کرتا ہے۔ VLA ایپلی کیشنز کے لیے، Whisper ابتدائی پروسیسنگ کا مرحلہ کا کام کرتا ہے جو قدرتی زبان کے حکم کو متن کی شکل میں تبدیل کرتا ہے جسے زبانی ماڈلز کے ذریعے پروسیس کیا جا سکتا ہے۔
+
+```python
+import openai
+import rospy
+from std_msgs.msg import String
+import speech_recognition as sr
+
+class VoiceCommandProcessor:
+    def __init__(self):
+        # ROS نوڈ کو شروع کریں
+        rospy.init_node('voice_command_processor')
+
+        # پروسیس کردہ حکم کے لیے پبلشر
+        self.command_pub = rospy.Publisher('/vla/command', String, queue_size=10)
+
+        # گفتگو کا پتہ لگانے والا شروع کریں
+        self.recognizer = sr.Recognizer()
+        self.microphone = sr.Microphone()
+
+        # ماحولیاتی شور کے لیے توانائی کی حد مقرر کریں
+        with self.microphone as source:
+            self.recognizer.adjust_for_ambient_noise(source)
+
+    def listen_and_transcribe(self):
+        """گفتگو کے حکم کو سنیں اور متن میں تبدیل کریں"""
+        try:
+            with self.microphone as source:
+                rospy.loginfo("گفتگو کے حکم کے لیے سن رہے ہیں...")
+                audio = self.recognizer.listen(source, timeout=5)
+
+            # ترجمہ کے لیے Whisper کا استعمال کریں (OpenAI API کا استعمال کرتے ہوئے)
+            # عمل میں، آپ مقامی Whisper ماڈلز کا استعمال کر سکتے ہیں
+            try:
+                # OpenAI Whisper API کا استعمال کرتے ہوئے
+                transcript = self.recognizer.recognize_google(audio)
+                rospy.loginfo(f"متن میں تبدیل: {transcript}")
+                return transcript
+            except sr.UnknownValueError:
+                rospy.logerr("آڈیو کو سمجھ نہیں سکے")
+                return None
+            except sr.RequestError as e:
+                rospy.logerr(f"Whisper سے نتائج کی درخواست نہیں کر سکے; {e}")
+                return None
+
+        except sr.WaitTimeoutError:
+            rospy.loginfo("وقت ختم ہونے کے اندر کوئی گفتگو نہیں سنا گیا")
+            return None
+
+    def process_command(self, text_command):
+        """متن کے حکم کو پروسیس کریں"""
+        if text_command:
+            # مزید پروسیسنگ کے لیے حکم کو شائع کریں
+            cmd_msg = String()
+            cmd_msg.data = text_command
+            self.command_pub.publish(cmd_msg)
+            return True
+        return False
+
+def main():
+    processor = VoiceCommandProcessor()
+
+    rate = rospy.Rate(1)  # حکم کو فی سیکنڈ ایک بار پروسیس کریں
+
+    while not rospy.is_shutdown():
+        command = processor.listen_and_transcribe()
+        if command:
+            processor.process_command(command)
+        rate.sleep()
+
+if __name__ == '__main__':
+    try:
+        main()
+    except rospy.ROSInterruptException:
+        pass
+```
+
+### سوچنے کے منصوبہ بندی کے لیے LLM کا انضمام
+
+بڑے زبانی ماڈلز (LLMs) VLA سسٹم میں سوچنے کے منصوبہ بندی کی اہم سطح کا کام کرتے ہیں، جو بلند سطحی زبانی حکم کو مخصوص روبوٹک اعمال کی ترتیب میں تبدیل کرتے ہیں۔ اس میں یہ شامل ہیں:
+
+1. **کام کی تقسیم**: پیچیدہ حکم کو آسان ذیلی کاموں میں توڑنا
+2. **عمل کا نکشہ**: زبانی تصورات کو روبوٹک مخصوص اعمال میں تبدیل کرنا
+3. **سیاق و سباق کا تجزیہ**: عمل کے انتخاب کے لیے ماحولیاتی سیاق و سباق کا استعمال کرنا
+4. **منصوبہ کی توثیق**: منصوبہ بند کردہ اعمال کی حفاظت اور قابلیت یقینی بنانا
+
+```python
+import openai
+import json
+from typing import List, Dict, Any
+
+class VLACognitivePlanner:
+    def __init__(self, api_key: str):
+        openai.api_key = api_key
+        self.system_prompt = """
+        آپ ایک وژن-زبان-عمل (VLA) روبوٹک سسٹم کے لیے سوچنے کے منصوبہ بند ہیں۔
+        آپ کا کام قدرتی زبان کے حکم کو مخصوص روبوٹک اعمال کی ترتیب میں توڑنا ہے۔
+        ہر عمل ایک ROS 2 سروس کال، ٹاپک میسج، یا ایکشن گول ہونا چاہیے۔
+
+        دستیاب عمل کی اقسام:
+        - نیویگیشن: move_to_location(location_name)
+        - ہتھیلی: pick_object(object_name), place_object(object_name, location)
+        - ادراک: look_at_object(object_name), scan_environment()
+        - بات چیت: speak(text), listen_for_response()
+        - مشروط: if_condition(condition, action)
+
+        ہمیشہ اپنا منصوبہ JSON ارے کی شکل میں اعمال کے ساتھ واپس کریں:
+        [
+            {
+                "action": "action_type",
+                "parameters": {"param1": "value1", ...},
+                "description": "عمل کی مختصر تفصیل"
+            }
+        ]
+        """
+
+    def plan_actions(self, command: str, environment_context: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """
+        حکم اور ماحولیاتی سیاق و سباق کی بنیاد پر اعمال کی ترتیب منصوبہ بند کریں
+        """
+        user_prompt = f"""
+        حکم: {command}
+
+        ماحولیاتی سیاق و سباق: {json.dumps(environment_context, indent=2)}
+
+        براہ کرم اس حکم کو انجام دینے کے لیے قدم بہ قدم منصوبہ فراہم کریں۔
+        """
+
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": self.system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                temperature=0.1,
+                max_tokens=1000
+            )
+
+            # JSON جواب نکالیں
+            response_text = response.choices[0].message['content'].strip()
+
+            # جواب کو صاف کریں تاکہ JSON نکالا جا سکے
+            if "```json" in response_text:
+                response_text = response_text.split("```json")[1].split("```")[0]
+            elif "```" in response_text:
+                response_text = response_text.split("```")[1].split("```")[0]
+
+            plan = json.loads(response_text)
+            return plan
+
+        except Exception as e:
+            rospy.logerr(f"سوچنے کے منصوبہ بندی میں خرابی: {e}")
+            return []
+
+    def validate_plan(self, plan: List[Dict[str, Any]], environment_context: Dict[str, Any]) -> bool:
+        """
+        یقینی بنائیں کہ منصوبہ بند کردہ اعمال موجودہ ماحول میں قابل عمل ہیں
+        """
+        # بنیادی توثیق - یہ دیکھیں کہ ضروری چیزیں/مقامات موجود ہیں
+        for action in plan:
+            if action['action'] in ['pick_object', 'place_object']:
+                obj_name = action['parameters'].get('object_name')
+                if obj_name and obj_name not in environment_context.get('visible_objects', []):
+                    rospy.logwarn(f"چیز {obj_name} ماحول میں قابل دید نہیں ہے")
+                    return False
+            elif action['action'] == 'move_to_location':
+                location = action['parameters'].get('location_name')
+                if location and location not in environment_context.get('navigable_locations', []):
+                    rospy.logwarn(f"مقام {location} قابل نیویگیشن نہیں ہے")
+                    return False
+        return True
+
+# مثال کا استعمال
+def example_usage():
+    planner = VLACognitivePlanner("your-api-key")
+
+    command = "براہ کرم میز پر موجود لال کپ کو لائیں اور اسے کھانے کی میز پر رکھ دیں"
+
+    environment_context = {
+        "visible_objects": ["red cup", "blue mug", "kitchen counter", "dining table"],
+        "navigable_locations": ["kitchen", "dining room", "living room"],
+        "robot_position": "living room"
+    }
+
+    plan = planner.plan_actions(command, environment_context)
+
+    if planner.validate_plan(plan, environment_context):
+        print("توثیق شدہ منصوبہ:")
+        for i, action in enumerate(plan):
+            print(f"{i+1}. {action['description']}")
+    else:
+        print("منصوبہ کی توثیق ناکام ہو گئی")
+```
+
+### ROS 2 عمل انجام
+
+آخری جزو منصوبہ بند کردہ اعمال کو ROS 2 انٹرفیسز کا استعمال کرتے ہوئے انجام دیتا ہے:
+
+```python
+import rclpy
+from rclpy.action import ActionClient
+from rclpy.node import Node
+from geometry_msgs.msg import PoseStamped
+from std_msgs.msg import String
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+from actionlib_msgs.msg import GoalStatus
+
+class VLAActionExecutor(Node):
+    def __init__(self):
+        super().__init__('vla_action_executor')
+
+        # کمانڈ منصوبوں کو سبسکرائب کریں
+        self.plan_sub = self.create_subscription(
+            String, '/vla/plan', self.plan_callback, 10)
+
+        # نیویگیشن کے لیے ایکشن کلائنٹ
+        self.nav_client = ActionClient(self, MoveBaseAction, 'move_base')
+
+        # ہتھیلی کمانڈز کے لیے پبلشرز
+        self.manip_pub = self.create_publisher(String, '/manipulation/command', 10)
+
+        self.current_plan = None
+        self.plan_index = 0
+
+    def plan_callback(self, msg):
+        """منصوبہ وصول کریں اور انجام شروع کریں"""
+        try:
+            plan = json.loads(msg.data)
+            self.current_plan = plan
+            self.plan_index = 0
+            self.execute_next_action()
+        except json.JSONDecodeError:
+            self.get_logger().error("غلط منصوبہ فارمیٹ")
+
+    def execute_next_action(self):
+        """منصوبہ میں اگلا عمل انجام دیں"""
+        if not self.current_plan or self.plan_index >= len(self.current_plan):
+            self.get_logger().info("منصوبہ انجام مکمل")
+            return
+
+        action = self.current_plan[self.plan_index]
+
+        if action['action'] == 'move_to_location':
+            self.execute_navigation(action['parameters'])
+        elif action['action'] == 'pick_object':
+            self.execute_manipulation(action['parameters'], 'pick')
+        elif action['action'] == 'place_object':
+            self.execute_manipulation(action['parameters'], 'place')
+        # مزید عمل کی اقسام کو ضرورت کے مطابق شامل کریں
+
+    def execute_navigation(self, params):
+        """نیویگیشن عمل انجام دیں"""
+        goal = MoveBaseGoal()
+
+        # مقام کے نام کو کوآرڈینیٹس میں تبدیل کریں (سادہ)
+        location_coords = self.get_coordinates_for_location(params['location_name'])
+
+        goal.target_pose.header.frame_id = "map"
+        goal.target_pose.header.stamp = self.get_clock().now().to_msg()
+        goal.target_pose.pose = location_coords
+
+        # ایکشن سرور کے لیے انتظار کریں
+        self.nav_client.wait_for_server()
+
+        # گول بھیجیں
+        future = self.nav_client.send_goal_async(goal)
+        future.add_done_callback(self.navigation_done_callback)
+
+    def navigation_done_callback(self, future):
+        """نیویگیشن گول کے مکمل ہونے کو سنبھالیں"""
+        goal_handle = future.result()
+        if goal_handle.status == GoalStatus.SUCCEEDED:
+            self.get_logger().info("نیویگیشن کامیاب")
+            self.plan_index += 1
+            self.execute_next_action()
+        else:
+            self.get_logger().error("نیویگیشن ناکام")
+            # ناکامی کو مناسب طریقے سے سنبھالیں
+
+    def execute_manipulation(self, params, action_type):
+        """ہتھیلی عمل انجام دیں"""
+        cmd_msg = String()
+        cmd_msg.data = f"{action_type} {params['object_name']}"
+        self.manip_pub.publish(cmd_msg)
+
+        # ایک حقیقی سسٹم میں، آپ مکمل ہونے کا انتظار کریں گے
+        # فی الحال، ہم صرف ایک تاخیر کے بعد اگلے عمل پر جارہے ہیں
+        timer = self.create_timer(2.0, self.manipulation_completed)
+
+    def manipulation_completed(self):
+        """ہتھیلی عمل کے مکمل ہونے کو سنبھالیں"""
+        self.plan_index += 1
+        self.execute_next_action()
+
+    def get_coordinates_for_location(self, location_name):
+        """مقام کے نام کو کوآرڈینیٹس میں تبدیل کریں (سادہ)"""
+        # یہ عام طور پر ایک نقشہ یا سیمینٹک مقام کاری سسٹم سے آئے گا
+        locations = {
+            "kitchen": [1.0, 2.0, 0.0],
+            "dining room": [3.0, 1.0, 0.0],
+            "living room": [0.0, 0.0, 0.0]
+        }
+        coords = locations.get(location_name, [0.0, 0.0, 0.0])
+
+        pose = PoseStamped()
+        pose.position.x = coords[0]
+        pose.position.y = coords[1]
+        pose.position.z = coords[2]
+        return pose
+
+def main(args=None):
+    rclpy.init(args=args)
+    executor = VLAActionExecutor()
+
+    try:
+        rclpy.spin(executor)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        executor.destroy_node()
+        rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+## OpenVLA اور اوپن سورس VLA فریم ورکس
+
+OpenVLA (Open Vision-Language-Action) اوپن سورس VLA تحقیق میں ایک اہم ترقی کی نمائندگی کرتا ہے، جو ویژن ان پٹ اور زبانی حکم کی بنیاد پر روبوٹک بازوؤں کو کنٹرول کرنے کے قابل پہلے سے تربیت یافتہ ماڈلز فراہم کرتا ہے۔ OpenVLA ماڈلز کو متنوع روبوٹک ڈیٹا سیٹس پر تربیت دی جاتی ہے اور وہ بغیر اضافی تربیت کے نئے کاموں اور ماحول میں جمود سے باہر نکل سکتے ہیں۔
+
+OpenVLA کی کلیدی خصوصیات:
+- سرے سے تربیت کے قابل وژن-زبان-عمل ماڈلز
+- نئے کاموں کے لیے صفر شاٹ جمود
+- مختلف روبوٹک پلیٹ فارمز کی حمایت
+- بلا سلسل ڈپلائمنٹ کے لیے ROS 2 کے ساتھ انضمام
+
+## VLA سسٹم میں چیلنج
+
+### زبان کو ادراک سے جوڑنا
+VLA سسٹم میں ایک بنیادی چیلنج درست طریقے سے زبانی حکم کو موجودہ بصری منظر سے جوڑنا ہے۔ اس کے لیے جگہ کے رشتے، چیز کی سہولت، اور سیاق و سباق کی معلومات کو سمجھنا ضروری ہے۔
+
+### حفاظت اور مضبوطی
+VLA سسٹم کو یہ یقینی بنانا چاہیے کہ منصوبہ بند کردہ اعمال موجودہ ماحول کے لیے محفوظ اور مناسب ہیں۔ اس میں تصادم سے بچنا، جسمانی پابندیوں کا احترام کرنا، اور مبہم حکم کو محفوظ طریقے سے سنبھالنا شامل ہے۔
+
+### حقیقی وقت کی کارکردگی
+VLA سسٹم کو بصری ان پٹ، زبانی حکم کو پروسیس کرنا چاہیے اور عملی روبوٹک ایپلی کیشنز کے لیے حقیقی وقت میں اعمال تیار کرنا چاہیے۔ اس کے لیے کارآمد ماڈل آرکیٹیکچر اور بہترین تکنیکوں کی ضرورت ہوتی ہے۔
+
+## ROS 2 ایکو سسٹم کے ساتھ انضمام
+
+VLA سسٹم ROS 2 کے ساتھ انضمام کرتے ہیں:
+
+- **ایکشن سرورز**: نیویگیشن اور ہتھیلی جیسے طویل چلنے والے کاموں کے لیے
+- **ٹاپکس**: جاری ڈیٹا سٹریمز جیسے سینسر ڈیٹا اور روبوٹ کی حالت کے لیے
+- **سروسز**: گوشوارہ کام اور کنفیگریشن میں تبدیلیوں کے لیے
+- **پیرامیٹرز**: VLA ماڈلز کی رن ٹائم کنفیگریشن کے لیے
+
+## خود کوشش کریں
+
+1. **VLA ماحول سیٹ اپ کریں**:
+   ```bash
+   # ضروری انحصاریات انسٹال کریں
+   pip install openai openai-whisper torch torchvision torchaudio
+   pip install ros2-interfaces
+   ```
+
+2. **گفتگو کے حکم کے پروسیسر کو نافذ کریں**:
+   - ایک ROS 2 نوڈ تخلیق کریں جو مائیکروفون کا استعمال کرتے ہوئے آڈیو کو حاصل کرتا ہے
+   - گفتگو سے متن کی تبدیلی کے لیے Whisper کا استعمال کریں
+   - ROS ٹاپک پر ترجمہ شدہ حکم شائع کریں
+
+3. **سوچنے والے منصوبہ بند کو تخلیق کریں**:
+   - LLM پر مبنی منصوبہ بندی کا سسٹم نافذ کریں
+   - "آگے بڑھیں" یا "چیز اٹھائیں" جیسے سادہ حکم کے ساتھ جانچ کریں
+   - ماحولیاتی سیاق و سباق کی آگہی شامل کریں
+
+4. **ایک تقلیدی روبوٹ سے منسلک کریں**:
+   - Gazebo یا Isaac Sim کا استعمال کریں موبائل مینیپولیٹر کے ساتھ
+   - عمل انجام کا نوڈ نافذ کریں
+   - مکمل VLA پائپ لائن کی جانچ کریں
+
+5. **مختلف LLMs کے ساتھ تجربہ کریں**:
+   - مختلف زبانی ماڈلز کی کوشش کریں (GPT، Claude، اوپن سورس متبادل)
+   - منصوبہ بندی کی معیار اور جواب کے وقت کا موازنہ کریں
+   - تیار کردہ منصوبوں کی حفاظت اور مضبوطی کا جائزہ لیں
+
+6. **ہتھیلی کے کاموں تک توسیع دیں**:
+   - روبوٹک بازو کے کنٹرول کے لیے MoveIt! کے ساتھ انضمام
+   - چیز کا پتہ لگانا اور پوز کا تخمینہ نافذ کریں
+   - "لال بلاک اٹھائیں اور اسے نیلے باکس پر رکھیں" جیسے پیچیدہ کاموں کی جانچ کریں
+
+ان مشقوں کے ذریعے، آپ وژن-زبان-عمل ماڈلز اور روبوٹک سسٹم کے ساتھ ان کے انضمام کے ساتھ ہاتھ سے کام کا تجربہ حاصل کریں گے، جو آپ کو جدید AI پاورڈ روبوٹس تیار کرنے کے لیے تیار کرے گا جو قدرتی زبان کے پیچیدہ حکم کو سمجھنے اور انجام دینے کے قابل ہوں گے۔
