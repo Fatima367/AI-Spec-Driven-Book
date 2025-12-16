@@ -25,12 +25,15 @@ export function PersonalizeButton({ chapterId }: { chapterId?: string } = {}) {
         // Join all parts after 'docs' to get the full path (e.g., 'part1/chapter1.1')
         return pathParts.slice(docsIndex + 1).join('/');
       }
-      // If 'docs' is not found, try to get the last part of the path
+      // If 'docs' is not found, try to construct a reasonable path
+      // For example, if the path is like /intro or /part1/chapter1.1, return that
       if (pathParts.length > 0) {
-        return pathParts[pathParts.length - 1];
+        // Remove any leading/trailing 'docs' references and return the remaining path
+        const filteredParts = pathParts.filter(part => part !== 'docs');
+        return filteredParts.join('/') || 'intro'; // Default to 'intro' for root path
       }
     }
-    return 'unknown';
+    return 'intro'; // Default fallback to a common chapter name
   })();
 
   // Ensure context is available before using it
@@ -41,7 +44,9 @@ export function PersonalizeButton({ chapterId }: { chapterId?: string } = {}) {
   } : null;
 
   const handleClick = async () => {
-    if (!user) {
+    // Check if user is authenticated by checking both user object and token
+    const token = typeof window !== 'undefined' ? localStorage.getItem('session_token') : null;
+    if (!user || !token) {
       // Check if we're in the browser environment before using alert
       if (typeof window !== 'undefined') {
         alert('Please log in to use personalization features');
@@ -50,7 +55,7 @@ export function PersonalizeButton({ chapterId }: { chapterId?: string } = {}) {
     }
 
     // Check if user profile is incomplete (only if user exists)
-    if (user && (!user.softwareExperience || !user.hardwareExperience)) {
+    if (user && token && (!user.softwareExperience || !user.hardwareExperience)) {
       // Check if we're in the browser environment before using confirm
       let shouldContinue = true;
       if (typeof window !== 'undefined') {
@@ -74,13 +79,17 @@ export function PersonalizeButton({ chapterId }: { chapterId?: string } = {}) {
     setError(null);
 
     try {
-      // Extract just the final part of the path for the API call (e.g., from 'part1/chapter1.1' get 'chapter1.1')
-      const apiChapterId = currentChapterId.split('/').pop() || currentChapterId;
+      // Use the full currentChapterId as the API chapter ID (e.g., 'part1/chapter1.1')
+      // This allows the backend to find the correct file path like 'book_frontend/docs/part1/chapter1.1.mdx'
+      const apiChapterId = currentChapterId;
+      // Get the session token from localStorage
+      const token = typeof window !== 'undefined' ? localStorage.getItem('session_token') : null;
+
       const response = await fetch(`${API_CONFIG.BASE_URL}/api/v1/personalize/${apiChapterId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user?.token || ''}` // Safely access token property
+          'Authorization': `Bearer ${token || ''}`
         },
         body: JSON.stringify({
           user_preferences: userPreferences
@@ -154,12 +163,15 @@ export function UrduTranslationButton({ chapterId }: { chapterId?: string } = {}
         // Join all parts after 'docs' to get the full path (e.g., 'part1/chapter1.1')
         return pathParts.slice(docsIndex + 1).join('/');
       }
-      // If 'docs' is not found, try to get the last part of the path
+      // If 'docs' is not found, try to construct a reasonable path
+      // For example, if the path is like /intro or /part1/chapter1.1, return that
       if (pathParts.length > 0) {
-        return pathParts[pathParts.length - 1];
+        // Remove any leading/trailing 'docs' references and return the remaining path
+        const filteredParts = pathParts.filter(part => part !== 'docs');
+        return filteredParts.join('/') || 'intro'; // Default to 'intro' for root path
       }
     }
-    return 'unknown';
+    return 'intro'; // Default fallback to a common chapter name
   })();
 
   // Check if current page is Urdu - using currentChapterId and window location to determine this

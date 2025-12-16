@@ -5,13 +5,20 @@ import os
 import time
 from typing import Dict, Any, Optional
 from datetime import datetime, timezone, timedelta
-from ..utils.content_utils import read_content_file
+from ..utils.content_utils import read_content_file, get_content_directory
 from ..utils.logging_utils import log_personalization_request, log_error, log_performance_metrics
 import hashlib
 
+
+def get_personalization_content_directory():
+    """
+    Get the content directory for personalization service
+    """
+    return get_content_directory()
+
 class PersonalizationService:
     def __init__(self):
-        self.content_dir = "book_frontend/docs"
+        self.content_dir = get_personalization_content_directory()
         # Performance tracking
         self.response_times = []
         # Caching
