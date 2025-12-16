@@ -21,7 +21,7 @@ const Home = () => {
           {/* Background Spheres */}
           <BackgroundSpheres />
 
-          {/* Hero Section */}
+          {/* Hero Section - Adjusted to account for navbar height */}
           <div
             style={{
               position: "relative",
@@ -30,8 +30,9 @@ const Home = () => {
               justifyContent: "center",
               backgroundColor: "rgba(8, 8, 18, 0.35)",
               alignItems: "center",
-              minHeight: "100vh",
+              minHeight: "calc(100vh - 60px)", // Account for navbar height
               padding: "20px",
+              paddingTop: "80px" // Extra padding to prevent content overlap with navbar
             }}
           >
             <GlassmorphismCard />

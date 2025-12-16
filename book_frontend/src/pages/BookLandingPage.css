@@ -1,3 +1,8 @@
 .book-landing-page .navbar {
-  display: none !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important; /* Higher z-index to ensure it stays on top of all content */
+  background-color: rgba(2, 5, 16, 0.9) !important; /* Semi-transparent dark background matching theme */
+  backdrop-filter: blur(10px) !important; /* Glass effect */
+  border-bottom: 1px solid rgba(0, 140, 160, 0.3) !important; /* Softer border */
 }
