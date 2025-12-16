@@ -162,6 +162,13 @@ export function UrduTranslationButton({ chapterId }: { chapterId?: string } = {}
     return 'unknown';
   })();
 
+  // Check if current page is Urdu - using currentChapterId and window location to determine this
+  const isUrduPage = currentChapterId.startsWith('urdu-') ||
+                     currentChapterId.includes('/urdu-') ||
+                     currentChapterId.includes('urdu-index') ||
+                     currentChapterId.includes('urdu-chapter') ||
+                     (typeof window !== 'undefined' && window.location.pathname.includes('/urdu-'));
+
   const handleClick = () => {
     if (!user) {
       // Check if we're in the browser environment before using confirm
@@ -184,103 +191,81 @@ export function UrduTranslationButton({ chapterId }: { chapterId?: string } = {}
     setError(null);
 
     try {
-      // Check if the Urdu version exists by making a quick check
-      // For now, we'll just navigate assuming the file exists
-      // In a real implementation, we would check if the file exists first
-
-      // Check if the current location is already the Urdu version
       // Only access window if we're in browser environment
       if (typeof window !== 'undefined') {
         const currentPath = window.location.pathname;
-        if (currentPath.includes('/docs/urdu-')) {
-          // If already on Urdu version, go back to original
-          // For root level: urdu-filename -> filename
-          // For directory index: directory/urdu-index -> directory/ (redirects to index)
-          // For nested: directory/urdu-filename -> directory/filename
-          let originalPath;
-          if (currentChapterId.includes('/')) {
-            // Nested path: directory/urdu-filename -> directory/filename
-            const [directory, urduFilename] = currentChapterId.split('/');
-            if (urduFilename === 'urdu-index') {
-              // This is a directory index file: directory/urdu-index -> directory/
-              originalPath = directory;
-            } else {
-              // Regular nested file: directory/urdu-filename -> directory/filename
-              const originalFilename = urduFilename.replace('urdu-', '');
-              originalPath = `${directory}/${originalFilename}`;
-            }
+
+        // Determine if we're currently on a Urdu page based on the current path
+        const isCurrentlyUrduPage = currentPath.includes('/urdu-');
+
+        if (isCurrentlyUrduPage) {
+          // If on Urdu page, navigate to English version
+          // Handle different patterns:
+          // /docs/urdu-intro -> /docs/intro
+          // /docs/part1/urdu-chapter1.1 -> /docs/part1/chapter1.1
+          // /docs/module1-ros2/urdu-index -> /docs/module1-ros2/ (not /docs/module1-ros2/index)
+          let englishPath = currentPath;
+
+          // Handle the urdu-index case: /docs/module/urdu-index -> /docs/module/ (not /docs/module/index)
+          // In Docusaurus, index.mdx files are served at the directory route, not /index
+          if (currentPath.includes('/urdu-index')) {
+            englishPath = currentPath.replace('/urdu-index', '/');
           } else {
-            // Root level: urdu-filename -> filename
-            originalPath = currentChapterId.replace('urdu-', '');
+            // Handle general urdu- prefix: /docs/urdu-... -> /docs/...
+            // Need to be more specific to avoid replacing /docs/urdu- with /docs/-
+            englishPath = currentPath.replace('/docs/urdu-', '/docs/');
+            // Handle cases like /docs/part1/urdu-chapter1.1 -> /docs/part1/chapter1.1
+            englishPath = englishPath.replace('/urdu-', '/');
           }
 
-          // Navigate back to the original path by reconstructing the URL
-          // Find the position of /docs/ and replace everything after it
-          const docsIndex = currentPath.indexOf('/docs/');
-          if (docsIndex !== -1) {
-            let basePath = currentPath.substring(0, docsIndex + 6); // '/docs/' length is 6
-            let newPath = basePath + originalPath;
-
-            // Add trailing slash for directory index files if the original had one
-            if (originalPath === 'module1-ros2' || originalPath === 'module2-digital-twin' ||
-                originalPath === 'module3-ai-robot-brain' || originalPath === 'module4-vla' ||
-                originalPath === 'capstone') {
-              if (currentPath.endsWith('/')) {
-                newPath += '/';
-              }
-            }
-
-            window.location.href = newPath;
-          }
+          window.location.href = englishPath;
         } else {
-          // Navigate to Urdu version
-          // For root level files: filename -> urdu-filename (intro -> urdu-intro, hardware-lab -> urdu-hardware-lab)
-          // For directory index files: directory -> directory/urdu-index (module1-ros2 -> module1-ros2/urdu-index)
-          // For nested files: directory/filename -> directory/urdu-filename (part1/chapter1.1 -> part1/urdu-chapter1.1)
-          let urduPath;
-          if (currentChapterId.includes('/')) {
-            // Nested path: directory/filename -> directory/urdu-filename
-            const [directory, filename] = currentChapterId.split('/');
-            urduPath = `${directory}/urdu-${filename}`;
+          // If on English page, navigate to Urdu version
+          // Handle different patterns:
+          // /docs/intro -> /docs/urdu-intro
+          // /docs/part1/chapter1.1 -> /docs/part1/urdu-chapter1.1
+          // /docs/module1-ros2/index -> /docs/module1-ros2/urdu-index
+          let urduPath = currentPath;
+
+          // If it's a directory with index (like /docs/module1-ros2/index), we want to go to urdu-index
+          if (currentPath.endsWith('/index')) {
+            urduPath = currentPath.replace('/index', '/urdu-index');
+          } else if (currentPath.endsWith('/')) {
+            // If it's a directory ending with /, we want to go to urdu-index
+            urduPath = currentPath.replace(/\/$/, '/urdu-index');
           } else {
-            // Check if this looks like a directory name (contains hyphens and represents a module/capstone)
-            // If it's a directory with an index file, go to directory/urdu-index
-            // Otherwise, it's a root level file, go to urdu-filename
-            if (currentChapterId === 'module1-ros2' || currentChapterId === 'module2-digital-twin' ||
-                currentChapterId === 'module3-ai-robot-brain' || currentChapterId === 'module4-vla' ||
-                currentChapterId === 'capstone') {
-              // These are directory names that have index files
-              urduPath = `${currentChapterId}/urdu-index`;
+            // For regular files, add 'urdu-' prefix to the last part after the last '/'
+            const lastSlashIndex = currentPath.lastIndexOf('/');
+            if (lastSlashIndex !== -1) {
+              const basePath = currentPath.substring(0, lastSlashIndex + 1);
+              const fileName = currentPath.substring(lastSlashIndex + 1);
+              if (fileName && fileName !== 'index') {
+                urduPath = basePath + 'urdu-' + fileName;
+              } else if (fileName === 'index') {
+                // For /docs/index, should become /docs/urdu-index
+                urduPath = currentPath.replace('/index', '/urdu-index');
+              }
             } else {
-              // Root level: filename -> urdu-filename
-              urduPath = `urdu-${currentChapterId}`;
+              // If no slash found after /docs/, it's a root level file like /docs/intro
+              urduPath = currentPath.replace('/docs/', '/docs/urdu-');
             }
           }
 
-          // Construct the Urdu URL by reconstructing the full path
-          // Find the position of /docs/ and replace everything after it
-          const docsIndex = currentPath.indexOf('/docs/');
-          if (docsIndex !== -1) {
-            let basePath = currentPath.substring(0, docsIndex + 6); // '/docs/' length is 6
-            let urduUrl = basePath + urduPath;
-
-            // In a real implementation, we would make a HEAD request to check if the file exists
-            // For now, we'll just navigate and handle 404s on the server side
-            fetch(urduUrl, { method: 'HEAD' })
-              .then(response => {
-                if (response.status === 404) {
-                  alert('Urdu translation is not available for this chapter yet. Please check back later.');
-                } else {
-                  // Navigate to Urdu version
-                  window.location.href = urduUrl;
-                }
-              })
-              .catch(() => {
-                // If the HEAD request fails, assume the file doesn't exist or is unreachable
-                alert('Unable to verify Urdu translation availability. Redirecting anyway...');
-                window.location.href = urduUrl;
-              });
-          }
+          // Check if the Urdu version exists before navigating
+          fetch(urduPath, { method: 'HEAD' })
+            .then(response => {
+              if (response.status === 404) {
+                alert('Urdu translation is not available for this chapter yet. Please check back later.');
+              } else {
+                // Navigate to Urdu version
+                window.location.href = urduPath;
+              }
+            })
+            .catch(() => {
+              // If the HEAD request fails, assume the file doesn't exist or is unreachable
+              alert('Unable to verify Urdu translation availability. Redirecting anyway...');
+              window.location.href = urduPath;
+            });
         }
       }
     } catch (err: any) {
@@ -300,7 +285,7 @@ export function UrduTranslationButton({ chapterId }: { chapterId?: string } = {}
       onClick={handleClick}
       disabled={loading}
     >
-      {loading ? 'Loading...' : 'اردو میں ترجمہ کریں'}
+      {loading ? 'Loading...' : (isUrduPage ? 'Translate to English' : 'اردو میں ترجمہ کریں')}
     </button>
   );
 }

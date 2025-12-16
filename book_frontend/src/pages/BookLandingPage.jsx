@@ -64,15 +64,16 @@ const BookLandingPage = () => {
         {/* Background Spheres */}
         <BackgroundSpheres />
 
-        {/* Hero Section */}
+        {/* Hero Section - Adjusted to account for navbar height */}
         <div style={{
           position: 'relative',
           zIndex: 2,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          minHeight: '100vh',
-          padding: '20px'
+          minHeight: 'calc(100vh - 60px)', // Account for navbar height
+          padding: '20px',
+          paddingTop: '80px' // Extra padding to prevent content overlap with navbar
         }}>
           <GlassmorphismCard />
         </div>
