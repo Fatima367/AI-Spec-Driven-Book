@@ -7,32 +7,52 @@ import shutil
 from typing import Optional
 import re
 
+
+def get_content_directory():
+    """
+    Get the absolute path to the content directory (book_frontend/docs)
+    """
+    # Get the project root directory (three levels up from this file: backend/src/utils)
+    current_file_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_file_dir)))
+    content_dir = os.path.join(project_root, "book_frontend", "docs")
+    return content_dir
+
 async def read_content_file(chapter_id: str) -> str:
     """
     Read content from an MDX file based on chapter ID
+    Handles multiple content structures:
+    - Direct files: intro.mdx, hardware-lab.mdx
+    - Directory with index: module1-ros2/index.mdx, capstone/index.mdx
+    - Nested files: part1/chapter1.1.mdx
     """
-    content_dir = "book_frontend/docs"
-    file_path = os.path.join(content_dir, f"{chapter_id}.mdx")
+    content_dir = get_content_directory()
 
-    if not os.path.exists(file_path):
-        # Try other common file extensions
-        for ext in ['.mdx', '.md']:
-            file_path = os.path.join(content_dir, f"{chapter_id}{ext}")
-            if os.path.exists(file_path):
-                break
-        else:
-            raise FileNotFoundError(f"Content file not found for chapter: {chapter_id}")
+    # List of possible file paths to check in order
+    possible_paths = [
+        # Nested path (e.g., part1/chapter1.1 -> part1/chapter1.1.mdx)
+        os.path.join(content_dir, f"{chapter_id}.mdx"),
+        os.path.join(content_dir, f"{chapter_id}.md"),
+        # Directory with index file (e.g., module1-ros2 -> module1-ros2/index.mdx)
+        os.path.join(content_dir, chapter_id, "index.mdx"),
+        os.path.join(content_dir, chapter_id, "index.md"),
+    ]
 
-    with open(file_path, 'r', encoding='utf-8') as file:
-        content = file.read()
+    # Try each possible path
+    for file_path in possible_paths:
+        if os.path.exists(file_path):
+            with open(file_path, 'r', encoding='utf-8') as file:
+                content = file.read()
+            return content
 
-    return content
+    # If no file found, raise error with helpful message
+    raise FileNotFoundError(f"Content file not found for chapter: {chapter_id}. Tried paths: {possible_paths}")
 
 async def write_content_file(file_name: str, content: str) -> bool:
     """
     Write content to an MDX file
     """
-    content_dir = "book_frontend/docs"
+    content_dir = get_content_directory()
     file_path = os.path.join(content_dir, file_name)
 
     try:
@@ -53,7 +73,7 @@ async def sync_urdu_content(english_file_path: str, urdu_content: str = None) ->
     If urdu_content is provided, update the Urdu file
     Otherwise, create a new Urdu file based on the English content
     """
-    content_dir = "book_frontend/docs"
+    content_dir = get_content_directory()
 
     # Convert English file path to Urdu file path
     urdu_file_path = english_file_path.replace(content_dir, os.path.join(content_dir, "urdu"), 1)
@@ -105,7 +125,7 @@ async def get_urdu_file_path(english_file_path: str) -> str:
     """
     Get the corresponding Urdu file path for an English file
     """
-    content_dir = "book_frontend/docs"
+    content_dir = get_content_directory()
 
     if english_file_path.startswith(content_dir):
         relative_path = os.path.relpath(english_file_path, content_dir)
@@ -132,7 +152,7 @@ async def get_all_content_files() -> list:
     """
     Get all content files in the docs directory
     """
-    content_dir = "book_frontend/docs"
+    content_dir = get_content_directory()
     content_files = []
 
     for root, dirs, files in os.walk(content_dir):
