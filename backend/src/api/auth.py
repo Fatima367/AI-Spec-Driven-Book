@@ -37,13 +37,11 @@ async def signup(request: Request):
     try:
         # Parse JSON body manually to get raw data
         body = await request.json()
-        print(f"Raw signup request data: {body}")  # Debug logging
 
         # Create the user data manually to bypass potential Pydantic issues
         from ..models import UserRegistrationRequest
         user_data = UserRegistrationRequest(**body)
 
-        print(f"Parsed user data: {user_data}")  # Debug logging
 
         # Validate email format
         if "@" not in user_data.email or "." not in user_data.email:
@@ -89,19 +87,19 @@ async def signup(request: Request):
 
         # Check if values are not empty strings before validation
         if user_data.softwareExperience is not None and user_data.softwareExperience != "" and user_data.softwareExperience not in valid_software_exp:
-            print(f"Invalid software experience: {user_data.softwareExperience}")  # Debug logging
+            print(f"Invalid software experience.")  # Debug logging
             raise HTTPException(status_code=400, detail="Invalid software experience value")
 
         if user_data.hardwareExperience is not None and user_data.hardwareExperience != "" and user_data.hardwareExperience not in valid_hardware_exp:
-            print(f"Invalid hardware experience: {user_data.hardwareExperience}")  # Debug logging
+            print(f"Invalid hardware experience.")  # Debug logging
             raise HTTPException(status_code=400, detail="Invalid hardware experience value")
 
         if user_data.technicalBackground is not None and user_data.technicalBackground != "" and user_data.technicalBackground not in valid_tech_background:
-            print(f"Invalid technical background: {user_data.technicalBackground}")  # Debug logging
+            print(f"Invalid technical background.")  # Debug logging
             raise HTTPException(status_code=400, detail="Invalid technical background value")
 
         if user_data.primaryProgrammingLanguage is not None and user_data.primaryProgrammingLanguage != "" and user_data.primaryProgrammingLanguage not in valid_programming_lang:
-            print(f"Invalid programming language: {user_data.primaryProgrammingLanguage}")  # Debug logging
+            print(f"Invalid programming language.")  # Debug logging
             raise HTTPException(status_code=400, detail="Invalid programming language value")
 
         # Create the user
@@ -125,10 +123,10 @@ async def signup(request: Request):
         if "Email already registered" in str(e):
             raise HTTPException(status_code=409, detail="Email already registered")
         else:
-            print(f"ValueError: {str(e)}")  # Debug logging
+            print(f"ValueError.")  # Debug logging
             raise HTTPException(status_code=400, detail=f"Validation error: {str(e)}")
     except Exception as e:
-        print(f"Signup exception: {str(e)}")  # Debug logging
+        print(f"Signup exception.")  # Debug logging
         raise HTTPException(status_code=500, detail=f"An error occurred during registration: {str(e)}")
 
 
@@ -138,7 +136,6 @@ async def login(request: Request):
     try:
         # Parse JSON body manually to get raw data
         body = await request.json()
-        print(f"Raw login request data: {body}")  # Debug logging
 
         # Create the login data manually to bypass potential Pydantic issues
         from ..models import LoginRequest
@@ -169,7 +166,7 @@ async def login(request: Request):
             session=session_response
         )
     except Exception as e:
-        print(f"Login exception: {str(e)}")  # Debug logging
+        print(f"Login exception.")  # Debug logging
         raise HTTPException(status_code=500, detail=f"An error occurred during login: {str(e)}")
 
 

@@ -81,12 +81,17 @@ To set up and run the project locally, follow these steps:
 
 The textbook includes advanced personalization and Urdu translation capabilities that enhance the learning experience for users with diverse backgrounds and language preferences:
 
-### Personalization
+### Personalization (AI-Powered with Gemini 2.0 Flash)
 - **User Profile Integration**: Content is personalized based on user's software/hardware experience level, technical background, and learning preferences
-- **Adaptive Content**: Users can click the "Personalize for Me" button on any chapter page to receive content adapted to their profile
-- **Intelligent Adaptation**: The system adjusts complexity, explanations, and focus areas based on user preferences
+- **Adaptive Content**: Users can click the "Personalize for Me" button on any chapter page to receive AI-adapted content
+- **Intelligent Adaptation**:
+  - **Beginners**: Content is simplified with step-by-step explanations, analogies, and beginner-friendly language
+  - **Advanced Users**: Content is enhanced with technical depth, best practices, research references, and optimization techniques
+  - **Preference-Based**: Adapts based on learning mode (visual, hands-on, theoretical) and focus area (hardware, software, theory)
+- **Syllabus Compliance**: AI-powered validator ensures all personalized content maintains core ROS 2, Gazebo, Isaac, and VLA concepts
 - **Authentication Required**: Personalization features require user authentication for profile access
 - **Session Management**: Proper session handling ensures personalization remains active during user sessions
+- **Smart Caching**: Personalized content is cached for 5 minutes to improve performance
 
 ### Urdu Translation
 - **Bilingual Access**: Users can access Urdu translations via the "اردو میں ترجمہ کریں" button on chapter pages
@@ -96,8 +101,13 @@ The textbook includes advanced personalization and Urdu translation capabilities
 - **Cultural Appropriateness**: Translations maintain technical accuracy while being culturally appropriate for Urdu-speaking audiences
 
 ### Technical Implementation
+- **AI-Powered Personalization**: Uses Google Gemini 2.0 Flash for intelligent content adaptation
+- **Syllabus Compliance Validator**: Ensures all personalized content maintains core course concepts (ROS 2, Gazebo, Isaac, VLA)
 - **Backend API**: Personalization endpoints at `/api/v1/personalize/{chapter_id}` handle content adaptation
 - **Authentication Middleware**: JWT-based authentication ensures secure access to personalization features
 - **Content Synchronization**: Automated tools keep Urdu translations synchronized with source content
 - **Error Handling**: Comprehensive error handling for session expiration and authentication failures
-- **Performance Optimization**: Caching and efficient algorithms ensure fast response times for personalized content
+- **Performance Optimization**:
+  - Intelligent caching (5-minute TTL) for personalized content
+  - Performance monitoring to ensure <500ms response times for 95% of requests
+  - Efficient Gemini API usage with fallback to original content on errors

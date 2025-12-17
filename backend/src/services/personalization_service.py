@@ -1,13 +1,15 @@
 """
 Personalization Service for adapting content based on user profile
+Integrates with Gemini AI for intelligent content adaptation
 """
 import os
 import time
 from typing import Dict, Any, Optional
 from datetime import datetime, timezone, timedelta
 from ..utils.content_utils import read_content_file, get_content_directory
-from ..utils.logging_utils import log_personalization_request, log_error, log_performance_metrics
+from ..utils.logging_utils import log_personalization_request, log_error, log_performance_metrics, log_info
 import hashlib
+from .gemini_personalization_service import gemini_personalization_service
 
 
 def get_personalization_content_directory():
@@ -203,32 +205,36 @@ class PersonalizationService:
 
     def _simplify_content(self, content: str) -> str:
         """
-        Simplify content for beginners
+        Simplify content for beginners using Gemini AI
         """
-        # This is a placeholder implementation
-        # In a real system, this would use more sophisticated text processing
-        # to simplify complex concepts and add explanations
-        return content
+        log_info("Simplifying content for beginner using Gemini AI")
+        return gemini_personalization_service.simplify_for_beginners(content)
 
     def _enhance_content(self, content: str) -> str:
         """
-        Enhance content for advanced users
+        Enhance content for advanced users using Gemini AI
         """
-        # This is a placeholder implementation
-        # In a real system, this would add more technical depth and advanced concepts
-        return content
+        log_info("Enhancing content for advanced user using Gemini AI")
+        return gemini_personalization_service.enhance_for_advanced(content)
 
     def _apply_user_preferences(self, content: str, preferences: Dict) -> str:
         """
-        Apply specific user preferences to content
+        Apply specific user preferences to content using Gemini AI
         """
-        # Apply preferences like learning mode, difficulty level, focus area, etc.
-        learning_mode = preferences.get('learning_mode', 'beginner')
-        difficulty = preferences.get('difficulty', 'basic')
+        # Extract preferences
+        learning_mode = preferences.get('learning_mode', 'balanced')
+        difficulty = preferences.get('difficulty', 'medium')
         focus_area = preferences.get('focus_area', 'theory')
 
-        # Placeholder implementation for applying preferences
-        return content
+        log_info(f"Applying user preferences: learning_mode={learning_mode}, difficulty={difficulty}, focus_area={focus_area}")
+
+        # Use Gemini to apply preferences
+        return gemini_personalization_service.apply_user_preferences(
+            content,
+            learning_mode=learning_mode,
+            difficulty=difficulty,
+            focus_area=focus_area
+        )
 
     def get_performance_stats(self) -> dict:
         """
