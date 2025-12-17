@@ -3,7 +3,17 @@ Gemini-based Personalization Service for adapting content based on user profile
 Uses Google's Gemini API to intelligently simplify or enhance content while maintaining syllabus compliance
 """
 import os
-import google.generativeai as genai
+try:
+    import google.genai as genai
+    GENAI_AVAILABLE = True
+except ImportError:
+    try:
+        import google.generativeai as genai  # Fallback to deprecated version
+        GENAI_AVAILABLE = True
+    except ImportError:
+        genai = None
+        GENAI_AVAILABLE = False
+
 from typing import Dict, Any, Optional
 from ..utils.logging_utils import log_info, log_warning, log_error
 from dotenv import load_dotenv
@@ -12,10 +22,16 @@ load_dotenv()
 
 # Configure Gemini API
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
+if GEMINI_API_KEY and genai:
+    try:
+        genai.configure(api_key=GEMINI_API_KEY)
+        log_info("Google GenAI configured successfully")
+    except Exception as e:
+        log_warning(f"Failed to configure Google GenAI: {str(e)}", "Configuration")
+        GENAI_AVAILABLE = False
 else:
-    log_warning("GEMINI_API_KEY not found in environment variables", "Configuration")
+    log_warning("GEMINI_API_KEY not found or GenAI not available", "Configuration")
+    GENAI_AVAILABLE = False
 
 
 class SyllabusComplianceValidator:
@@ -76,8 +92,16 @@ class GeminiPersonalizationService:
     """
 
     def __init__(self):
-        self.model = genai.GenerativeModel('gemini-2.0-flash')
         self.validator = SyllabusComplianceValidator()
+        if GENAI_AVAILABLE and genai:
+            try:
+                self.model = genai.GenerativeModel('gemini-2.0-flash')
+                self.available = True
+            except Exception as e:
+                log_warning(f"Failed to initialize GenAI model: {str(e)}", "Configuration")
+                self.available = False
+        else:
+            self.available = False
 
         # System instruction for maintaining syllabus compliance
         self.syllabus_context = """
@@ -102,6 +126,10 @@ DO NOT:
         Simplify content for users with beginner experience level
         Adds more explanations, breaks down complex concepts, uses simpler language
         """
+        if not self.available:
+            log_warning("GenAI not available, returning original content", "simplify_for_beginners")
+            return content
+
         prompt = f"""
 {self.syllabus_context}
 
@@ -150,6 +178,10 @@ ADAPTED CONTENT (maintain MDX format):
         Enhance content for users with advanced experience level
         Adds technical depth, advanced concepts, implementation details
         """
+        if not self.available:
+            log_warning("GenAI not available, returning original content", "enhance_for_advanced")
+            return content
+
         prompt = f"""
 {self.syllabus_context}
 
@@ -201,6 +233,10 @@ ENHANCED CONTENT (maintain MDX format):
         """
         Apply specific user preferences to content adaptation
         """
+        if not self.available:
+            log_warning("GenAI not available, returning original content", "apply_user_preferences")
+            return content
+
         preference_instructions = []
 
         if learning_mode == "visual":

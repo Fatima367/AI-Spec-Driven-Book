@@ -16,6 +16,7 @@ def get_personalization_content_directory():
     """
     Get the content directory for personalization service
     """
+    from ..utils.content_utils import get_content_directory
     return get_content_directory()
 
 class PersonalizationService:
@@ -208,14 +209,24 @@ class PersonalizationService:
         Simplify content for beginners using Gemini AI
         """
         log_info("Simplifying content for beginner using Gemini AI")
-        return gemini_personalization_service.simplify_for_beginners(content)
+        try:
+            return gemini_personalization_service.simplify_for_beginners(content)
+        except Exception as e:
+            log_error(e, "simplify_content_with_gemini")
+            # Return original content if Gemini fails
+            return content
 
     def _enhance_content(self, content: str) -> str:
         """
         Enhance content for advanced users using Gemini AI
         """
         log_info("Enhancing content for advanced user using Gemini AI")
-        return gemini_personalization_service.enhance_for_advanced(content)
+        try:
+            return gemini_personalization_service.enhance_for_advanced(content)
+        except Exception as e:
+            log_error(e, "enhance_content_with_gemini")
+            # Return original content if Gemini fails
+            return content
 
     def _apply_user_preferences(self, content: str, preferences: Dict) -> str:
         """
@@ -228,13 +239,18 @@ class PersonalizationService:
 
         log_info(f"Applying user preferences: learning_mode={learning_mode}, difficulty={difficulty}, focus_area={focus_area}")
 
-        # Use Gemini to apply preferences
-        return gemini_personalization_service.apply_user_preferences(
-            content,
-            learning_mode=learning_mode,
-            difficulty=difficulty,
-            focus_area=focus_area
-        )
+        try:
+            # Use Gemini to apply preferences
+            return gemini_personalization_service.apply_user_preferences(
+                content,
+                learning_mode=learning_mode,
+                difficulty=difficulty,
+                focus_area=focus_area
+            )
+        except Exception as e:
+            log_error(e, "apply_user_preferences_with_gemini")
+            # Return original content if Gemini fails
+            return content
 
     def get_performance_stats(self) -> dict:
         """
