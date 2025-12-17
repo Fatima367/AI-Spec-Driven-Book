@@ -76,7 +76,7 @@ class GeminiPersonalizationService:
     """
 
     def __init__(self):
-        self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        self.model = genai.GenerativeModel('gemini-2.0-flash')
         self.validator = SyllabusComplianceValidator()
 
         # System instruction for maintaining syllabus compliance
