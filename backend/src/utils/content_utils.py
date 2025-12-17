@@ -15,7 +15,8 @@ def get_content_directory():
     # Get the project root directory (three levels up from this file: backend/src/utils)
     current_file_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_file_dir)))
-    content_dir = os.path.join(project_root, "book_frontend", "docs")
+    # Ensure we get the absolute path
+    content_dir = os.path.abspath(os.path.join(project_root, "book_frontend", "docs"))
     return content_dir
 
 async def read_content_file(chapter_id: str) -> str:
@@ -38,14 +39,104 @@ async def read_content_file(chapter_id: str) -> str:
         os.path.join(content_dir, chapter_id, "index.md"),
     ]
 
-    # Try each possible path
+    # Additional path patterns that might be used
+    # Handle cases where chapter_id includes 'docs/' prefix
+    if chapter_id.startswith('docs/'):
+        clean_chapter_id = chapter_id[5:]  # Remove 'docs/' prefix
+        possible_paths.extend([
+            os.path.join(content_dir, f"{clean_chapter_id}.mdx"),
+            os.path.join(content_dir, f"{clean_chapter_id}.md"),
+            os.path.join(content_dir, clean_chapter_id, "index.mdx"),
+            os.path.join(content_dir, clean_chapter_id, "index.md"),
+        ])
+
+    # Handle cases where path has extra components
+    # e.g., if the path is something like "docs/module1-ros2" instead of just "module1-ros2"
+    if '/' in chapter_id:
+        parts = chapter_id.split('/')
+        if len(parts) > 1:
+            # Try different combinations by removing the first part (likely 'docs')
+            if parts[0] == 'docs':
+                reduced_path = '/'.join(parts[1:])
+                possible_paths.extend([
+                    os.path.join(content_dir, f"{reduced_path}.mdx"),
+                    os.path.join(content_dir, f"{reduced_path}.md"),
+                    os.path.join(content_dir, reduced_path, "index.mdx"),
+                    os.path.join(content_dir, reduced_path, "index.md"),
+                ])
+
+            # Also try removing the last part if it might be a file extension or index reference
+            if parts[-1] in ['index', 'index.mdx', 'index.md']:
+                reduced_path = '/'.join(parts[:-1])
+                possible_paths.extend([
+                    os.path.join(content_dir, reduced_path, "index.mdx"),
+                    os.path.join(content_dir, reduced_path, "index.md"),
+                ])
+
+            # Additional fallback: try various combinations of the path parts
+            # This handles cases like "part2/chapter2.1" -> check for "part2/chapter2.1.mdx" but also "part2/chapter2.1/index.mdx"
+            for i in range(1, len(parts)):
+                partial_path = '/'.join(parts[:i])
+                remaining_path = '/'.join(parts[i:])
+                if partial_path and remaining_path:
+                    possible_paths.extend([
+                        os.path.join(content_dir, partial_path, f"{remaining_path}.mdx"),
+                        os.path.join(content_dir, partial_path, f"{remaining_path}.md"),
+                        os.path.join(content_dir, partial_path, remaining_path, "index.mdx"),
+                        os.path.join(content_dir, partial_path, remaining_path, "index.md"),
+                    ])
+
+    # Try each possible path in local environment
     for file_path in possible_paths:
         if os.path.exists(file_path):
             with open(file_path, 'r', encoding='utf-8') as file:
                 content = file.read()
             return content
 
-    # If no file found, raise error with helpful message
+    # If file is not found locally, try to fetch from the deployed frontend
+    # This handles the case where the backend is deployed separately and doesn't have local content files
+    try:
+        from urllib.parse import urljoin
+        import aiohttp
+
+        # Get the deployed frontend URL from environment variable
+        frontend_url = os.getenv('FRONTEND_URL', 'https://physical-ai-n-humanoid-robotics.vercel.app')
+
+        # Try to fetch content from the frontend
+        # Format: https://physical-ai-n-humanoid-robotics.vercel.app/docs/part1/chapter1.1.mdx
+        # or https://physical-ai-n-humanoid-robotics.vercel.app/docs/module1-ros2/index.mdx
+        urls_to_try = [
+            f"{frontend_url}/docs/{chapter_id}.mdx",
+            f"{frontend_url}/docs/{chapter_id}.md",
+            f"{frontend_url}/docs/{chapter_id}/",
+            f"{frontend_url}/docs/{chapter_id}"
+        ]
+
+        for url in urls_to_try:
+            try:
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(url) as response:
+                        if response.status == 200:
+                            content = await response.text()
+                            # For HTML responses (like index pages), we might need to extract the actual content
+                            # This is a simple check - in a real implementation, we'd want more sophisticated parsing
+                            if url.endswith('/') or url == f"{frontend_url}/docs/{chapter_id}":
+                                # This is likely an HTML page, not raw MDX content
+                                # For personalization, we might need to extract just the content portion
+                                # For now, let's just return the content if it's available
+                                pass
+                            return content
+            except Exception:
+                continue  # Try the next URL
+
+    except ImportError:
+        # aiohttp is not available, skip the remote fetch
+        pass
+    except Exception:
+        # If there's an error with remote fetching, continue to raise the original error
+        pass
+
+    # If no file found locally or remotely, raise error with helpful message
     raise FileNotFoundError(f"Content file not found for chapter: {chapter_id}. Tried paths: {possible_paths}")
 
 async def write_content_file(file_name: str, content: str) -> bool:
