@@ -16,3 +16,4 @@ bcrypt
 python-jose[cryptography]
 fastapi_limiter
 psycopg2
+google-generativeai
