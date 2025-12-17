@@ -95,7 +95,7 @@ class GeminiPersonalizationService:
         self.validator = SyllabusComplianceValidator()
         if GENAI_AVAILABLE and genai:
             try:
-                self.model = genai.GenerativeModel('gemini-2.0-flash')
+                self.model = genai.GenerativeModel('gemini-2.5-flash-lite')
                 self.available = True
             except Exception as e:
                 log_warning(f"Failed to initialize GenAI model: {str(e)}", "Configuration")

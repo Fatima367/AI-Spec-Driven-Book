@@ -32,7 +32,7 @@ This directory contains specialized skills and subagents created to support the 
 ### 4. Urdu Translation
 - **Purpose**: Translates educational content from English to Urdu with technical accuracy
 - **Key Features**:
-  - Uses gemini-2.0-flash with Urdu prompt engineering
+  - Uses gemini-2.5-flash-lite with Urdu prompt engineering
   - Maintains technical terminology consistency
   - Preserves mathematical formulations
   - Ensures cultural appropriateness
