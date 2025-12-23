@@ -19,14 +19,14 @@ def get_gemini_embedding_client() -> OpenAI:
     )
     return client
 
-def get_embeddings(text: str) -> list[float]:
+def get_embeddings(texts: list[str]) -> list[list[float]]:
     client = get_gemini_embedding_client()
     # Using a common Gemini embedding model identifier
-    # If this fails, try 'text-embedding-004' or consult Google's latest documentation
-    model = "gemini-embedding-001" 
+    # If this fails, consult Google's latest documentation
+    model = "text-embedding-004" 
 
     response = client.embeddings.create(
-        input=text,
+        input=texts,
         model=model
     )
-    return response.data[0].embedding
+    return [item.embedding for item in response.data]
