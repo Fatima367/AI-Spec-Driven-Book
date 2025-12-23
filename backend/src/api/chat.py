@@ -41,7 +41,7 @@ async def chat_with_bot(request: ChatRequest):
         # Determine the text to use for retrieval
         retrieval_query_text = request.selected_text if request.selected_text else request.query
         
-        query_embedding = get_embeddings(retrieval_query_text)
+        query_embedding = get_embeddings([retrieval_query_text])[0]
 
         # Retrieve relevant chunks from Qdrant
         search_result = qdrant_client.query_points(

@@ -4,34 +4,16 @@ Uses Google's Gemini API to intelligently simplify or enhance content while main
 """
 import os
 try:
-    import google.genai as genai
+    import google.generativeai as genai
     GENAI_AVAILABLE = True
 except ImportError:
-    try:
-        import google.generativeai as genai  # Fallback to deprecated version
-        GENAI_AVAILABLE = True
-    except ImportError:
-        genai = None
-        GENAI_AVAILABLE = False
-
+    genai = None
+    GENAI_AVAILABLE = False
 from typing import Dict, Any, Optional
 from ..utils.logging_utils import log_info, log_warning, log_error
 from dotenv import load_dotenv
 
 load_dotenv()
-
-# Configure Gemini API
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if GEMINI_API_KEY and genai:
-    try:
-        genai.configure(api_key=GEMINI_API_KEY)
-        log_info("Google GenAI configured successfully")
-    except Exception as e:
-        log_warning(f"Failed to configure Google GenAI: {str(e)}", "Configuration")
-        GENAI_AVAILABLE = False
-else:
-    log_warning("GEMINI_API_KEY not found or GenAI not available", "Configuration")
-    GENAI_AVAILABLE = False
 
 
 class SyllabusComplianceValidator:
@@ -93,15 +75,21 @@ class GeminiPersonalizationService:
 
     def __init__(self):
         self.validator = SyllabusComplianceValidator()
+        self.available = False
         if GENAI_AVAILABLE and genai:
-            try:
-                self.model = genai.GenerativeModel('gemini-2.5-flash-lite')
-                self.available = True
-            except Exception as e:
-                log_warning(f"Failed to initialize GenAI model: {str(e)}", "Configuration")
-                self.available = False
+            GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+            if GEMINI_API_KEY:
+                try:
+                    genai.configure(api_key=GEMINI_API_KEY)
+                    self.model = genai.GenerativeModel('gemini-2.5-flash-lite')
+                    self.available = True
+                    log_info("Google GenAI configured successfully")
+                except Exception as e:
+                    log_warning(f"Failed to configure Google GenAI: {str(e)}", "Configuration")
+            else:
+                log_warning("GEMINI_API_KEY not found", "Configuration")
         else:
-            self.available = False
+            log_warning("google.generativeai library not found", "Configuration")
 
         # System instruction for maintaining syllabus compliance
         self.syllabus_context = """
