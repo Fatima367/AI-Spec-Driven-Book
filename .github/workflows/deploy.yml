@@ -43,4 +43,4 @@ jobs:
 
           # Push the changes to your Hugging Face Space
           # Replace 'YOUR_HF_USERNAME/YOUR_SPACE_NAME' with your actual Space ID
-          git push https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME master
+          git push https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME main
