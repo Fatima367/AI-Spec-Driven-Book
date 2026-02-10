@@ -1,0 +1,49 @@
+name: Deploy Backend to Hugging Face
+
+on:
+  push:
+    branches:
+      - main # Trigger on pushes to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' # Or your preferred Python version
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install huggingface_hub
+          pip install -r backend/requirements.txt # Install your backend dependencies
+
+      - name: Login to Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          huggingface-cli login --token $HF_TOKEN
+
+      - name: Deploy to Hugging Face Space
+        run: |
+          # Copy backend files to a temporary directory for deployment
+          mkdir -p huggingface_space
+          cp -r backend/* huggingface_space/
+          
+          # Initialize a git repository in the temporary directory
+          cd huggingface_space
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Deploy backend to Hugging Face Space" || true # '|| true' to avoid failing if no changes
+
+          # Push the changes to your Hugging Face Space
+          # Replace 'YOUR_HF_USERNAME/YOUR_SPACE_NAME' with your actual Space ID
+          git push https://HF_TOKEN:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/YOUR_HF_USERNAME/YOUR_SPACE_NAME main -f
