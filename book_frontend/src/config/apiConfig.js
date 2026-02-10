@@ -7,7 +7,7 @@ const getApiBaseUrl = () => {
       return 'http://127.0.0.1:8000';
     } else {
       // Production URL - adjust as needed
-      return 'https://ai-spec-driven-book-backend.up.railway.app';
+      return 'https://syraa123-physical-ai-and-humanoid-robotics.hf.space';
     }
   }
   // Fallback for server-side

@@ -13,7 +13,7 @@ const betterAuthConfig = {
   },
   // Define the API endpoints that match our Python FastAPI implementation
   api: {
-    baseUrl: process.env.API_BASE_URL || "https://ai-spec-driven-book-backend.up.railway.app/api/v1",
+    baseUrl: process.env.API_BASE_URL || "https://syraa123-physical-ai-and-humanoid-robotics.hf.space/api/v1",
     prefix: "/auth"
   },
   // User schema extensions for background information
