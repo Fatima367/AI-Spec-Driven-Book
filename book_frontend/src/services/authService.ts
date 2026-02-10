@@ -6,7 +6,7 @@ import { UserProfileResponse, UpdateBackgroundRequest } from '../../backend/src/
 // This client will interact with your FastAPI backend's /api/v1/auth endpoints
 export const authClient = new AuthClient({
   // baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://ai-spec-driven-book-backend.up.railway.app/api/v1',
-  baseURL: 'https://ai-spec-driven-book-backend.up.railway.app/api/v1', // Using direct URL for now, will use env var later
+  baseURL: 'https://syraa123-physical-ai-and-humanoid-robotics.hf.space/api/v1', // Using direct URL for now, will use env var later
   endpoints: {
     signup: '/auth/signup',
     login: '/auth/login',

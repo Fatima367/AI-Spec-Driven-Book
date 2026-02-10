@@ -38,7 +38,7 @@ function NavbarItemCustomAuth({
       // Get the API base URL (similar to how it's done in apiConfig)
       const API_BASE_URL = typeof window !== 'undefined'
         ? window.location.origin
-        : process.env.BACKEND_URL || 'https://ai-spec-driven-book-backend.up.railway.app';
+        : process.env.BACKEND_URL || 'https://syraa123-physical-ai-and-humanoid-robotics.hf.space';
       const API_VERSION = '/api/v1';
 
       // Call logout endpoint (server-side cleanup)
