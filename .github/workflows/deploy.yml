@@ -24,26 +24,23 @@ jobs:
           pip install huggingface_hub
           pip install -r backend/requirements.txt # Install your backend dependencies
 
-      - name: Login to Hugging Face
+      - name: Deploy to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+          HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
         run: |
-          python -m huggingface_hub.commands.user_access login --token $HF_TOKEN
+          git config --global user.email "bot@github.com"
+          git config --global user.name "Bot"
 
-      - name: Deploy to Hugging Face Space
-        run: |
-          # Copy backend files to a temporary directory for deployment
-          mkdir -p huggingface_space
+          git clone https://huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME huggingface_space
           cp -r backend/* huggingface_space/
           
           # Initialize a git repository in the temporary directory
           cd huggingface_space
-          git init
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -m "Deploy backend to Hugging Face Space" || true # '|| true' to avoid failing if no changes
 
           # Push the changes to your Hugging Face Space
           # Replace 'YOUR_HF_USERNAME/YOUR_SPACE_NAME' with your actual Space ID
-          git push https://HF_TOKEN:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/YOUR_HF_USERNAME/YOUR_SPACE_NAME main -f
+          git push https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME master
