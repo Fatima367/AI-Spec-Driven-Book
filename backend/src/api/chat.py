@@ -2,8 +2,10 @@ import traceback
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
+from groq import Groq # Import Groq client
+import os # Ensure os is imported for environment variables
 
-from ..services.embedding_service import get_embeddings, get_gemini_embedding_client
+from ..services.embedding_service import get_embeddings # Keep Gemini for embeddings
 from ..services.qdrant_service import get_qdrant_client
 from .ingest import DocumentChunk # Reuse DocumentChunk model
 from dotenv import load_dotenv
@@ -11,6 +13,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 router = APIRouter()
+
+# Initialize Groq client globally or per request as needed
+# For now, let's initialize it here. It will get the API key from environment.
+groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 class Citation(BaseModel):
     doc_id: str
@@ -79,23 +85,19 @@ async def chat_with_bot(request: ChatRequest):
             {"role": "user", "content": f"Context from the book:\n{context_text}\n\nUser Question: {request.query}"}
         ]
         
-        # Get Gemini LLM client configured via OpenAI client
-        gemini_llm_client = get_gemini_embedding_client() # Reusing the same client setup, but will call chat.completions
-
-        # For chat completion, Gemini uses models like "gemini-pro" or "gemini-1.5-pro"
-        # I'll use "gemini-1.5-pro" as it's a capable model.
-        # This might need adjustment based on available models via the OpenAI-compatible endpoint.
+        print("Sending request to Groq with prompt_messages:")
+        print(prompt_messages)
         try:
-            chat_response = gemini_llm_client.chat.completions.create(
-                model="gemini-2.5-flash-lite", # Use an appropriate Gemini chat model
+            chat_response = groq_client.chat.completions.create(
+                model="llama-3.1-8b-instant", # Use an appropriate Groq chat model
                 messages=prompt_messages,
                 temperature=0.7,
                 max_tokens=500
             )
             answer = chat_response.choices[0].message.content
         except Exception as llm_error:
-            # Fallback for polite refusal if LLM call fails
             print(f"LLM call failed: {llm_error}")
+            traceback.print_exc() # Print the full traceback for LLM errors
             return ChatResponse(answer="I apologize, but I couldn't process your request at the moment. Please try again later.", citations=[])
 
         return ChatResponse(answer=answer, citations=citations)
