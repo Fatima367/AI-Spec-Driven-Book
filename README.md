@@ -48,7 +48,7 @@ To set up and run the project locally, follow these steps:
     ```
 4.  **Run the backend server:**
     ```bash
-    uvicorn main:app --reload --port 8000
+    uvicorn src.main:app --reload --port 8000
     ```
     The backend API will be accessible at `http://127.0.0.1:8000`.
 
