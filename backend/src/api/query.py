@@ -31,7 +31,7 @@ async def query_docs(request: QueryRequest):
         if not qdrant_client.collection_exists(collection_name=collection_name):
             raise HTTPException(status_code=404, detail=f"Qdrant collection '{collection_name}' not found. Please ingest documents first.")
 
-        query_embedding = get_embeddings(request.query)
+        query_embedding = get_embeddings([request.query])
 
         search_result = qdrant_client.query(
             collection_name=collection_name,

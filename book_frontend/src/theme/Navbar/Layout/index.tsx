@@ -17,6 +17,12 @@ function NavbarBackdrop(props: ComponentProps<'div'>) {
       role="presentation"
       {...props}
       className={clsx('navbar-sidebar__backdrop', props.className)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          props.onClick?.(e);
+        }
+      }}
     />
   );
 }

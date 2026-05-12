@@ -1,19 +1,17 @@
 """
 Gemini-based Personalization Service for adapting content based on user profile
-Uses Google's Gemini API to intelligently simplify or enhance content while maintaining syllabus compliance
+Uses Groq API to intelligently simplify or enhance content while maintaining syllabus compliance
 """
 import os
-try:
-    import google.generativeai as genai
-    GENAI_AVAILABLE = True
-except ImportError:
-    genai = None
-    GENAI_AVAILABLE = False
+from groq import Groq
 from typing import Dict, Any, Optional
 from ..utils.logging_utils import log_info, log_warning, log_error
 from dotenv import load_dotenv
 
 load_dotenv()
+
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GROQ_MODEL_NAME = os.getenv("GROQ_MODEL_NAME", "llama-3.1-8b-instant") # Default Groq model
 
 
 class SyllabusComplianceValidator:
@@ -76,20 +74,20 @@ class GeminiPersonalizationService:
     def __init__(self):
         self.validator = SyllabusComplianceValidator()
         self.available = False
-        if GENAI_AVAILABLE and genai:
-            GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-            if GEMINI_API_KEY:
-                try:
-                    genai.configure(api_key=GEMINI_API_KEY)
-                    self.model = genai.GenerativeModel('gemini-2.5-flash-lite')
-                    self.available = True
-                    log_info("Google GenAI configured successfully")
-                except Exception as e:
-                    log_warning(f"Failed to configure Google GenAI: {str(e)}", "Configuration")
-            else:
-                log_warning("GEMINI_API_KEY not found", "Configuration")
+        self.groq_client = None
+
+        if GROQ_API_KEY:
+            try:
+                self.groq_client = Groq(api_key=GROQ_API_KEY)
+                # Test a simple call to ensure the client is working
+                # This part is illustrative, and might need actual implementation depending on Groq API's init behavior
+                # For now, just setting self.available to True if client is initialized
+                self.available = True
+                log_info("Groq client configured successfully")
+            except Exception as e:
+                log_warning(f"Failed to configure Groq client: {str(e)}", "Configuration")
         else:
-            log_warning("google.generativeai library not found", "Configuration")
+            log_warning("GROQ_API_KEY not found", "Configuration")
 
         # System instruction for maintaining syllabus compliance
         self.syllabus_context = """
@@ -114,13 +112,13 @@ DO NOT:
         Simplify content for users with beginner experience level
         Adds more explanations, breaks down complex concepts, uses simpler language
         """
-        if not self.available:
-            log_warning("GenAI not available, returning original content", "simplify_for_beginners")
+        if not self.available or not self.groq_client:
+            log_warning("Groq client not available, returning original content", "simplify_for_beginners")
             return content
 
-        prompt = f"""
-{self.syllabus_context}
-
+        messages = [
+            {"role": "system", "content": self.syllabus_context},
+            {"role": "user", "content": f"""
 TASK: Adapt this Physical AI & Robotics textbook content for BEGINNER-level learners.
 User's technical background: {tech_background}
 
@@ -140,11 +138,17 @@ ORIGINAL CONTENT:
 {content}
 
 ADAPTED CONTENT (maintain MDX format):
-"""
+"""}
+        ]
 
         try:
-            response = self.model.generate_content(prompt)
-            personalized_content = response.text
+            chat_completion = self.groq_client.chat.completions.create(
+                messages=messages,
+                model=GROQ_MODEL_NAME,
+                temperature=0.7, # You can adjust temperature as needed
+                max_tokens=2000, # Adjust max_tokens as needed
+            )
+            personalized_content = chat_completion.choices[0].message.content
 
             # Validate syllabus compliance
             is_valid, message = self.validator.validate_content(content, personalized_content)
@@ -166,13 +170,13 @@ ADAPTED CONTENT (maintain MDX format):
         Enhance content for users with advanced experience level
         Adds technical depth, advanced concepts, implementation details
         """
-        if not self.available:
-            log_warning("GenAI not available, returning original content", "enhance_for_advanced")
+        if not self.available or not self.groq_client:
+            log_warning("Groq client not available, returning original content", "enhance_for_advanced")
             return content
 
-        prompt = f"""
-{self.syllabus_context}
-
+        messages = [
+            {"role": "system", "content": self.syllabus_context},
+            {"role": "user", "content": f"""
 TASK: Adapt this Physical AI & Robotics textbook content for ADVANCED-level learners.
 User's technical background: {tech_background}
 
@@ -192,11 +196,17 @@ ORIGINAL CONTENT:
 {content}
 
 ENHANCED CONTENT (maintain MDX format):
-"""
+"""}
+        ]
 
         try:
-            response = self.model.generate_content(prompt)
-            personalized_content = response.text
+            chat_completion = self.groq_client.chat.completions.create(
+                messages=messages,
+                model=GROQ_MODEL_NAME,
+                temperature=0.7, # You can adjust temperature as needed
+                max_tokens=2000, # Adjust max_tokens as needed
+            )
+            personalized_content = chat_completion.choices[0].message.content
 
             # Validate syllabus compliance
             is_valid, message = self.validator.validate_content(content, personalized_content)
@@ -221,8 +231,8 @@ ENHANCED CONTENT (maintain MDX format):
         """
         Apply specific user preferences to content adaptation
         """
-        if not self.available:
-            log_warning("GenAI not available, returning original content", "apply_user_preferences")
+        if not self.available or not self.groq_client:
+            log_warning("Groq client not available, returning original content", "apply_user_preferences")
             return content
 
         preference_instructions = []
@@ -244,9 +254,9 @@ ENHANCED CONTENT (maintain MDX format):
         if not preference_instructions:
             return content
 
-        prompt = f"""
-{self.syllabus_context}
-
+        messages = [
+            {"role": "system", "content": self.syllabus_context},
+            {"role": "user", "content": f"""
 TASK: Adapt this content with the following user preferences:
 {chr(10).join(f'- {instruction}' for instruction in preference_instructions)}
 
@@ -256,11 +266,17 @@ ORIGINAL CONTENT:
 {content}
 
 ADAPTED CONTENT (maintain MDX format):
-"""
+"""}
+        ]
 
         try:
-            response = self.model.generate_content(prompt)
-            personalized_content = response.text
+            chat_completion = self.groq_client.chat.completions.create(
+                messages=messages,
+                model=GROQ_MODEL_NAME,
+                temperature=0.7, # You can adjust temperature as needed
+                max_tokens=2000, # Adjust max_tokens as needed
+            )
+            personalized_content = chat_completion.choices[0].message.content
 
             # Validate syllabus compliance
             is_valid, message = self.validator.validate_content(content, personalized_content)

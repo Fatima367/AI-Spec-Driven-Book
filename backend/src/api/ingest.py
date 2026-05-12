@@ -3,7 +3,9 @@ from pydantic import BaseModel, Field
 import os
 import glob
 import uuid
+import time
 from typing import List
+import anyio
 
 from ..services.embedding_service import get_embeddings
 from ..services.qdrant_service import get_qdrant_client
@@ -20,15 +22,26 @@ class DocumentChunk(BaseModel):
     page_content: str = Field(..., max_length=CHUNK_MAX_LENGTH) # Reduced from 5000 to 1500 for better performance and context
     chapter_title: str
     url_slug: str
+    language: str = Field(default="en", description="Language code: 'en' for English, 'ur' for Urdu")
 
     class Config:
         json_schema_extra = {
             "example": {
                 "page_content": "This is a chunk of text.",
                 "chapter_title": "Introduction",
-                "url_slug": "/docs/intro"
+                "url_slug": "/docs/intro",
+                "language": "en"
             }
         }
+
+
+async def _read_file_async(file_path: str) -> str:
+    """Read file asynchronously using anyio.to_thread.run_sync."""
+    def _read():
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    return await anyio.to_thread.run_sync(_read)
+
 
 @router.post("/ingest")
 async def ingest_docs():
@@ -57,8 +70,7 @@ async def ingest_docs():
 
         all_chunks = []
         for file_path in markdown_files:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
+            content = await _read_file_async(file_path)
 
             if not content.strip():
                 print(f"Warning: Skipping empty file {file_path}")
@@ -93,22 +105,47 @@ async def ingest_docs():
 
                 relative_path = os.path.relpath(file_path, docs_path)
                 url_slug = "/" + os.path.splitext(relative_path)[0].replace("\\", "/")
-                
+
                 chapter_title = os.path.basename(file_path).replace(".md", "").replace(".mdx", "")
                 if chunk_content_stripped.startswith("#"):
                     chapter_title = chunk_content_stripped.split('\n')[0].replace("#", "").strip()
 
+                # Detect language based on filename
+                filename = os.path.basename(file_path)
+                language = "ur" if filename.startswith("urdu-") else "en"
+
                 all_chunks.append(DocumentChunk(
                     page_content=chunk_content_stripped,
                     chapter_title=chapter_title,
-                    url_slug=url_slug
+                    url_slug=url_slug,
+                    language=language
                 ))
-        
+
         if not all_chunks:
             return {"message": "No content to ingest.", "documents_ingested": 0}
 
+        # Process embeddings in batches to avoid rate limits
         texts_to_embed = [chunk.page_content for chunk in all_chunks]
-        embeddings = get_embeddings(texts_to_embed)
+        embeddings = []
+        batch_size = 10  # Process 10 chunks at a time
+        total_batches = (len(texts_to_embed) + batch_size - 1) // batch_size
+
+        print(f"📊 Processing {len(texts_to_embed)} chunks in {total_batches} batches...")
+
+        for i in range(0, len(texts_to_embed), batch_size):
+            batch_num = (i // batch_size) + 1
+            batch_texts = texts_to_embed[i:i + batch_size]
+
+            print(f"🔄 Processing batch {batch_num}/{total_batches} ({len(batch_texts)} chunks)...")
+            batch_embeddings = get_embeddings(batch_texts)
+            embeddings.extend(batch_embeddings)
+
+            # Wait 60 seconds between batches (except after the last batch)
+            if i + batch_size < len(texts_to_embed):
+                print(f"⏳ Waiting 60 seconds before next batch to avoid rate limits...")
+                time.sleep(60)
+
+        print(f"✅ All embeddings generated successfully!")
 
         qdrant_client = get_qdrant_client()
         collection_name = "book_content_chunks"

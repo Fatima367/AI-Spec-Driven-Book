@@ -13,7 +13,6 @@ from ..models import (
     ErrorResponse
 )
 from ..services.auth_service import auth_service
-from fastapi_limiter.depends import RateLimiter # Import RateLimiter
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
