@@ -6,6 +6,24 @@ import os
 import shutil
 from typing import Optional
 import re
+import anyio
+
+
+async def _read_file_async(file_path: str) -> str:
+    """Read file asynchronously using anyio.to_thread.run_sync."""
+    def _read():
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    return await anyio.to_thread.run_sync(_read)
+
+
+async def _write_file_async(file_path: str, content: str) -> None:
+    """Write file asynchronously using anyio.to_thread.run_sync."""
+    def _write():
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+    return await anyio.to_thread.run_sync(_write)
 
 
 def get_content_directory():
@@ -18,6 +36,7 @@ def get_content_directory():
     # Ensure we get the absolute path
     content_dir = os.path.abspath(os.path.join(project_root, "book_frontend", "docs"))
     return content_dir
+
 
 async def read_content_file(chapter_id: str) -> str:
     """
@@ -89,8 +108,7 @@ async def read_content_file(chapter_id: str) -> str:
     # Try each possible path in local environment
     for file_path in possible_paths:
         if os.path.exists(file_path):
-            with open(file_path, 'r', encoding='utf-8') as file:
-                content = file.read()
+            content = await _read_file_async(file_path)
             return content
 
     # If file is not found locally, try to fetch from the deployed frontend
@@ -139,6 +157,7 @@ async def read_content_file(chapter_id: str) -> str:
     # If no file found locally or remotely, raise error with helpful message
     raise FileNotFoundError(f"Content file not found for chapter: {chapter_id}. Tried paths: {possible_paths}")
 
+
 async def write_content_file(file_name: str, content: str) -> bool:
     """
     Write content to an MDX file
@@ -149,14 +168,13 @@ async def write_content_file(file_name: str, content: str) -> bool:
     try:
         # Create directory if it doesn't exist
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
-
-        with open(file_path, 'w', encoding='utf-8') as file:
-            file.write(content)
-
+        
+        await _write_file_async(file_path, content)
         return True
     except Exception as e:
         print(f"Error writing content file {file_path}: {str(e)}")
         return False
+
 
 async def sync_urdu_content(english_file_path: str, urdu_content: str = None) -> bool:
     """
@@ -185,32 +203,26 @@ async def sync_urdu_content(english_file_path: str, urdu_content: str = None) ->
 
     try:
         if urdu_content is not None:
-            # Write provided Urdu content to the Urdu file
-            os.makedirs(os.path.dirname(urdu_file_path), exist_ok=True)
-            with open(urdu_file_path, 'w', encoding='utf-8') as file:
-                file.write(urdu_content)
+             # Write provided Urdu content to the Urdu file
+            await _write_file_async(urdu_file_path, urdu_content)
             return True
         else:
             # Create Urdu file based on English content if it doesn't exist
             if not os.path.exists(urdu_file_path):
                 # Read English content
-                with open(english_file_path, 'r', encoding='utf-8') as file:
-                    english_content = file.read()
+                english_content = await _read_file_async(english_file_path)
 
                 # Create basic Urdu content (initially just a placeholder)
                 # In a real implementation, this would involve actual translation
                 urdu_content = f"<!-- Urdu translation of {os.path.basename(english_file_path)} -->\n\n{english_content}"
-
                 # Write to Urdu file
-                os.makedirs(os.path.dirname(urdu_file_path), exist_ok=True)
-                with open(urdu_file_path, 'w', encoding='utf-8') as file:
-                    file.write(urdu_content)
-
+                await _write_file_async(urdu_file_path, urdu_content)
                 return True
             return True  # Urdu file already exists
     except Exception as e:
         print(f"Error synchronizing Urdu content for {english_file_path}: {str(e)}")
         return False
+
 
 async def get_urdu_file_path(english_file_path: str) -> str:
     """
@@ -232,12 +244,14 @@ async def get_urdu_file_path(english_file_path: str) -> str:
     name, ext = os.path.splitext(base_name)
     return os.path.join(dir_path, f"urdu-{name}{ext}")
 
+
 async def check_urdu_file_exists(english_file_path: str) -> bool:
     """
     Check if the corresponding Urdu file exists for an English file
     """
     urdu_file_path = await get_urdu_file_path(english_file_path)
     return os.path.exists(urdu_file_path)
+
 
 async def get_all_content_files() -> list:
     """
@@ -256,6 +270,7 @@ async def get_all_content_files() -> list:
                 content_files.append(full_path)
 
     return content_files
+
 
 async def sync_all_urdu_files() -> bool:
     """

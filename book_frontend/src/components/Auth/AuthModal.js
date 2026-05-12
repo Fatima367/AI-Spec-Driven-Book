@@ -33,9 +33,39 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login', onLoginSuccess, onS
     }
   };
 
+  const handleOverlayKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      onClose();
+    }
+  };
+
+  const handleContentKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      e.stopPropagation();
+    }
+  };
+
   return (
-    <div className="auth-modal-overlay" onClick={onClose}>
-      <div className="auth-modal-content" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="auth-modal-overlay"
+      onClick={onClose}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClose();
+        }
+      }}
+      tabIndex={0}
+      role="button"
+      aria-label="Close modal"
+    >
+      <div
+        className="auth-modal-content"
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.key === 'Escape' && e.stopPropagation()}
+        tabIndex={-1}
+        role="dialog"
+      >
         <div className="auth-modal-header">
           <h2>{currentView === 'login' ? 'Sign In' : 'Create Account'}</h2>
           <button className="auth-modal-close" onClick={onClose} aria-label="Close modal">

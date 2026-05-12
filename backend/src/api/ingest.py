@@ -5,6 +5,7 @@ import glob
 import uuid
 import time
 from typing import List
+import anyio
 
 from ..services.embedding_service import get_embeddings
 from ..services.qdrant_service import get_qdrant_client
@@ -33,6 +34,15 @@ class DocumentChunk(BaseModel):
             }
         }
 
+
+async def _read_file_async(file_path: str) -> str:
+    """Read file asynchronously using anyio.to_thread.run_sync."""
+    def _read():
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    return await anyio.to_thread.run_sync(_read)
+
+
 @router.post("/ingest")
 async def ingest_docs():
     """
@@ -60,8 +70,7 @@ async def ingest_docs():
 
         all_chunks = []
         for file_path in markdown_files:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
+            content = await _read_file_async(file_path)
 
             if not content.strip():
                 print(f"Warning: Skipping empty file {file_path}")
