@@ -1,10 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 import os
-import glob
 import uuid
-import time
-from typing import List
 import anyio
 
 from ..services.embedding_service import get_embeddings
@@ -143,7 +140,7 @@ async def ingest_docs():
             # Wait 60 seconds between batches (except after the last batch)
             if i + batch_size < len(texts_to_embed):
                 print(f"⏳ Waiting 60 seconds before next batch to avoid rate limits...")
-                time.sleep(60)
+                await anyio.sleep(60)
 
         print(f"✅ All embeddings generated successfully!")
 
